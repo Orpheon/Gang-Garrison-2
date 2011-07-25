@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="BotGetTarget" type="RESOURCE"/>
+  <resource name="BotAim" type="RESOURCE"/>
+  <resource name="BotShoot" type="RESOURCE"/>
+  <resource name="DemoAim" type="RESOURCE"/>
+</resources>

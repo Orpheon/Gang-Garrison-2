@@ -1,5 +1,19 @@
 var player;
 
+// Banning
+ip = socket_remote_ip(socket)
+show_message(ip)
+show_message(ds_list_find_value(global.banlist, 0))
+for (a=0; a<ds_list_size(global.banlist)-1; a+=1)
+{
+    if string(ip) == ds_list_find_value(global.banlist, a)
+    {
+        // Kick player
+        socket_destroy(socket)
+        print("A banned player has tried to join.")
+    }
+}
+
 if(socket_has_error(socket)) {
     // Connection closed unexpectedly, remove client
     instance_destroy();
@@ -23,6 +37,8 @@ if(tcp_receive(socket, expectedBytes)) {
         noOfPlayers = ds_list_size(global.players);
         if(global.dedicatedMode)
             noOfPlayers -= 1;
+        
+        noOfPlayers -= instance_number(BotPlayer)
             
         if(noOfPlayers >= global.playerLimit) {
             write_ubyte(socket, SERVER_FULL);

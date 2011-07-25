@@ -22,7 +22,7 @@ ysize = view_hview[0];
     
     draw_set_color(c_black);
     draw_set_alpha(0.8);
-    draw_rectangle(xoffset, yoffset, xoffset+xsize, yoffset+ysize, false);   
+    draw_rectangle(xoffset, yoffset, xoffset+xsize, yoffset+ysize, false);
     draw_set_color(c_white);
     
     draw_set_valign(fa_middle);

@@ -4,7 +4,7 @@
     if file_exists("game_errors.log") file_delete("game_errors.log");
     
     var customMapRotationFile;
-
+    
     //import wav files for music
     global.MenuMusic=sound_add(choose("Music/menumusic1.wav","Music/menumusic2.wav","Music/menumusic3.wav","Music/menumusic4.wav"), 1, true);
     global.IngameMusic=sound_add("Music/ingamemusic.wav", 1, true);
@@ -16,15 +16,16 @@
     if(global.FaucetMusic != -1)
         sound_volume(global.FaucetMusic, 0.8);
         
-
     global.sendBuffer = buffer_create();
     global.eventBuffer = buffer_create();
     global.tempBuffer = buffer_create();
     global.HudCheck = false;
-    global.map_rotation = ds_list_create();
+    global.map_rotation = ds_list_create();    
+    
+    OHU_Init()
     
     global.CustomMapCollisionSprite = -1;
-    
+        
     window_set_region_scale(-1, false);
     
     ini_open("gg2.ini");
@@ -66,6 +67,33 @@
     global.totalMapAreas=1;
     global.setupTimer=1800;
     global.joinedServerName="";
+    
+    //Classlimits:
+    global.classlimits = 9999
+    global.classlimits[CLASS_SCOUT] = ini_read_real("Server", "Runner Class Limit", 9999)
+    global.classlimits[CLASS_PYRO] = ini_read_real("Server", "Firebug Class Limit", 9999)
+    global.classlimits[CLASS_SOLDIER] = ini_read_real("Server", "Rocketman Class Limit", 9999)
+    global.classlimits[CLASS_HEAVY] = ini_read_real("Server", "Overweight Class Limit", 9999)
+    global.classlimits[CLASS_DEMOMAN] = ini_read_real("Server", "Detonator Class Limit", 9999)
+    global.classlimits[CLASS_MEDIC] = ini_read_real("Server", "Healer Class Limit", 9999)
+    global.classlimits[CLASS_ENGINEER] = ini_read_real("Server", "Constructor Class Limit", 9999)
+    global.classlimits[CLASS_SPY] = ini_read_real("Server", "Infiltrator Class Limit", 9999)
+    global.classlimits[CLASS_SNIPER] = ini_read_real("Server", "Rifleman Class Limit", 9999)
+    global.classlimits[CLASS_QUOTE] = ini_read_real("Server", "Quote Class Limit", 9999)
+    
+    // Bot options
+    global.bot_num_wished = ini_read_real("Bots", "Number of Bots", 10)
+    global.bot_mode = ini_read_real("Bots", "Mode", 0)
+    global.bot_coop = ini_read_real("Bots", "Co-op enabled", 0)
+    global.bot_class_array[0] = ini_read_real("Bots", "Runner enabled", 1)
+    global.bot_class_array[1] = ini_read_real("Bots", "Firebug enabled", 1)
+    global.bot_class_array[2] = ini_read_real("Bots", "Rocketman enabled", 1)
+    global.bot_class_array[3] = ini_read_real("Bots", "Overweight enabled", 1)
+    global.bot_class_array[4] = ini_read_real("Bots", "Constructor enabled", 1)
+    global.bot_class_array[5] = ini_read_real("Bots", "Rifleman enabled", 1)
+
+    global.bot_num = 0
+    global.bot_offset = 0
         
     ini_write_string("Settings", "PlayerName", global.playerName);
     ini_write_real("Settings", "Fullscreen", global.fullscreen);
@@ -92,7 +120,26 @@
     ini_write_real("Server", "Respawn Time", global.Server_RespawntimeSec);
     ini_write_real("Server", "Time Limit", global.timeLimitMins);
     ini_write_string("Server", "Password", global.serverPassword);
-    
+    ini_write_real("Server", "Runner Class Limit", global.classlimits[CLASS_SCOUT])
+    ini_write_real("Server", "Firebug Class Limit", global.classlimits[CLASS_PYRO])
+    ini_write_real("Server", "Soldier Class Limit", global.classlimits[CLASS_SOLDIER])
+    ini_write_real("Server", "Overweight Class Limit", global.classlimits[CLASS_HEAVY])
+    ini_write_real("Server", "Detonator Class Limit", global.classlimits[CLASS_DEMOMAN])
+    ini_write_real("Server", "Healer Class Limit", global.classlimits[CLASS_MEDIC])
+    ini_write_real("Server", "Constructor Class Limit", global.classlimits[CLASS_ENGINEER])
+    ini_write_real("Server", "Infiltrator Class Limit", global.classlimits[CLASS_SPY])
+    ini_write_real("Server", "Rifleman Class Limit", global.classlimits[CLASS_SNIPER])
+    ini_write_real("Server", "Quote Class Limit", global.classlimits[CLASS_QUOTE])
+    ini_write_real("Bots", "Number of Bots", global.bot_num_wished)
+    ini_write_real("Bots", "Mode", global.bot_mode)
+    ini_write_real("Bots", "Co-op enabled", global.bot_coop);
+    ini_write_real("Bots", "Runner enabled", global.bot_class_array[0])
+    ini_write_real("Bots", "Firebug enabled", global.bot_class_array[1])
+    ini_write_real("Bots", "Rocketman enabled", global.bot_class_array[2])
+    ini_write_real("Bots", "Overweight enabled", global.bot_class_array[3])
+    ini_write_real("Bots", "Constructor enabled", global.bot_class_array[4])
+    ini_write_real("Bots", "Rifleman enabled", global.bot_class_array[5])
+   
     //screw the 0 index we will start with 1
     //map_truefort 
     maps[1] = ini_read_real("Maps", "ctf_truefort", 1);

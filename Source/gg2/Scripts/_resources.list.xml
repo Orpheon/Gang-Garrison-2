@@ -36,8 +36,10 @@
   <resource name="clientArenaEndRound" type="RESOURCE"/>
   <resource name="parseProtocolUuid" type="RESOURCE"/>
   <resource name="pointCapture" type="RESOURCE"/>
-  <resource name="calculateMonthAndDay" type="RESOURCE"/>
   <resource name="selectSpawnGroup" type="RESOURCE"/>
+  <resource name="calculateMonthAndDay" type="RESOURCE"/>
   <resource name="partyTime" type="RESOURCE"/>
   <resource name="characterHitObstacle" type="RESOURCE"/>
+  <resource name="Bot" type="GROUP"/>
+  <resource name="Hosting Utilities" type="GROUP"/>
 </resources>

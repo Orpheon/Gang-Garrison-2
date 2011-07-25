@@ -2,6 +2,8 @@ var noOfPlayers, serverDescription;
 noOfPlayers = ds_list_size(global.players);
 if(global.dedicatedMode)
     noOfPlayers -= 1;
+    
+noOfPlayers -= instance_number(BotPlayer)
 
 serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]";
 if(global.serverPassword != "")

@@ -34,7 +34,7 @@ xbegin = 40;
 ybegin = 200;
 spacing = 30;
 width = 300; 
-items = 11;
+items = 13;
 valueoffset = 200;
 editing = -1;
 canClick = false;
@@ -49,8 +49,10 @@ item[5] = "Capture Limit:";
 item[6] = "Respawn Time (secs):";
 item[7] = "Auto Balance:";
 item[8] = "Announce to Lobby:";
-item[9] = "Start Game";
-item[10] = "Back";
+item[9] = "Bot Options";
+item[10] = "Class Limits";
+item[11] = "Start Game";
+item[12] = "Back";
     
 value[0] = global.serverName;
 value[1] = global.serverPassword;
@@ -74,6 +76,8 @@ if(global.useLobbyServer) {
     
 value[9] = "";
 value[10] = "";
+value[11] = "";
+value[12] = "";
 </argument>
       </arguments>
     </action>

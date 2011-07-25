@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="OTHER" id="24">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if object != -1
+{
+    object.keyState = BotInputConverter()
+    object.aimDirection = aimDirection
+    object.netAimDirection = aimDirection*65536/360
+
+    with object
+    {
+        event_user(1)
+    }
+}
+else
+{
+    alarm[5] = 1
+    BotInit()
+}
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

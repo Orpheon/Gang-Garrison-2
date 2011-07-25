@@ -21,6 +21,8 @@ if(spawner.team == TEAM_RED) {
     spawnY = ds_list_find_value(global.spawnPointsBlue[1,spawnGroup], spawnpointId);
 }
 
+team = spawner.team
+
 character = getCharacterObject(spawner.team, spawner.class);
 if(character == -1) {
     show_message("Spawning a player did not succeed because his class and/or team were invalid.");

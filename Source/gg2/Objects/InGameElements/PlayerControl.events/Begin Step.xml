@@ -21,18 +21,21 @@ if(instance_exists(TeamSelectController) || instance_exists(ClassSelectControlle
 else
     menuOpen = false;
 
-//Checking for input - Mapped Keys
-if(keyboard_check_pressed(global.changeTeam)) inputChangeTeam();
-if(keyboard_check_pressed(global.changeClass)) inputChangeClass();
+if !global.typing
+{
+    //Checking for input - Mapped Keys
+    if(keyboard_check_pressed(global.changeTeam)) inputChangeTeam();
+    if(keyboard_check_pressed(global.changeClass)) inputChangeClass();
 
-var scoreKeyDown;
-scoreKeyDown = keyboard_check_direct(global.showScores);
-if(scoreKeyDown and !oldScoreKeyDown)
-    inputShowScores();
-else if(!scoreKeyDown and oldScoreKeyDown)
-    inputCloseScores();
-oldScoreKeyDown = scoreKeyDown;
-    
+    var scoreKeyDown;
+    scoreKeyDown = keyboard_check_direct(global.showScores);
+    if(scoreKeyDown and !oldScoreKeyDown)
+        inputShowScores();
+    else if(!scoreKeyDown and oldScoreKeyDown)
+        inputCloseScores();
+    oldScoreKeyDown = scoreKeyDown;
+}
+
 var keybyte;
 keybyte = 0;
     
@@ -79,8 +82,24 @@ if(global.myself.object != -1)
         }
     }
     
-    ClientInputstate(global.serverSocket, keybyte);
-    socket_send(global.serverSocket);
+    if global.isHost
+    {
+        if !global.typing
+        {
+            ClientInputstate(global.serverSocket, keybyte);
+            socket_send(global.serverSocket);
+        }
+        else
+        {
+            ClientInputstate(global.serverSocket, 0);
+            socket_send(global.serverSocket);
+        }
+    }
+    else
+    {
+        ClientInputstate(global.serverSocket, keybyte);
+        socket_send(global.serverSocket);
+    }
 }
 
 if(keybyte != 0

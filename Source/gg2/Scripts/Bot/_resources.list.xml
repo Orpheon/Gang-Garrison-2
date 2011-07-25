@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="BotInit" type="RESOURCE"/>
+  <resource name="Documentation" type="RESOURCE"/>
+  <resource name="BotMain" type="RESOURCE"/>
+  <resource name="BotInputConverter" type="RESOURCE"/>
+  <resource name="BotFollowHuman" type="RESOURCE"/>
+  <resource name="BotReverse" type="RESOURCE"/>
+  <resource name="BotAutonomousMove" type="RESOURCE"/>
+  <resource name="BotMove" type="RESOURCE"/>
+  <resource name="BotFight" type="GROUP"/>
+  <resource name="Map Modes" type="GROUP"/>
+  <resource name="Nodes(outdated)" type="GROUP"/>
+  <resource name="BotAim" type="GROUP"/>
+  <resource name="GetBotTeam" type="RESOURCE"/>
+  <resource name="GetBotClass" type="RESOURCE"/>
+  <resource name="CreateBot" type="RESOURCE"/>
+  <resource name="DestroyBot" type="RESOURCE"/>
+</resources>

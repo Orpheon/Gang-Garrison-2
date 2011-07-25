@@ -1,6 +1,16 @@
 if(serverbalance != 0)
     balancecounter+=1;
 
+if global.bot_mode == 2
+{
+    global.bot_num_wished = instance_number(Player)+1
+}
+
+if !instance_exists(Console)
+{
+    instance_create(0, 0, Console)
+}
+
 // Register with Lobby Server every 30 seconds
 if(global.useLobbyServer and (frame mod 900)==0)
     sendLobbyRegistration();
@@ -8,10 +18,24 @@ frame += 1;
 
 buffer_clear(global.sendBuffer);
 
+if global.bot_num_wished < 0
+{
+    global.bot_num_wished = 0
+}
+
+while global.bot_num < global.bot_num_wished
+{
+    CreateBot()
+}
+while global.bot_num > global.bot_num_wished
+{
+    DestroyBot()
+}
+
 acceptJoiningPlayer();
 with(JoiningPlayer)
     serviceJoiningPlayer();
-
+    
 // Service all players
 var i;
 for(i=0; i<ds_list_size(global.players); i+=1)
@@ -19,6 +43,42 @@ for(i=0; i<ds_list_size(global.players); i+=1)
     var player;
     player = ds_list_find_value(global.players, i);
     
+    if player.object_index == BotPlayer
+    {
+        with player
+        {
+            event_user(14)
+        }
+        
+        if player.build == 1 //Building a sentry
+        {
+            if(player.object != -1)
+            {
+                if(player.class == CLASS_ENGINEER
+                and collision_circle(player.object.x, player.object.y, 50, Sentry, false, true) < 0
+                and player.object.nutsNBolts == 100 and (collision_point(player.object.x,player.object.y,SpawnRoom,0,0) < 0)
+                and player.sentry == -1 and !player.object.onCabinet)
+                {
+                    buildSentry(player);
+                    write_ubyte(global.sendBuffer, BUILD_SENTRY);
+                    write_ubyte(global.sendBuffer, i);
+                }
+            }
+
+        }
+        else if player.build == -1 //Destroying a sentry.
+        {
+            if(player.sentry != -1) {
+                with(player.sentry) {
+                    instance_destroy();
+                }
+            }
+            player.sentry = -1;
+        }
+        
+        continue
+    }
+        
     if(socket_has_error(player.socket))
     {
         removePlayer(player);
@@ -58,18 +118,21 @@ if(impendingMapChange > 0)
 
 if(global.winners != -1 and !global.mapchanging)
 {
-    if(global.winners == TEAM_RED and global.currentMapArea < global.totalMapAreas)
+    if !global.mapChangeCommanded
     {
-        global.nextMap = global.currentMap;
-        global.currentMapArea += 1;
-    }
-    else
-    { 
-        global.currentMapIndex += 1;
-        global.currentMapArea = 1;
-        if(global.currentMapIndex == ds_list_size(global.map_rotation)) 
-            global.currentMapIndex = 0;
-        global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
+        if(global.winners == TEAM_RED and global.currentMapArea < global.totalMapAreas)
+        {
+            global.nextMap = global.currentMap;
+            global.currentMapArea += 1;
+        }
+        else
+        { 
+            global.currentMapIndex += 1;
+            global.currentMapArea = 1;
+            if(global.currentMapIndex == ds_list_size(global.map_rotation)) 
+                global.currentMapIndex = 0;
+            global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
+        }
     }
     global.mapchanging = 1;
     impendingMapChange = 300; // in 300 frames (ten seconds), we'll do a map change
@@ -146,11 +209,17 @@ if(impendingMapChange == 0)
     }
 }
 
+global.mapChangeCommanded = 0
+
 var i;
 for(i=1; i<ds_list_size(global.players); i+=1)
 {
     var player;
     player = ds_list_find_value(global.players, i);
+    if player.object_index == BotPlayer
+    {
+        continue;
+    }
     write_buffer(player.socket, global.eventBuffer);
     write_buffer(player.socket, global.sendBuffer);
     socket_send(player.socket);

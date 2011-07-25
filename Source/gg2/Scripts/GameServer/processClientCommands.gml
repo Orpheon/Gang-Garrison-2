@@ -6,6 +6,12 @@ playerId = argument1;
 // To prevent players from flooding the server, limit the number of commands to process per step and player.
 commandLimitRemaining = 10;
 
+if player.team != TEAM_SPECTATOR and player.class != getClass(player.class)
+{
+    player.class = getClass(player.team, player.class)
+    ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
+}
+
 with(player) {
     if(!variable_local_exists("commandReceiveState")) {
         // 0: waiting for command byte.
@@ -65,6 +71,7 @@ while(commandLimitRemaining > 0) {
         case PLAYER_CHANGECLASS:
             var class;
             class = read_ubyte(socket);
+            team = player.team
             if(getCharacterObject(player.team, class) != -1)
             {
                 if(player.object != -1)
