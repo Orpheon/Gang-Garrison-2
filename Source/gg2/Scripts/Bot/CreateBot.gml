@@ -25,7 +25,6 @@ else*/
         GetBotTeam(player)
     
         GetBotClass(player)
-    
 
         player.name = "Tempest Bot "+string(global.bot_num+global.bot_offset);
     }

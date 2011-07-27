@@ -86,6 +86,22 @@ do {
             {
                 print("/v"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
             }
+            else if string_copy(chatString, 0, 2) == "/r"
+            {
+                print("/r"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+            }
+            else if string_copy(chatString, 0, 2) == "/b"
+            {
+                print("/b"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+            }
+            else if string_copy(chatString, 0, 2) == "/g"
+            {
+                print("/g"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+            }
+            else if string_copy(chatString, 0, 2) == "/w"
+            {
+                print("/w"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+            }
             else
             {
                 print(player_name+": "+chatString)

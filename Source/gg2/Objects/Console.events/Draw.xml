@@ -94,12 +94,6 @@ for (i = 0; i &lt; listlen; i += 1) {
         draw_text(x,y-listheight+string_height("_")*i,string_copy(ds_list_find_value(global.ConsoleLog,i), 3, string_length(ds_list_find_value(global.ConsoleLog,i))));
         draw_set_color(make_color_rgb(0, 255, 255));
     }
-    else if string_copy(ds_list_find_value(global.ConsoleLog, i), 0, 2) = "/b"
-    {
-        draw_set_color(c_black)
-        draw_text(x,y-listheight+string_height("_")*i,string_copy(ds_list_find_value(global.ConsoleLog,i), 3, string_length(ds_list_find_value(global.ConsoleLog,i))));
-        draw_set_color(make_color_rgb(0, 255, 255));
-    }
     else
     {
         draw_text(x,y-listheight+string_height("_")*i,ds_list_find_value(global.ConsoleLog,i));

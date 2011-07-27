@@ -252,15 +252,15 @@ for(i=1; i<ds_list_size(global.players); i+=1)
     write_buffer(player.socket, global.sendBuffer);
     if ds_list_find_index(global.chatters, player) >= 0
     {
-        if player.team == TEAM_RED
+        if player.team == TEAM_RED or global.crossTeamChat
         {
             write_buffer(player.socket, global.chatBufferRed)
         }
-        else if player.team == TEAM_BLUE
+        else if player.team == TEAM_BLUE or global.crossTeamChat
         {
             write_buffer(player.socket, global.chatBufferBlue)
         }
-        else if player.team = TEAM_SPECTATOR
+        else if player.team = TEAM_SPECTATOR or global.crossTeamChat
         {
             write_buffer(player.socket, global.chatBufferSpectator)
         }

@@ -75,20 +75,31 @@ while(commandLimitRemaining > 0) {
             {
                 write_ubyte(global.chatBufferRed, OHU_CHAT_JOIN)
                 write_ubyte(global.chatBufferRed, playerId)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
-                print("/r"+player.name+" has joined the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                
+                if global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR or global.crossTeamChat
+                {
+                    print("/r"+player.name+" has joined the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                }
             }
             else if player.team == TEAM_BLUE
             {
                 write_ubyte(global.chatBufferBlue, OHU_CHAT_JOIN)
                 write_ubyte(global.chatBufferBlue, playerId)
-                print("/b"+player.name+" has joined the chat")
 
+                if global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR or global.crossTeamChat
+                {
+                    print("/b"+player.name+" has joined the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                }
             }
             else if player.team == TEAM_SPECTATOR
             {
                 write_ubyte(global.chatBufferSpectator, OHU_CHAT_JOIN)
                 write_ubyte(global.chatBufferSpectator, playerId)
-                print("/g"+player.name+" has joined the chat")
+
+                if global.myself.team == TEAM_SPECTATOR or global.crossTeamChat
+                {
+                    print("/g"+player.name+" has joined the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                }
             }
             break;
 
@@ -99,19 +110,28 @@ while(commandLimitRemaining > 0) {
             {
                 write_ubyte(global.chatBufferRed, OHU_CHAT_LEAVE)
                 write_ubyte(global.chatBufferRed, playerId)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
-                print("/r"+player.name+" has left the chat")
+                if global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR
+                {
+                    print("/r"+player.name+" has left the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                }
             }
             else if player.team == TEAM_BLUE
             {
                 write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
                 write_ubyte(global.chatBufferBlue, playerId)
-                print("/b"+player.name+" has left the chat")
+                if global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR
+                {
+                    print("/b"+player.name+" has left the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                }
             }
             else if player.team == TEAM_SPECTATOR
             {
                 write_ubyte(global.chatBufferSpectator, OHU_CHAT_LEAVE)
                 write_ubyte(global.chatBufferSpectator, playerId)
-                print("/g"+player.name+" has left the chat")
+                if global.myself.team == TEAM_SPECTATOR
+                {
+                    print("/g"+player.name+" has left the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                }
             }
 
             break;
@@ -120,7 +140,7 @@ while(commandLimitRemaining > 0) {
             length = socket_receivebuffer_size(socket);
             chatString = read_string(socket, length)
 
-            if playerId == 0// If the host is talking:
+            if playerId == 0 and player.team == TEAM_SPECTATOR// If the host is talking:
             {
                 ServerSendChatString(global.chatBufferRed, playerId, "/v"+chatString)
                 ServerSendChatString(global.chatBufferBlue, playerId, "/v"+chatString)
@@ -129,19 +149,51 @@ while(commandLimitRemaining > 0) {
             }
             else if player.team = TEAM_RED
             {
-                ServerSendChatString(global.chatBufferRed, playerId, chatString)
-                print("/r"+player.name+": "+chatString)
+                if global.crossTeamChat
+                {
+                    ServerSendChatString(global.chatBufferRed, playerId, "/r"+chatString)
+                }
+                else
+                {
+                    ServerSendChatString(global.chatBufferRed, playerId, chatString)
+                }
+
+                if global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR or global.crossTeamChat
+                {
+                    print("/r"+player.name+": "+chatString)
+                }
             }
             else if player.team == TEAM_BLUE
             {
-                ServerSendChatString(global.chatBufferBlue, playerId, chatString)
-                print("/b"+player.name+": "+chatString)
+                if global.crossTeamChat
+                {
+                    ServerSendChatString(global.chatBufferBlue, playerId, "/b"+chatString)
+                }
+                else
+                {
+                    ServerSendChatString(global.chatBufferBlue, playerId, chatString)
+                }
+                
+                if global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR or global.crossTeamChat
+                {
+                    print("/b"+player.name+": "+chatString)
+                }
             }
             else if player.team == TEAM_SPECTATOR
             {
-                write_ubyte(global.chatBufferSpectator, OHU_CHAT_LEAVE)
-                write_ubyte(global.chatBufferSpectator, playerId)
-                print("/g"+player.name+": "+chatString)
+                if global.crossTeamChat
+                {
+                    ServerSendChatString(global.chatBufferSpectator, playerId, "/g"+chatString)
+                }
+                else
+                {
+                    ServerSendChatString(global.chatBufferSpectator, playerId, chatString)
+                }
+                
+                if global.myself.team == TEAM_SPECTATOR or global.crossTeamChat
+                {
+                    print("/g"+player.name+": "+chatString)
+                }
             }
 
             break;
@@ -153,7 +205,7 @@ while(commandLimitRemaining > 0) {
             if playerId != 0// The kicker isn't the host...
             {
                 show_message("Someone has tried to abuse OHU and has tried to kick someone out of chat.#Kicking.")
-                string_array[1] = player.name// This is used by the kicking script, it's noramlly the first arg you type.
+                string_array[1] = player.name// This is used by the kicking script, it's normally the first arg you type.
                 execute_string(ds_list_find_value(global.executionList, ds_list_find_index(global.commandList, "kick")))
             }
             else
