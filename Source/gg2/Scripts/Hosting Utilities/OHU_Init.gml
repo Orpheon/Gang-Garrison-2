@@ -3,6 +3,11 @@ global.ConsoleLog = ds_list_create();
 global.ConsoleCmdLog = ds_list_create();
 global.typing = false
 global.mapChangeCommanded = 0
+global.chatters = ds_list_create();
+global.chatBuffer = buffer_create();// This is used from the clients to receive chat messages.
+global.chatBufferRed = buffer_create();// These three are for the server to not mix up messages
+global.chatBufferBlue = buffer_create();
+global.chatBufferSpectator = buffer_create();
 
 // Reading the Banlist:
 if !file_exists("banlist.txt")
@@ -229,5 +234,14 @@ ds_list_add(global.executionList, "global.winners = 2
 global.currentMapArea = 1
 global.nextMap = string_array[1]
 global.mapChangeCommanded = 1")
+
+ds_list_add(global.commandList, "chat")
+ds_list_add(global.executionList, "
+write_ubyte(global.serverSocket, OHU_CHAT_JOIN)
+socket_send(global.serverSocket)
+Console.mode = 'chat'")
+
+addCommand('help', "for (a=0; a<ds_list_size(global.commandList)-1; a+=1) {print(ds_list_find_value(global.commandList, a))}")
+addCommand("nextMap", "global.winners = 2")
 
 loadPlugins()

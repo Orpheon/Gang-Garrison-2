@@ -16,6 +16,8 @@
         <argument kind="STRING">ds_list_destroy(global.players);
 socket_destroy(global.tcpListener);
 socket_destroy(global.serverSocket);
+
+global.bot_num = 0
 </argument>
       </arguments>
     </action>

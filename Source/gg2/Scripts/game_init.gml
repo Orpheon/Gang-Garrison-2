@@ -68,6 +68,8 @@
     global.setupTimer=1800;
     global.joinedServerName="";
     
+    global.randomRotation = ini_read_real("Server", "Randomize Rotation", 0)
+    
     //Classlimits:
     global.classlimits = 9999
     global.classlimits[CLASS_SCOUT] = ini_read_real("Server", "Runner Class Limit", 9999)
@@ -351,6 +353,26 @@ global.launchMap = "";
         AudioControlToggleMute();
         room_goto_fix(Menu);
     }
+    
+    if global.randomRotation
+    {
+        copy_list = ds_list_create()
+        
+        while ds_list_size(global.map_rotation) > 0
+        {
+            index = random_range(0, ds_list_size(global.map_rotation)-1)
+            ds_list_add(copy_list, ds_list_find_value(global.map_rotation, index))
+            ds_list_delete(global.map_rotation, index)
+        }
+        
+        for (s=0; s<ds_list_size(copy_list); s+=1)
+        {
+            ds_list_add(global.map_rotation, ds_list_find_value(copy_list, s))
+        }
+        
+        ds_list_destroy(copy_list)
+    }
+        
     
     // custom dialog box graphics
     message_background(popupBackgroundB);

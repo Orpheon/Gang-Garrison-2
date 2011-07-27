@@ -13,20 +13,28 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">if (text == "") {
-    instance_destroy();
-}else{
-    print(text);
+        <argument kind="STRING">if global.typing
+{
+    if mode != "chat"
+    {
+        print(text);
+    }
     
     processCommand(text)
-        
-    ds_list_add(global.ConsoleCmdLog,text);
+    
     while (ds_list_size(global.ConsoleCmdLog)&gt;10) {
         ds_list_delete(global.ConsoleCmdLog,0);
     }
+    
     text = "";
     keyboard_string = "_";
     seek = 0;
+    
+    global.typing = 0
+}
+else
+{
+    global.typing = 1
 }
 </argument>
       </arguments>

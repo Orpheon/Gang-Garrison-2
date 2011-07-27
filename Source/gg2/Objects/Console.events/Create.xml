@@ -24,6 +24,8 @@ lheldtime = 0;
 prev = -1;
 old = "";
 ovr = false;
+
+mode = "console"
 </argument>
       </arguments>
     </action>

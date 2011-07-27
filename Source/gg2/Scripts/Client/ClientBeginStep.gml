@@ -47,16 +47,60 @@ do {
             deserializeState(QUICK_UPDATE);
             global.serverFrame += 1;
             break;
-             
+
         case CAPS_UPDATE:
-            deserializeState(CAPS_UPDATE);
+            deserializeState(CAPS_UPDATE); 
             break;
-                  
+
         case INPUTSTATE:
             deserializeState(INPUTSTATE);
             global.serverFrame += 1;
-            break;             
-        
+            break;
+
+        case OHU_CHAT_JOIN:
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer)
+            player_id = read_ubyte(global.tempBuffer)
+            new_player = ds_list_find_value(global.players, player_id)
+            player_name = new_player.name
+            chatString = player_name+" has joined the chat"
+            print(chatString)
+            break;
+
+        case OHU_CHAT_LEAVE:
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer)
+            player_id = read_ubyte(global.tempBuffer)
+            new_player = ds_list_find_value(global.players, player_id)
+            player_name = new_player.name
+            chatString = player_name+" has left the chat"
+            print(chatString)
+            break;
+
+        case OHU_CHAT:
+            receiveCompleteMessage(global.serverSocket,1,global.tempBuffer);
+            player_id = read_ubyte(global.tempBuffer)
+            chatString = receivestring(global.serverSocket, 1)
+            new_player = ds_list_find_value(global.players, player_id)
+            player_name = new_player.name
+            
+            if string_copy(chatString, 0, 2) == "/v"// Server is talking. Move the color code to before the name.
+            {
+                print("/v"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+            }
+            else
+            {
+                print(player_name+": "+chatString)
+            }
+            break;
+            
+        case OHU_CHAT_KICK:
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer)
+            player_id = read_ubyte(global.tempBuffer)
+            new_player = ds_list_find_value(global.players, player_id)
+            player_name = new_player.name
+            chatString = player_name+" has been kicked from the chat."
+            print(chatString)
+            break;
+
         case PLAYER_JOIN:
             player = instance_create(0,0,Player);
             player.name = receivestring(global.serverSocket, 1);
@@ -67,7 +111,7 @@ do {
                 playerControl = instance_create(0,0,PlayerControl);
             }
             break;
-            
+
         case PLAYER_LEAVE:
             // Delete player from the game, adjust own ID accordingly
             receiveCompleteMessage(global.serverSocket,1,global.tempBuffer);

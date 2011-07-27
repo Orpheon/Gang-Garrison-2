@@ -3,27 +3,27 @@ class_list = ds_list_create()
 
 team = argument0.team
 
-if global.bot_class_array[0] and getClass(CLASS_SCOUT) == CLASS_SCOUT // If scout is enabled and the classlimit allows it...
+if global.bot_class_array[0]
 {
     ds_list_add(class_list, CLASS_SCOUT)
 }
-if global.bot_class_array[1] and getClass(CLASS_PYRO) == CLASS_PYRO // If pyro is enabled, etc...
+if global.bot_class_array[1]
 {
     ds_list_add(class_list, CLASS_PYRO)
 }
-if global.bot_class_array[2] and getClass(CLASS_SOLDIER) == CLASS_SOLDIER
+if global.bot_class_array[2]
 {
     ds_list_add(class_list, CLASS_SOLDIER)
 }
-if global.bot_class_array[3] and getClass(CLASS_HEAVY) == CLASS_HEAVY
+if global.bot_class_array[3]
 {
     ds_list_add(class_list, CLASS_HEAVY)
 }
-if global.bot_class_array[4] and getClass(CLASS_ENGINEER) == CLASS_ENGINEER
+if global.bot_class_array[4]
 {
     ds_list_add(class_list, CLASS_ENGINEER)
 }
-if global.bot_class_array[5] and getClass(CLASS_SNIPER) == CLASS_SNIPER
+if global.bot_class_array[5]
 {
     ds_list_add(class_list, CLASS_SNIPER)
 }

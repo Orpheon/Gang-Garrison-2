@@ -63,11 +63,127 @@ while(commandLimitRemaining > 0) {
         
         switch(player.commandReceiveCommand)
         {
+
+        case OHU_HELLO:
+            player.isOHU = 1
+            break;
+
+        case OHU_CHAT_JOIN:
+            ds_list_add(global.chatters, player)
+
+            if player.team = TEAM_RED
+            {
+                write_ubyte(global.chatBufferRed, OHU_CHAT_JOIN)
+                write_ubyte(global.chatBufferRed, playerId)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
+                print("/r"+player.name+" has joined the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+            }
+            else if player.team == TEAM_BLUE
+            {
+                write_ubyte(global.chatBufferBlue, OHU_CHAT_JOIN)
+                write_ubyte(global.chatBufferBlue, playerId)
+                print("/b"+player.name+" has joined the chat")
+
+            }
+            else if player.team == TEAM_SPECTATOR
+            {
+                write_ubyte(global.chatBufferSpectator, OHU_CHAT_JOIN)
+                write_ubyte(global.chatBufferSpectator, playerId)
+                print("/g"+player.name+" has joined the chat")
+            }
+            break;
+
+        case OHU_CHAT_LEAVE:
+            ds_list_delete(global.chatters, ds_list_find_index(global.chatters, player))
+
+            if player.team = TEAM_RED
+            {
+                write_ubyte(global.chatBufferRed, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferRed, playerId)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
+                print("/r"+player.name+" has left the chat")
+            }
+            else if player.team == TEAM_BLUE
+            {
+                write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferBlue, playerId)
+                print("/b"+player.name+" has left the chat")
+            }
+            else if player.team == TEAM_SPECTATOR
+            {
+                write_ubyte(global.chatBufferSpectator, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferSpectator, playerId)
+                print("/g"+player.name+" has left the chat")
+            }
+
+            break;
+
+        case OHU_CHAT:
+            length = socket_receivebuffer_size(socket);
+            chatString = read_string(socket, length)
+
+            if playerId == 0// If the host is talking:
+            {
+                ServerSendChatString(global.chatBufferRed, playerId, "/v"+chatString)
+                ServerSendChatString(global.chatBufferBlue, playerId, "/v"+chatString)
+                ServerSendChatString(global.chatBufferSpectator, playerId, "/v"+chatString)
+                print("/v"+player.name+": "+chatString)
+            }
+            else if player.team = TEAM_RED
+            {
+                ServerSendChatString(global.chatBufferRed, playerId, chatString)
+                print("/r"+player.name+": "+chatString)
+            }
+            else if player.team == TEAM_BLUE
+            {
+                ServerSendChatString(global.chatBufferBlue, playerId, chatString)
+                print("/b"+player.name+": "+chatString)
+            }
+            else if player.team == TEAM_SPECTATOR
+            {
+                write_ubyte(global.chatBufferSpectator, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferSpectator, playerId)
+                print("/g"+player.name+": "+chatString)
+            }
+
+            break;
+
+        case OHU_CHAT_KICK:
+            player_id = read_ubyte(socket)
+            kick_player = ds_list_find_value(global.players, player_id)
+
+            if playerId != 0// The kicker isn't the host...
+            {
+                show_message("Someone has tried to abuse OHU and has tried to kick someone out of chat.#Kicking.")
+                string_array[1] = player.name// This is used by the kicking script, it's noramlly the first arg you type.
+                execute_string(ds_list_find_value(global.executionList, ds_list_find_index(global.commandList, "kick")))
+            }
+            else
+            {            
+                ds_list_delete(global.chatters, ds_list_find_index(global.chatters, player))
+            
+                if kick_player.team = TEAM_RED
+                {
+                    write_ubyte(global.chatBufferRed, OHU_CHAT_KICK)
+                    write_ubyte(global.chatBufferRed, player_id)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
+                }
+                else if kick_player.team == TEAM_BLUE
+                {
+                    write_ubyte(global.chatBufferBlue, OHU_CHAT_KICK)
+                    write_ubyte(global.chatBufferBlue, player_id)
+                }
+                else if kick_player.team == TEAM_SPECTATOR
+                {
+                    write_ubyte(global.chatBufferSpectator, OHU_CHAT_KICK)
+                    write_ubyte(global.chatBufferSpectator, player_id)
+                }
+            }
+            print("You have successfully kicked "+ds_list_find_value(global.players, player_id).name)
+            break;
+
         case PLAYER_LEAVE:
             socket_destroy(player.socket);
             player.socket = -1;
             break;
-            
+
         case PLAYER_CHANGECLASS:
             var class;
             class = read_ubyte(socket);
@@ -106,13 +222,20 @@ while(commandLimitRemaining > 0) {
                 ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
             }
             break;
-            
+
         case PLAYER_CHANGETEAM:
             var newTeam, balance, redSuperiority;
             newTeam = read_ubyte(socket);
             
             redSuperiority = 0   //calculate which team is bigger
             with(Player)
+            {
+                if(team == TEAM_RED)
+                    redSuperiority += 1;
+                else if(team == TEAM_BLUE)
+                    redSuperiority -= 1;
+            }
+            with(BotPlayer)
             {
                 if(team == TEAM_RED)
                     redSuperiority += 1;
@@ -289,6 +412,10 @@ while(commandLimitRemaining > 0) {
                     if(string_count("#",name) > 0)
                     {
                         name = "I <3 Bacon";
+                    }
+                    if ds_list_find_index(global.chatters, player) >= 0// The player is part of the chat, gotta change the name there too.
+                    {
+                        ServerSendChatString(global.chatBuffer, player.name+" is now known as "+name)
                     }
                     write_ubyte(global.sendBuffer, PLAYER_CHANGENAME);
                     write_ubyte(global.sendBuffer, playerId);

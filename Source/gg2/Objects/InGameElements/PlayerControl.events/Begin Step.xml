@@ -21,6 +21,11 @@ if(instance_exists(TeamSelectController) || instance_exists(ClassSelectControlle
 else
     menuOpen = false;
 
+if !instance_exists(Console)
+{
+    instance_create(x, y, Console)
+}
+    
 if !global.typing
 {
     //Checking for input - Mapped Keys
@@ -82,22 +87,14 @@ if(global.myself.object != -1)
         }
     }
     
-    if global.isHost
+    if !global.typing
     {
-        if !global.typing
-        {
-            ClientInputstate(global.serverSocket, keybyte);
-            socket_send(global.serverSocket);
-        }
-        else
-        {
-            ClientInputstate(global.serverSocket, 0);
-            socket_send(global.serverSocket);
-        }
+        ClientInputstate(global.serverSocket, keybyte);
+        socket_send(global.serverSocket);
     }
     else
     {
-        ClientInputstate(global.serverSocket, keybyte);
+        ClientInputstate(global.serverSocket, 0);
         socket_send(global.serverSocket);
     }
 }

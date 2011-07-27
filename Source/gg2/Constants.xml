@@ -131,4 +131,10 @@
   <constant name="MOUSE_LEFT" value="9001"/>
   <constant name="MOUSE_RIGHT" value="9002"/>
   <constant name="HP_PER_POINT" value="400"/>
+  <constant name="OHU_HELLO" value="50"/>
+  <constant name="OHU_MESSAGE" value="51"/>
+  <constant name="OHU_CHAT" value="52"/>
+  <constant name="OHU_CHAT_JOIN" value="53"/>
+  <constant name="OHU_CHAT_LEAVE" value="54"/>
+  <constant name="OHU_CHAT_KICK" value="55"/>
 </constants>

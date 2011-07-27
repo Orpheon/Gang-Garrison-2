@@ -21,3 +21,9 @@ commandBytes[SCOPE_OUT] = 0;
 commandBytes[PASSWORD_SEND] = commandBytesPrefixLength1;
 commandBytes[PLAYER_CHANGENAME] = commandBytesPrefixLength1;
 commandBytes[INPUTSTATE] = 3;
+
+commandBytes[OHU_HELLO] = 0;
+commandBytes[OHU_CHAT] = commandBytesPrefixLength1;
+commandBytes[OHU_CHAT_JOIN] = 0;
+commandBytes[OHU_CHAT_LEAVE] = 0;
+commandBytes[OHU_CHAT_KICK] = 1;

@@ -20,4 +20,5 @@ if(receiveCompleteMessage(argument0, size, buffer) > 0) {
 
 result = read_string(buffer, size);
 buffer_destroy(buffer);
+
 return result;

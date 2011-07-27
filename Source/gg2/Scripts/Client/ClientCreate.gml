@@ -39,6 +39,7 @@
         
     buffer_clear(global.sendBuffer);
     ClientPlayerJoin(global.playerName);
+    write_ubyte(global.sendBuffer, OHU_HELLO)
     write_buffer(global.serverSocket, global.sendBuffer);
     socket_send(global.serverSocket);
 }

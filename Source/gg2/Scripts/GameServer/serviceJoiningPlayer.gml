@@ -2,8 +2,6 @@ var player;
 
 // Banning
 ip = socket_remote_ip(socket)
-show_message(ip)
-show_message(ds_list_find_value(global.banlist, 0))
 for (a=0; a<ds_list_size(global.banlist)-1; a+=1)
 {
     if string(ip) == ds_list_find_value(global.banlist, a)

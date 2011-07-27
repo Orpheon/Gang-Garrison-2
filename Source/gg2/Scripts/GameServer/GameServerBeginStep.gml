@@ -6,11 +6,6 @@ if global.bot_mode == 2
     global.bot_num_wished = instance_number(Player)+1
 }
 
-if !instance_exists(Console)
-{
-    instance_create(0, 0, Console)
-}
-
 // Register with Lobby Server every 30 seconds
 if(global.useLobbyServer and (frame mod 900)==0)
     sendLobbyRegistration();
@@ -81,6 +76,26 @@ for(i=0; i<ds_list_size(global.players); i+=1)
         
     if(socket_has_error(player.socket))
     {
+        if ds_list_find_index(global.chatters, player) >= 0
+        {
+            // Remove the player from the chat:
+            ds_list_delete(global.chatters, ds_list_find_index(global.chatters, player))
+            if player.team = TEAM_RED
+            {
+                write_ubyte(global.chatBufferRed, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferRed, i)
+            }
+            else if player.team == TEAM_BLUE
+            {
+                write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferBlue, i)
+            }
+            else if player.team == TEAM_SPECTATOR
+            {
+                write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
+                write_ubyte(global.chatBufferBlue, i)
+            }
+        }
         removePlayer(player);
         ServerPlayerLeave(i);
         i-=1;
@@ -207,6 +222,19 @@ if(impendingMapChange == 0)
         timesChangedCapLimit = 0;
         alarm[5]=1;
     }
+    
+    for (i=0; i<ds_list_size(global.players)-1; i+=1)
+    {
+        player = ds_list_find_value(global.players, i)
+        
+        if player.object_index == BotPlayer
+        {
+            removePlayer(player)
+            ServerPlayerLeave(i)
+            i -= 1 //This is what was causing me all those errors. Graaah.
+        }
+    }
+    global.bot_num = 0
 }
 
 global.mapChangeCommanded = 0
@@ -222,6 +250,27 @@ for(i=1; i<ds_list_size(global.players); i+=1)
     }
     write_buffer(player.socket, global.eventBuffer);
     write_buffer(player.socket, global.sendBuffer);
+    if ds_list_find_index(global.chatters, player) >= 0
+    {
+        if player.team == TEAM_RED
+        {
+            write_buffer(player.socket, global.chatBufferRed)
+        }
+        else if player.team == TEAM_BLUE
+        {
+            write_buffer(player.socket, global.chatBufferBlue)
+        }
+        else if player.team = TEAM_SPECTATOR
+        {
+            write_buffer(player.socket, global.chatBufferSpectator)
+        }
+    }
     socket_send(player.socket);
 }
+
+
+
 buffer_clear(global.eventBuffer);
+buffer_clear(global.chatBufferBlue);
+buffer_clear(global.chatBufferRed);
+buffer_clear(global.chatBufferSpectator);
