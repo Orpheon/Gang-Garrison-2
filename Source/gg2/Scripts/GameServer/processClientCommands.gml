@@ -6,7 +6,7 @@ playerId = argument1;
 // To prevent players from flooding the server, limit the number of commands to process per step and player.
 commandLimitRemaining = 10;
 
-if player.team != TEAM_SPECTATOR and player.class != getClass(player.class)
+if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, player.class)
 {
     player.class = getClass(player.team, player.class)
     ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
