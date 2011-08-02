@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<event category="KEYPRESS" id="84">
+<event category="KEYPRESS" id="89">
   <actions>
     <action id="603" library="1">
       <!--action name: Code-->
@@ -15,8 +15,8 @@
       <arguments>
         <argument kind="STRING">if !global.typing and mode == "chat"
 {
-    publicChatEnabled = 0
-    print("Private chat enabled")
+    publicChatEnabled = 1
+    print("Public chat enabled")
 }
 </argument>
       </arguments>
