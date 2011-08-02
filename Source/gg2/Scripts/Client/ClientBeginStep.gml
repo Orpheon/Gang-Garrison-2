@@ -63,7 +63,19 @@ do {
             new_player = ds_list_find_value(global.players, player_id)
             player_name = new_player.name
             chatString = player_name+" has joined the chat"
-            print(chatString)
+            
+            if new_player.team == TEAM_RED
+            {
+                print("/:/r"+chatString)
+            }
+            else if new_player.team == TEAM_BLUE
+            {
+                print("/:/b"+chatString)
+            }
+            else
+            {
+                print("/:/g"+chatString)
+            }
             break;
 
         case OHU_CHAT_LEAVE:
@@ -72,8 +84,19 @@ do {
             new_player = ds_list_find_value(global.players, player_id)
             player_name = new_player.name
             chatString = player_name+" has left the chat"
-            print(chatString)
-            break;
+
+            if new_player.team == TEAM_RED
+            {
+                print("/:/r"+chatString)
+            }
+            else if new_player.team == TEAM_BLUE
+            {
+                print("/:/b"+chatString)
+            }
+            else
+            {
+                print("/:/g"+chatString)
+            }            break;
 
         case OHU_CHAT:
             receiveCompleteMessage(global.serverSocket,1,global.tempBuffer);
@@ -81,31 +104,24 @@ do {
             chatString = receivestring(global.serverSocket, 1)
             new_player = ds_list_find_value(global.players, player_id)
             player_name = new_player.name
-            
-            if string_copy(chatString, 0, 2) == "/v"// Server is talking. Move the color code to before the name.
+
+            if player_id == 0
             {
-                print("/v"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+                print("/:/y"+player_name+": /:/w"+chatString)
             }
-            else if string_copy(chatString, 0, 2) == "/r"
+            else if new_player.team == TEAM_RED
             {
-                print("/r"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+                print("/:/r"+player_name+": /:/w"+chatString)
             }
-            else if string_copy(chatString, 0, 2) == "/b"
+            else if new_player.team == TEAM_BLUE
             {
-                print("/b"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+                print("/:/b"+player_name+": /:/w"+chatString)
             }
-            else if string_copy(chatString, 0, 2) == "/g"
+            else if new_player.team == TEAM_SPECTATOR
             {
-                print("/g"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
+                print("/:/g"+player_name+": /:/w"+chatString)
             }
-            else if string_copy(chatString, 0, 2) == "/w"
-            {
-                print("/w"+player_name+": "+string_copy(chatString, 3, string_length(chatString)))
-            }
-            else
-            {
-                print(player_name+": "+chatString)
-            }
+
             break;
             
         case OHU_CHAT_KICK:
@@ -114,7 +130,19 @@ do {
             new_player = ds_list_find_value(global.players, player_id)
             player_name = new_player.name
             chatString = player_name+" has been kicked from the chat."
-            print(chatString)
+
+            if new_player.team == TEAM_RED
+            {
+                print("/:/r"+chatString)
+            }
+            else if new_player.team == TEAM_BLUE
+            {
+                print("/:/b"+chatString)
+            }
+            else
+            {
+                print("/:/g"+chatString)
+            }
             break;
 
         case PLAYER_JOIN:

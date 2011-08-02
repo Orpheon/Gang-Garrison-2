@@ -5,8 +5,8 @@ global.typing = false
 global.mapChangeCommanded = 0
 global.crossTeamChat = 0
 global.chatters = ds_list_create();
-global.chatBuffer = buffer_create();// This is used from the clients to receive chat messages.
-global.chatBufferRed = buffer_create();// These three are for the server to not mix up messages
+global.chatBuffer = buffer_create();// This is used from the clients to receive chat messages, and is the global chat buffer.
+global.chatBufferRed = buffer_create();// These three are the private chat buffers.
 global.chatBufferBlue = buffer_create();
 global.chatBufferSpectator = buffer_create();
 

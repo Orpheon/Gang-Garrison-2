@@ -137,4 +137,5 @@
   <constant name="OHU_CHAT_JOIN" value="53"/>
   <constant name="OHU_CHAT_LEAVE" value="54"/>
   <constant name="OHU_CHAT_KICK" value="55"/>
+  <constant name="OHU_CHAT_PRIVATE" value=""/>
 </constants>

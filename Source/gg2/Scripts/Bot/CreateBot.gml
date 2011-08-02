@@ -12,7 +12,7 @@ else*/
     
     player.aimDirection = 0
 
-    if global.botJoined[0]// The hoster decided to add a few bots via console.
+    if global.botJoined[0]// The hoster decided to add a bot via console.
     {
         player.name = global.botJoined[1]
         player.team = global.botJoined[2]

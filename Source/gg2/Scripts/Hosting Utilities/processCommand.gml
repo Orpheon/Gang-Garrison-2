@@ -72,7 +72,20 @@ else// Mode=Chat;
     else
     {
         tempBuffer = buffer_create()// I created my own buffer because that's simple and I don't want to interfere in something else.
-        ClientSendChatString(tempBuffer, string_array[0])
+        
+        if publicChatEnabled
+        {
+            // Send to global chat
+            ClientSendChatString(tempBuffer, string_array[0])
+        }
+        else
+        {
+            //Send to team-only chat
+            write_ubyte(tempBuffer, OHU_CHAT_PRIVATE)
+            write_ubyte(tempBuffer, string_length(string_array[0]))
+            write_string(tempBuffer, string_array[0])
+        }
+        
         write_buffer(global.serverSocket, tempBuffer)
         socket_send(global.serverSocket)
         buffer_destroy(tempBuffer)

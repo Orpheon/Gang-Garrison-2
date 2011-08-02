@@ -26,6 +26,8 @@ old = "";
 ovr = false;
 
 mode = "console"
+
+publicChatEnabled = 0
 </argument>
       </arguments>
     </action>

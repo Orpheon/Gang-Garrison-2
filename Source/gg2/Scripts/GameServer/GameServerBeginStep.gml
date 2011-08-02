@@ -252,15 +252,17 @@ for(i=1; i<ds_list_size(global.players); i+=1)
     write_buffer(player.socket, global.sendBuffer);
     if ds_list_find_index(global.chatters, player) >= 0
     {
-        if player.team == TEAM_RED or global.crossTeamChat
+        write_buffer(player.socket, global.chatBuffer)// Public chat
+    
+        if player.team == TEAM_RED// Private chats
         {
             write_buffer(player.socket, global.chatBufferRed)
         }
-        else if player.team == TEAM_BLUE or global.crossTeamChat
+        else if player.team == TEAM_BLUE
         {
             write_buffer(player.socket, global.chatBufferBlue)
         }
-        else if player.team = TEAM_SPECTATOR or global.crossTeamChat
+        else if player.team = TEAM_SPECTATOR
         {
             write_buffer(player.socket, global.chatBufferSpectator)
         }
@@ -274,3 +276,4 @@ buffer_clear(global.eventBuffer);
 buffer_clear(global.chatBufferBlue);
 buffer_clear(global.chatBufferRed);
 buffer_clear(global.chatBufferSpectator);
+buffer_clear(global.chatBuffer);
