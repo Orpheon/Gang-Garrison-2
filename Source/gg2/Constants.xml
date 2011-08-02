@@ -137,5 +137,9 @@
   <constant name="OHU_CHAT_JOIN" value="53"/>
   <constant name="OHU_CHAT_LEAVE" value="54"/>
   <constant name="OHU_CHAT_KICK" value="55"/>
-  <constant name="OHU_CHAT_PRIVATE" value=""/>
+  <constant name="OHU_CHAT_PRIVATE" value="56"/>
+  <constant name="OHU_RCON_PASS" value="57"/>
+  <constant name="OHU_RCON_PASS_WRONG" value="58"/>
+  <constant name="OHU_RCON_COMMAND" value="59"/>
+  <constant name="OHU_RCON_HELLO" value="60"/>
 </constants>

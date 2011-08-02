@@ -9,6 +9,8 @@ global.chatBuffer = buffer_create();// This is used from the clients to receive 
 global.chatBufferRed = buffer_create();// These three are the private chat buffers.
 global.chatBufferBlue = buffer_create();
 global.chatBufferSpectator = buffer_create();
+global.rconBuffer = buffer_create();
+global.rconPass = -1// Rcon is disabled by default
 
 // Reading the Banlist:
 if !file_exists("banlist.txt")
@@ -236,8 +238,7 @@ global.currentMapArea = 1
 global.nextMap = string_array[1]
 global.mapChangeCommanded = 1")
 
-ds_list_add(global.commandList, "chat")
-ds_list_add(global.executionList, "
+addCommand("chat", "
 write_ubyte(global.serverSocket, OHU_CHAT_JOIN)
 socket_send(global.serverSocket)
 Console.mode = 'chat'")
@@ -257,5 +258,16 @@ else
     global.crossTeamChat = 0
     print('Cross-team chat has been disabled')
 }")
+
+addCommand("setRconPass", "
+global.rconPass = string_array[1]
+print('Successfully changed Rcon Password to '+string_array[1])")
+
+addCommand("rconPass", "
+write_ubyte(global.serverSocket, OHU_RCON_PASS)
+write_ubyte(global.serverSocket, string_length(string_array[1]))
+write_string(global.serverSocket, string_array[1])
+socket_send(global.serverSocket)
+")
 
 loadPlugins()

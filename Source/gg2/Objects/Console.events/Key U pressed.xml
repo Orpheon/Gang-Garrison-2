@@ -17,6 +17,7 @@
 {
     publicChatEnabled = 0
     print("Private chat enabled")
+    global.typing = 1
 }
 </argument>
       </arguments>

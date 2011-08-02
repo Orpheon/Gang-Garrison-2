@@ -5,12 +5,12 @@ if nearestTarget != -1
 else
 {
     if team == TEAM_RED
-        {
-            target = SpawnPointBlue
-        }
-        else
-        {
-            target = SpawnPointRed
-        }
+    {
+        target = SpawnPointBlue
+    }
+    else
+    {
+        target = SpawnPointRed
+    }
 
 }

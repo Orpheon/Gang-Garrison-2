@@ -144,6 +144,29 @@ do {
                 print("/:/g"+chatString)
             }
             break;
+            
+        case OHU_RCON_HELLO:
+        
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer)
+            player_id = read_ubyte(global.tempBuffer)
+            
+            if player_id == global.playerID
+            {
+                print("You are now a Rcon. Type 'rcon command -arg1 -arg2' for a command to be executed.")
+                global.myself.isRcon = 1
+            }
+            break;
+            
+        case OHU_RCON_PASS_WRONG:
+        
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer)
+            player_id = read_ubyte(global.tempBuffer)
+
+            if player_id == global.playerID
+            {
+                print("That was a wrong password. Please try again.")
+            }
+            break;
 
         case PLAYER_JOIN:
             player = instance_create(0,0,Player);

@@ -80,21 +80,8 @@ for(i=0; i<ds_list_size(global.players); i+=1)
         {
             // Remove the player from the chat:
             ds_list_delete(global.chatters, ds_list_find_index(global.chatters, player))
-            if player.team = TEAM_RED
-            {
-                write_ubyte(global.chatBufferRed, OHU_CHAT_LEAVE)
-                write_ubyte(global.chatBufferRed, i)
-            }
-            else if player.team == TEAM_BLUE
-            {
-                write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
-                write_ubyte(global.chatBufferBlue, i)
-            }
-            else if player.team == TEAM_SPECTATOR
-            {
-                write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
-                write_ubyte(global.chatBufferBlue, i)
-            }
+            write_ubyte(global.chatBuffer, OHU_CHAT_LEAVE)
+            write_ubyte(global.chatBuffer, i)
         }
         removePlayer(player);
         ServerPlayerLeave(i);
@@ -250,6 +237,12 @@ for(i=1; i<ds_list_size(global.players); i+=1)
     }
     write_buffer(player.socket, global.eventBuffer);
     write_buffer(player.socket, global.sendBuffer);
+    
+    if player.isOHU == 1
+    {
+        write_buffer(player.socket, global.rconBuffer);
+    }
+    
     if ds_list_find_index(global.chatters, player) >= 0
     {
         write_buffer(player.socket, global.chatBuffer)// Public chat
@@ -277,3 +270,4 @@ buffer_clear(global.chatBufferBlue);
 buffer_clear(global.chatBufferRed);
 buffer_clear(global.chatBufferSpectator);
 buffer_clear(global.chatBuffer);
+buffer_clear(global.rconBuffer);

@@ -5,6 +5,7 @@
   <resource name="ClientPlayerChangeclass" type="RESOURCE"/>
   <resource name="ClientInputstate" type="RESOURCE"/>
   <resource name="ClientSendChatString" type="RESOURCE"/>
+  <resource name="ClientSendRconString" type="RESOURCE"/>
   <resource name="ServerPlayerJoin" type="RESOURCE"/>
   <resource name="ServerPlayerLeave" type="RESOURCE"/>
   <resource name="ServerPlayerChangeteam" type="RESOURCE"/>

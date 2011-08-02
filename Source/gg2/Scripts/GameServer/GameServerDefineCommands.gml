@@ -28,3 +28,5 @@ commandBytes[OHU_CHAT_PRIVATE] = commandBytesPrefixLength1;
 commandBytes[OHU_CHAT_JOIN] = 0;
 commandBytes[OHU_CHAT_LEAVE] = 0;
 commandBytes[OHU_CHAT_KICK] = 1;
+commandBytes[OHU_RCON_PASS] = commandBytesPrefixLength1;
+commandBytes[OHU_RCON_COMMAND] = commandBytesPrefixLength1;

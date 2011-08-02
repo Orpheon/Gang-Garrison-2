@@ -17,6 +17,7 @@
 {
     if text == ""
     {
+        global.typing = 0
         exit;
     }
 

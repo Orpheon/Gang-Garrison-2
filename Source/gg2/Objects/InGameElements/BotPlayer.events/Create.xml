@@ -69,6 +69,8 @@
     
     authorized = true;
     
+    isRcon = 0
+    
     BotInit()
 }
 </argument>

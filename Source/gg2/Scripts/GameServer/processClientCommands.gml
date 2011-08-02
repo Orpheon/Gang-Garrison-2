@@ -60,7 +60,7 @@ while(commandLimitRemaining > 0) {
         player.commandReceiveState = 0;
         player.commandReceiveExpectedBytes = 1;
         commandLimitRemaining -= 1;
-        
+
         switch(player.commandReceiveCommand)
         {
 
@@ -218,7 +218,7 @@ while(commandLimitRemaining > 0) {
             player_id = read_ubyte(socket)
             kick_player = ds_list_find_value(global.players, player_id)
 
-            if playerId != 0// The kicker isn't the host...
+            if playerId != 0 and player.isRcon == 0// The kicker isn't the host nor a rcon...
             {
                 show_message("Someone has tried to abuse OHU and has tried to kick someone out of chat.#Kicking.")
                 string_array[1] = player.name// This is used by the kicking script, it's normally the first arg you type.
@@ -245,6 +245,75 @@ while(commandLimitRemaining > 0) {
                 }
             }
             print("You have successfully kicked "+ds_list_find_value(global.players, player_id).name)
+            break;
+            
+        case OHU_RCON_PASS:
+        
+            length = socket_receivebuffer_size(socket);
+            password = read_string(socket, length)
+            
+            if is_string(global.rconPass)
+            {
+                if password == global.rconPass and playerId != 0
+                {
+                    player.isRcon = 1
+                    write_ubyte(global.rconBuffer, OHU_RCON_HELLO)
+                    write_ubyte(global.rconBuffer, playerId)
+                }
+                else
+                {
+                    write_ubyte(global.rconBuffer, OHU_RCON_PASS_WRONG)
+                    write_ubyte(global.rconBuffer, playerId)
+                }
+            }
+            else
+            {
+                write_ubyte(global.rconBuffer, OHU_RCON_PASS_WRONG)
+                write_ubyte(global.rconBuffer, playerId)
+            }
+            break;
+            
+        case OHU_RCON_COMMAND:
+        
+            length = socket_receivebuffer_size(socket);
+            commandString = read_string(socket, length)
+            
+            if player.isRcon
+            {
+                // process the command
+                i = 0
+                while commandString != ""
+                {
+                    index = string_pos("-", commandString)
+                    if index != 0
+                    {
+                        string_array[i] = string_copy(commandString, 1, index-2)
+                        commandString = string_delete(commandString, 1, index)
+                    }
+                    else
+                    {
+                        string_array[i] = commandString
+                        commandString = ""
+                    }
+                    i += 1
+                }
+                // Fill up missing arguments, to prevent crashings.
+                string_array[i+1] = ""
+                string_array[i+2] = ""
+                string_array[i+3] = ""
+                string_array[i+4] = ""
+                string_array[i+5] = ""
+                
+                index = ds_list_find_index(global.commandList, string_array[0])
+                if index >= 0
+                {
+                    execute_string(ds_list_find_value(global.executionList, index))
+                }
+                else
+                {
+                    print("A Rcon has typed an invalid command.#"+string_array[0])
+                }
+            }
             break;
 
         case PLAYER_LEAVE:

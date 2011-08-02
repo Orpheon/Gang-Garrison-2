@@ -20,6 +20,7 @@
     socket = -1;
     name = "";
     isOHU = 0
+    isRcon = 0
     
     //fuck your shit I'm making statistic arrays
     stats[KILLS] = 0;
