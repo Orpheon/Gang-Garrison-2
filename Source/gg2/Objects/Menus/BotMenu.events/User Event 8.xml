@@ -16,7 +16,7 @@
         <argument kind="STRING">global.bot_class_array[5] = !global.bot_class_array[5]
 
 ini_open("gg2.ini");
-ini_write_real("Bots", "Rifleman enabled", global.bot_class_array[5])
+ini_write_real("Bots", "Constructor enabled", global.bot_class_array[5])
 ini_close();
     
 if global.bot_class_array[5] {

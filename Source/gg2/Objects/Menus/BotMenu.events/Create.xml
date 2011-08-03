@@ -18,7 +18,7 @@ xbegin = 40;
 ybegin = 200;
 spacing = 30;
 width = 300; 
-items = 10;
+items = 11;
 valueoffset = 200;
 editing = -1;
 canClick = false;
@@ -31,9 +31,10 @@ item[3] = "Runner:";
 item[4] = "Firebug:";
 item[5] = "Rocketman:";
 item[6] = "Overweight:";
-item[7] = "Constructor:";
-item[8] = "Rifleman:";
-item[9] = "Back";
+item[7] = "Healer:";
+item[8] = "Constructor:";
+item[9] = "Rifleman:";
+item[10] = "Back";
 
 value[0] = global.bot_num_wished;
 
@@ -59,7 +60,7 @@ else
     value[2] = "Off"
 }
 
-for(s=0; s&lt;6; s+=1)
+for(s=0; s&lt;7; s+=1)
 {
     if global.bot_class_array[s]
     {
@@ -71,7 +72,7 @@ for(s=0; s&lt;6; s+=1)
     }
 }
 
-value[9] = ''
+value[10] = ''
 </argument>
       </arguments>
     </action>

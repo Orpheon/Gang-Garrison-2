@@ -16,7 +16,7 @@
         <argument kind="STRING">global.bot_class_array[4] = !global.bot_class_array[4]
 
 ini_open("gg2.ini");
-ini_write_real("Bots", "Constructor enabled", global.bot_class_array[4])
+ini_write_real("Bots", "Healer enabled", global.bot_class_array[4])
 ini_close();
     
 if global.bot_class_array[4] {

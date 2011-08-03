@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<event category="MOUSE" id="50">
+<event category="OTHER" id="20">
   <actions>
     <action id="603" library="1">
       <!--action name: Code-->
@@ -13,14 +13,8 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">if mouse_x &gt; x and mouse_x &lt; x+sprite_get_bbox_right(sprite_index) and mouse_y &gt; y and mouse_y &lt; y+sprite_get_bbox_bottom(sprite_index)
-{
-    global.typing = true
-}
-else
-{
-    global.typing = false
-}
+        <argument kind="STRING">instance_create(x, y, HostOptionsController)
+instance_destroy()
 </argument>
       </arguments>
     </action>

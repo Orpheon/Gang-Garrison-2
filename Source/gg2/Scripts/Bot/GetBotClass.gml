@@ -21,9 +21,13 @@ if global.bot_class_array[3]
 }
 if global.bot_class_array[4]
 {
-    ds_list_add(class_list, CLASS_ENGINEER)
+    ds_list_add(class_list, CLASS_MEDIC)
 }
 if global.bot_class_array[5]
+{
+    ds_list_add(class_list, CLASS_ENGINEER)
+}
+if global.bot_class_array[6]
 {
     ds_list_add(class_list, CLASS_SNIPER)
 }
@@ -36,7 +40,7 @@ if ds_list_size(class_list) > 0 //If at least one bot has been enabled...
 }
 else
 {
-    argument0.class = choose(CLASS_SCOUT, CLASS_PYRO, CLASS_SOLDIER, CLASS_HEAVY, CLASS_SNIPER)
+    argument0.class = choose(CLASS_SCOUT, CLASS_PYRO, CLASS_SOLDIER, CLASS_HEAVY, CLASS_MEDIC, CLASS_ENGINEER, CLASS_SNIPER)
 }
     
 ds_list_destroy(class_list)

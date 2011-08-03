@@ -1,4 +1,4 @@
-if global.bot_coop
+if global.bot_coop and class != CLASS_MEDIC
 {
     var targetQueue, testDist, playercheck, targetAngle, obscured, rotateoffset;
 

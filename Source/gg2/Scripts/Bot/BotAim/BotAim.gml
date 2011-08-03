@@ -23,6 +23,11 @@ else if class == CLASS_ENGINEER
     weapon_speed = 13+object.hspeed
 }
 
+else if class == CLASS_MEDIC
+{
+    weapon_speed = 9
+}
+
 else if class != CLASS_SNIPER
 {
     show_message("This class isn't ready yet. How did you manage to do this? Please post it on the thread.")

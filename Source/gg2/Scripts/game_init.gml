@@ -91,8 +91,9 @@
     global.bot_class_array[1] = ini_read_real("Bots", "Firebug enabled", 1)
     global.bot_class_array[2] = ini_read_real("Bots", "Rocketman enabled", 1)
     global.bot_class_array[3] = ini_read_real("Bots", "Overweight enabled", 1)
-    global.bot_class_array[4] = ini_read_real("Bots", "Constructor enabled", 1)
-    global.bot_class_array[5] = ini_read_real("Bots", "Rifleman enabled", 1)
+    global.bot_class_array[4] = ini_read_real("Bots", "Healer enabled", 1)
+    global.bot_class_array[5] = ini_read_real("Bots", "Constructor enabled", 1)
+    global.bot_class_array[6] = ini_read_real("Bots", "Rifleman enabled", 1)
 
     global.bot_num = 0
     global.bot_offset = 0
@@ -139,8 +140,9 @@
     ini_write_real("Bots", "Firebug enabled", global.bot_class_array[1])
     ini_write_real("Bots", "Rocketman enabled", global.bot_class_array[2])
     ini_write_real("Bots", "Overweight enabled", global.bot_class_array[3])
-    ini_write_real("Bots", "Constructor enabled", global.bot_class_array[4])
-    ini_write_real("Bots", "Rifleman enabled", global.bot_class_array[5])
+    ini_write_real("Bots", "Healer enabled", global.bot_class_array[4])
+    ini_write_real("Bots", "Constructor enabled", global.bot_class_array[5])
+    ini_write_real("Bots", "Rifleman enabled", global.bot_class_array[6])
    
     //screw the 0 index we will start with 1
     //map_truefort 

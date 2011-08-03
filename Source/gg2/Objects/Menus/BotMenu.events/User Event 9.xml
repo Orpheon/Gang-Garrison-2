@@ -13,8 +13,17 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">instance_create(x, y, HostOptionsController)
-instance_destroy()
+        <argument kind="STRING">global.bot_class_array[6] = !global.bot_class_array[6]
+
+ini_open("gg2.ini");
+ini_write_real("Bots", "Rifleman enabled", global.bot_class_array[5])
+ini_close();
+    
+if global.bot_class_array[6] {
+    value[9] = "Enabled";
+} else {
+    value[9] = "Disabled";
+}
 </argument>
       </arguments>
     </action>

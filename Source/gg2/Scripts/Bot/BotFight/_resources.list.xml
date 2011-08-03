@@ -2,5 +2,6 @@
 <resources>
   <resource name="BotFight" type="RESOURCE"/>
   <resource name="PyroFight" type="RESOURCE"/>
+  <resource name="MedicFight" type="RESOURCE"/>
   <resource name="SniperFight" type="RESOURCE"/>
 </resources>

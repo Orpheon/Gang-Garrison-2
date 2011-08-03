@@ -101,7 +101,9 @@ else if bot_class = "overweight" or bot_class == "heavy"
 }
 else if bot_class = "detonator" or bot_class == "demoman"
 {
-    player.class = CLASS_DEMOMAN
+    //player.class = CLASS_DEMOMAN
+    print("This class is not ready yet. Please choose another one.")
+    exit;
 }
 else if bot_class = "healer" or bot_class == "medic"
 {
@@ -113,7 +115,9 @@ else if bot_class = "constructor" or bot_class == "engineer"
 }
 else if bot_class = "infiltrator" or bot_class == "spy"
 {
-    player.class = CLASS_SPY
+    //player.class = CLASS_SPY
+    print("This class is not ready yet. Please choose another one.")
+    exit;
 }
 else if bot_class = "rifleman" or bot_class == "sniper"
 {
@@ -121,7 +125,7 @@ else if bot_class = "rifleman" or bot_class == "sniper"
 }
 else
 {
-    print("Unvalid Class. Please write either the tf2 or the gg2 name in lowercase, eg. runner. Note that Healer, Detonator and Spy are deactivated.")
+    print("Unvalid Class. Please write either the tf2 or the gg2 name in lowercase, eg. runner. Note that Detonator and Infiltrator are deactivated.")
     exit;
 }
     

@@ -1,8 +1,11 @@
-build = 0 //This is to record the Engineer building sentries.
+build = 0// This is to record the Engineer building sentries.
 
-BotGetTarget() //Aim
+BotGetTarget()// Aim
 
-BotFollowHuman() //Get the nearest friendly human
+if class != CLASS_MEDIC
+{
+    BotFollowHuman()// Get the nearest friendly human; only used for following. Medic usees the code else-where.
+}
 
 if reverse_alarm!=0
 {
@@ -15,7 +18,11 @@ if nearestTarget == -1 and BotFighting
     BotInit()
 }
 
-if BotFighting == 1 or class == CLASS_SPY
+if class == CLASS_MEDIC
+{
+    MedicFight()
+}
+else if BotFighting == 1
 {
     if random(7)<2
     {
@@ -38,7 +45,7 @@ if BotFighting == 1 or class == CLASS_SPY
     if BotFighting and target_in_sight and class == CLASS_ENGINEER and object.nutsNBolts >= 100 and collision_circle(object.x, object.y, 50, Sentry, false, true) < 0
     {
         //Create Sentry. This is a bit complicated to simulate because the menu is what registers the key. So I'm sending the bytes manually.
-        //See BotPlayer user event 14
+        //See GameServerBeginStep, at the place where user event 14 of the bot is called.
         
         //Destroy it first
         if sentry != -1
