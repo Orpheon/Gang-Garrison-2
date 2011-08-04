@@ -8,8 +8,41 @@ commandLimitRemaining = 10;
 
 if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, player.class)
 {
-    player.class = getClass(player.team, player.class)
-    ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
+    class = getClass(player.team, player.class)
+    if(getCharacterObject(player.team, class) != -1)
+    {
+        if(player.object != -1)
+        {
+            with(player.object)
+            {
+                if (collision_point(x,y,SpawnRoom,0,0) < 0)
+                {
+                    if (lastDamageDealer == -1 || lastDamageDealer == player)
+                    {
+                        sendEventPlayerDeath(player, player, noone, BID_FAREWELL);
+                        doEventPlayerDeath(player, player, noone, BID_FAREWELL);
+                    }
+                    else
+                    {
+                        var assistant;
+                        assistant = secondToLastDamageDealer;
+                        if (lastDamageDealer.object != -1)
+                            if (lastDamageDealer.object.healer != -1)
+                                assistant = lastDamageDealer.object.healer;
+                            sendEventPlayerDeath(player, lastDamageDealer, assistant, FINISHED_OFF);
+                            doEventPlayerDeath(player, lastDamageDealer, assistant, FINISHED_OFF);
+                    }
+                }
+                else
+                    instance_destroy();
+            }
+        }
+        else if(player.alarm[5]<=0)
+        player.alarm[5] = 1;
+        player.class = class;
+        ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
+    }
+    break;
 }
 
 with(player) {
@@ -121,7 +154,7 @@ while(commandLimitRemaining > 0) {
                 write_ubyte(global.chatBufferBlue, playerId)
                 if (global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
                 {
-                    print("/:/b"+player.name+" has left the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                    print("/:/b"+player.name+" has left the chat")
                 }
             }
             else if player.team == TEAM_SPECTATOR
@@ -130,7 +163,7 @@ while(commandLimitRemaining > 0) {
                 write_ubyte(global.chatBufferSpectator, playerId)
                 if (global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
                 {
-                    print("/:/g"+player.name+" has left the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
+                    print("/:/g"+player.name+" has left the chat")
                 }
             }
 
@@ -144,6 +177,11 @@ while(commandLimitRemaining > 0) {
             {           
                 ServerSendChatString(global.chatBuffer, playerId, chatString)
                 print("/:/y"+player.name+": /:/w"+chatString)
+            }
+            else if player.isRcon
+            {
+                ServerSendChatString(global.chatBuffer, playerId, "/:/l"+chatString)// The clients don't know who is rcon and who isn't, so I have to do this here already.
+                print("/:/l"+player.name+": /:/w"+chatString)
             }
             else if player.team = TEAM_RED
             {
@@ -324,7 +362,9 @@ while(commandLimitRemaining > 0) {
         case PLAYER_CHANGECLASS:
             var class;
             class = read_ubyte(socket);
-            team = player.team
+            
+            class = getClass(player.team, class)
+            
             if(getCharacterObject(player.team, class) != -1)
             {
                 if(player.object != -1)
@@ -388,6 +428,12 @@ while(commandLimitRemaining > 0) {
             
             if(balance != newTeam)
             {
+/*                if newTeam != TEAM_SPECTATOR
+                {
+                    player.class = getClass(newTeam, player.class)
+                    ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
+                }
+*/
                 if(getCharacterObject(newTeam, player.class) != -1 or newTeam==TEAM_SPECTATOR)
                 {  
                     if(player.object != -1)

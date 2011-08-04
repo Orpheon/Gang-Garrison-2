@@ -96,7 +96,8 @@ do {
             else
             {
                 print("/:/g"+chatString)
-            }            break;
+            }
+            break;
 
         case OHU_CHAT:
             receiveCompleteMessage(global.serverSocket,1,global.tempBuffer);
@@ -234,7 +235,7 @@ do {
                     Balancer.name=player.name;
                     with (Balancer) notice=1;
                   }
-                  break;
+              break;
                   
         case PLAYER_CHANGETEAM:
             receiveCompleteMessage(global.serverSocket,2,global.tempBuffer);
