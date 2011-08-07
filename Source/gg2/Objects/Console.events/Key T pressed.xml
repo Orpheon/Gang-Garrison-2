@@ -13,8 +13,10 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">global.typing = 0
-mode = "console"
+        <argument kind="STRING">if global.typing == 0
+{
+    mode = "console"
+}
 </argument>
       </arguments>
     </action>
