@@ -3,7 +3,7 @@
 // argument1 = the class the player wishes.
 
 
-if iterateTeammates(argument0, argument1) < global.classlimits[argument1]
+if iterateTeammates(argument0, argument1) <= global.classlimits[argument1]
 {
     // You're allowed to get that class
     return argument1
@@ -20,6 +20,7 @@ else
     ds_list_add(classes, CLASS_ENGINEER)
     ds_list_add(classes, CLASS_SPY)
     ds_list_add(classes, CLASS_SNIPER)
+    // No quote; you shouldn't be assigned quote by luck.
     
     validClass = -1
     

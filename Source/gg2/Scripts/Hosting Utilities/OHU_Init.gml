@@ -239,7 +239,7 @@ ds_list_add(global.executionList, "global.winners = 2")
 ds_list_add(global.commandList, "changeMap")
 ds_list_add(global.executionList, "global.winners = 2
 global.currentMapArea = 1
-global.nextMap = string_array[1]
+global.nextMap = string_array[1]+string_array[2]+string_array[3]+string_array[4]
 global.mapChangeCommanded = 1")
 
 addCommand("chat", "

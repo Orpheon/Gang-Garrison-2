@@ -6,7 +6,7 @@ playerId = argument1;
 // To prevent players from flooding the server, limit the number of commands to process per step and player.
 commandLimitRemaining = 10;
 
-if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, player.class)
+/*if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, player.class)
 {
     class = getClass(player.team, player.class)
     if(getCharacterObject(player.team, class) != -1)
@@ -43,7 +43,7 @@ if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, playe
         ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
     }
     break;
-}
+}*/
 
 with(player) {
     if(!variable_local_exists("commandReceiveState")) {
@@ -109,7 +109,7 @@ while(commandLimitRemaining > 0) {
                 write_ubyte(global.chatBufferRed, OHU_CHAT_JOIN)
                 write_ubyte(global.chatBufferRed, playerId)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
                 
-                if (global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
+                if (global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR)
                 {
                     print("/:/r"+player.name+" has joined the chat")// The /:/r is a color tag. Yes, clients can do this manually. This is printed here for the server.
                 }
@@ -119,7 +119,7 @@ while(commandLimitRemaining > 0) {
                 write_ubyte(global.chatBufferBlue, OHU_CHAT_JOIN)
                 write_ubyte(global.chatBufferBlue, playerId)
 
-                if (global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
+                if (global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR)
                 {
                     print("/:/b"+player.name+" has joined the chat")
                 }
@@ -129,7 +129,7 @@ while(commandLimitRemaining > 0) {
                 write_ubyte(global.chatBufferSpectator, OHU_CHAT_JOIN)
                 write_ubyte(global.chatBufferSpectator, playerId)
 
-                if (global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
+                if (global.myself.team == TEAM_SPECTATOR)
                 {
                     print("/:/g"+player.name+" has joined the chat")
                 }
@@ -143,7 +143,7 @@ while(commandLimitRemaining > 0) {
             {
                 write_ubyte(global.chatBufferRed, OHU_CHAT_LEAVE)
                 write_ubyte(global.chatBufferRed, playerId)// I'm letting the clients reconstruct their own string as it doesn't create as much lag.
-                if (global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
+                if (global.myself.team == TEAM_RED or global.myself.team == TEAM_SPECTATOR)
                 {
                     print("/:/r"+player.name+" has left the chat")// The /r is a color tag.Yes, clients can do this manually. This is printed here for the server.
                 }
@@ -152,7 +152,7 @@ while(commandLimitRemaining > 0) {
             {
                 write_ubyte(global.chatBufferBlue, OHU_CHAT_LEAVE)
                 write_ubyte(global.chatBufferBlue, playerId)
-                if (global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
+                if (global.myself.team == TEAM_BLUE or global.myself.team == TEAM_SPECTATOR)
                 {
                     print("/:/b"+player.name+" has left the chat")
                 }
@@ -161,7 +161,7 @@ while(commandLimitRemaining > 0) {
             {
                 write_ubyte(global.chatBufferSpectator, OHU_CHAT_LEAVE)
                 write_ubyte(global.chatBufferSpectator, playerId)
-                if (global.myself.team == TEAM_SPECTATOR) and Console.mode == "chat"
+                if (global.myself.team == TEAM_SPECTATOR)
                 {
                     print("/:/g"+player.name+" has left the chat")
                 }
@@ -187,28 +187,19 @@ while(commandLimitRemaining > 0) {
             {
                 ServerSendChatString(global.chatBuffer, playerId, chatString)
                 
-                if Console.mode == "chat"
-                {
-                    print("/:/r"+player.name+": /:/w"+chatString)
-                }
+                print("/:/r"+player.name+": /:/w"+chatString)
             }
             else if player.team = TEAM_BLUE
             {
                 ServerSendChatString(global.chatBuffer, playerId, chatString)
                 
-                if Console.mode == "chat"
-                {
-                    print("/:/b"+player.name+": /:/w"+chatString)
-                }
+                print("/:/b"+player.name+": /:/w"+chatString)
             }
             else if player.team = TEAM_SPECTATOR
             {
                 ServerSendChatString(global.chatBuffer, playerId, chatString)
                 
-                if Console.mode == "chat"
-                {
-                    print("/:/g"+player.name+": /:/w"+chatString)
-                }
+                print("/:/g"+player.name+": /:/w"+chatString)
             }
 
             break;
@@ -226,28 +217,19 @@ while(commandLimitRemaining > 0) {
             {
                 ServerSendChatString(global.chatBufferRed, playerId, chatString)
                 
-                if Console.mode == "chat" and global.myself.team == TEAM_RED
-                {
-                    print("/:/r"+player.name+": /:/w"+chatString)
-                }
+                print("/:/r"+player.name+": /:/w"+chatString)
             }
             else if player.team = TEAM_BLUE
             {
                 ServerSendChatString(global.chatBufferBlue, playerId, chatString)
                 
-                if Console.mode == "chat" and global.myself.team == TEAM_BLUE
-                {
-                    print("/:/b"+player.name+": /:/w"+chatString)
-                }
+                print("/:/b"+player.name+": /:/w"+chatString)
             }
             else if player.team = TEAM_SPECTATOR
             {
                 ServerSendChatString(global.chatBufferSpectator, playerId, chatString)
                 
-                if Console.mode == "chat" and global.myself.team == TEAM_SPECTATOR
-                {
-                    print("/:/g"+player.name+": /:/w"+chatString)
-                }
+                print("/:/g"+player.name+": /:/w"+chatString)
             }
             break;
             
@@ -428,12 +410,6 @@ while(commandLimitRemaining > 0) {
             
             if(balance != newTeam)
             {
-/*                if newTeam != TEAM_SPECTATOR
-                {
-                    player.class = getClass(newTeam, player.class)
-                    ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
-                }
-*/
                 if(getCharacterObject(newTeam, player.class) != -1 or newTeam==TEAM_SPECTATOR)
                 {  
                     if(player.object != -1)

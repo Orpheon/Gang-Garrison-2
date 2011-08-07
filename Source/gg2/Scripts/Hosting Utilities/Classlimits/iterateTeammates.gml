@@ -4,7 +4,7 @@
 //argument1 = the class in question
 
 i = 0
-for (a=0; a<ds_list_size(global.players)-1; a+=1)
+for (a=0; a<ds_list_size(global.players); a+=1)
 {
     otherPlayer = ds_list_find_value(global.players, a)
     if otherPlayer.team == argument0 and otherPlayer.object_index == Player// Don't count bots, or things will get stupid.
