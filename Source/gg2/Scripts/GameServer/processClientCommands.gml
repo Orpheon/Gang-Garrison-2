@@ -416,7 +416,7 @@ while(commandLimitRemaining > 0) {
                     {
                         with(player.object)
                         {
-                            if (lastDamageDealer == -1 || lastDamageDealer == player)
+                            if (lastDamageDealer == -1 || lastDamageDealer == player || !instance_exists("lastDamageDealer.object"))
                             {
                                 sendEventPlayerDeath(player, player, noone, BID_FAREWELL);
                                 doEventPlayerDeath(player, player, noone, BID_FAREWELL);

@@ -2,6 +2,10 @@
 // argument0 = the player team.
 // argument1 = the class the player wishes.
 
+if !variable_global_exists("global.classlimits[argument1]")
+{
+    return argument1
+}
 
 if iterateTeammates(argument0, argument1) <= global.classlimits[argument1]
 {

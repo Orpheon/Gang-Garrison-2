@@ -71,7 +71,6 @@
     global.randomRotation = ini_read_real("Server", "Randomize Rotation", 0)
     
     //Classlimits:
-    global.classlimits = 9999
     global.classlimits[CLASS_SCOUT] = ini_read_real("Server", "Runner Class Limit", 9999)
     global.classlimits[CLASS_PYRO] = ini_read_real("Server", "Firebug Class Limit", 9999)
     global.classlimits[CLASS_SOLDIER] = ini_read_real("Server", "Rocketman Class Limit", 9999)

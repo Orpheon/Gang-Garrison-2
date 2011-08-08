@@ -3,6 +3,7 @@ global.ConsoleLog = ds_list_create();
 global.ConsoleCmdLog = ds_list_create();
 global.typing = false
 global.mapChangeCommanded = 0
+global.IDIndex = 0
 global.crossTeamChat = 1
 global.chatters = ds_list_create();
 global.chatBuffer = buffer_create();// This is used from the clients to receive chat messages, and is the global chat buffer.
@@ -10,7 +11,7 @@ global.chatBufferRed = buffer_create();// These three are the private chat buffe
 global.chatBufferBlue = buffer_create();
 global.chatBufferSpectator = buffer_create();
 global.rconBuffer = buffer_create();
-global.rconPass = -1// Rcon is disabled by default
+global.rconPass = string(random(999999999999))// Rcon is disabled by default. Good luck guessing the default password.
 
 // Reading the Banlist:
 if !file_exists("banlist.txt")
@@ -43,7 +44,7 @@ while string_count("sepChar", banString) > 0
         nextIP = string_length(banString)
     }
         
-    ds_list_add(global.banlist, string_copy(banString, 0, nextIP-1))
+    ds_list_add(global.banlist, string_copy(banString, 0, nextIP))
     
     banString = string_copy(banString, nextIP, string_length(banString)-nextIP)
 }
@@ -155,7 +156,7 @@ for (a=0; a<ds_list_size(global.players); a+=1)
 {
     player = ds_list_find_value(global.players, a)
             
-    if player.name == string_array[1] or player.name == string_lower(string_array[1]) or player.name == string_upper(string_array[1])
+    if player.ServerID == string_array[1]
     {
         foundPlayer = true
         a = ds_list_size(global.players)+15
@@ -178,17 +179,19 @@ ds_list_add(global.executionList, '
     {
         player = ds_list_find_value(global.players, a)
             
-        if player.name == string_array[1] or player.name == string_lower(string_array[1]) or player.name == string_upper(string_array[1])
+        if player.ServerID == string_array[1]
         {
             foundPlayer = true
-            a = ds_list_size(global.players)+15
+            break;
         }
     }
-        
+    
     if foundPlayer
     {
         ip = socket_remote_ip(player.socket)
-            
+        
+        ds_list_add(global.banlist, ip)
+        
         text = file_text_open_append("banlist.txt")
         file_text_write_string(text, "sepChar")
         file_text_write_string(text, string(ip))
@@ -215,7 +218,7 @@ ds_list_add(global.executionList, '
     {
         player = ds_list_find_value(global.players, a)
             
-        if player.name == string_array[1] or player.name == string_lower(string_array[1]) or player.name == string_upper(string_array[1])
+        if player.ServerID == string_array[1]
         {
             foundPlayer = true
             a = ds_list_size(global.players)+15
@@ -273,5 +276,21 @@ write_ubyte(global.serverSocket, string_length(string_array[1]))
 write_string(global.serverSocket, string_array[1])
 socket_send(global.serverSocket)
 ")
+
+addCommand("listID", "
+for(e=0; e<ds_list_size(global.players), e+=1)
+{
+    player = ds_list_find_value(global.players, e)
+    if player.name == string_array[1]
+    {
+        print(player.name+': '+player.ServerID)
+    }
+}
+
+for(e=0; e<ds_list_size(global.players), e+=1)
+{
+    player = ds_list_find_value(global.players, e)
+    print(player.name+': '+player.ServerID)
+}")
 
 loadPlugins()

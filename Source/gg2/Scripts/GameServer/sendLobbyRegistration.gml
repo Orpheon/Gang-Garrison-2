@@ -5,7 +5,14 @@ if(global.dedicatedMode)
     
 noOfPlayers -= instance_number(BotPlayer)
 
-serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]+["+string(global.bot_num_wished)+"]Bots"+" - OHU";
+if global.bot_num_wished > 0
+{
+    serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]+["+string(global.bot_num_wished)+"]Bots"+" - OHU";
+}
+else
+{
+    serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]"+" - OHU";
+}
 if(global.serverPassword != "")
     serverDescription = "!private!" + serverDescription;
 

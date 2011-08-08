@@ -72,7 +72,7 @@
             }
         
             draw_set_halign(fa_left);
-            draw_text(xoffset-4, yoffset+70+20*(i+1),"    "+player.name);
+            draw_text(xoffset-4, yoffset+70+20*(i+1),"    "+player.name+"; ID="+string(player.ServerID));
         
             draw_set_halign(fa_right);
             draw_text(xoffset+xsize/2-15, yoffset+70+20*(i+1), string(floor(player.stats[POINTS])));
@@ -93,7 +93,7 @@
             }
        
             draw_set_halign(fa_left);
-            draw_text(xoffset+xsize/2+32, yoffset+70+20*(i+1),"    "+player.name);
+            draw_text(xoffset+xsize/2+32, yoffset+70+20*(i+1),"    "+player.name+"; ID="+string(player.ServerID));
         
             draw_set_halign(fa_right);
             draw_text(xoffset+xsize+25, yoffset+70+20*(i+1), string(floor(player.stats[POINTS])));
@@ -114,7 +114,6 @@
     
     for(i=0; ds_priority_size(spec) &gt; 0; i+=1) {
         player = ds_priority_delete_max(spec);            
-        
         if (ds_priority_size(spec) == 0)
         {
             specList=specList + player.name;
@@ -122,7 +121,7 @@
         else
         {
             specList=specList + player.name + ", ";
-        }   
+        }
     }    
     draw_text_ext(xoffset+xsize-350, yoffset+370,specList,-1,400)
     
