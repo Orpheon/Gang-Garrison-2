@@ -194,5 +194,10 @@ else
     left = 0
 }
 
+if (object.hp < 30) or (random(2000)<2 and object.hp < object.maxHp)
+{
+    bubbleHP = 1
+}
+
 last_x = object.x
 last_y = object.y

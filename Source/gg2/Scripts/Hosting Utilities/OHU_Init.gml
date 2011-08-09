@@ -12,6 +12,8 @@ global.chatBufferBlue = buffer_create();
 global.chatBufferSpectator = buffer_create();
 global.rconBuffer = buffer_create();
 global.rconPass = string(random(999999999999))// Rcon is disabled by default. Good luck guessing the default password.
+global.BotDominationBubble[0] = 0
+global.BotDominationBubble[1] = 0
 
 // Reading the Banlist:
 if !file_exists("banlist.txt")

@@ -5,6 +5,7 @@ jump = 0
 LMB = 0
 RMB = 0
 aimDirection = 0
+bubbleHP = 0
 
 BotMain();
 
@@ -43,5 +44,10 @@ keybyte |= $10
 if RMB == 1
 {
 keybyte |= $08
+}
+
+if bubbleHP
+{
+keybyte |= $04
 }
 return keybyte

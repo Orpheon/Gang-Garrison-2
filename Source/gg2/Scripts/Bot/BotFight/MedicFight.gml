@@ -9,7 +9,7 @@ if class == CLASS_MEDIC
     with(Character) {
         testDist = distance_to_object(other.object);
         if(id != other.object.id and team == other.team and testDist < 300 and (player.class != CLASS_MEDIC or player.object_index == Player)) {// Only consider Characters near enough, the others get considered later. Also don't heal medic bots.
-            ds_priority_add(targetQueue, id, other.object.maxHp-other.object.hp);
+            ds_priority_add(targetQueue, id, maxHp-hp);
         }
     }
 
@@ -53,7 +53,7 @@ if class == CLASS_MEDIC
             with(Character) {
                 testDist = distance_to_object(other.object);
                 if(id != other.object.id and team == other.team) {
-                    ds_priority_add(targetQueue, id, other.object.maxHp-other.object.hp);
+                    ds_priority_add(targetQueue, id, maxHp-hp);
                 }
             }
 

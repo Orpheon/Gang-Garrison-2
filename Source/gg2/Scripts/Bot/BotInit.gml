@@ -14,3 +14,5 @@ target_x = 0
 target_y = 0
 
 aimModifier = 0
+
+bubbleKill = 0

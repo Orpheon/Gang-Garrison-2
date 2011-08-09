@@ -1,14 +1,28 @@
-// Special Pyro fighting script. Wareya said flare prediction is impossible without brute force (or really hard maths). It's not. Keyword: "Senkrechter Wurf".
+// Special Pyro fighting script.
 // Gotta take ammo in consideration as well. Sometime.
 
 
 if sign(object.x-nearestTarget.x) == -1
 {
-    direction_ = 'right'
+    if reverse
+    {
+        direction_ = 'left'
+    }
+    else
+    {
+        direction_ = 'right'
+    }
 }
 else
 {
-    direction_ = 'left'
+    if reverse
+    {
+        direction_ = 'right'
+    }
+    else
+    {
+        direction_ = 'left'
+    }
 }
 
 if(collision_line(object.x,object.y,Target_x,Target_y,Obstacle,true,true)<0

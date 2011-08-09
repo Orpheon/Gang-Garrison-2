@@ -6,9 +6,23 @@ playerId = argument1;
 // To prevent players from flooding the server, limit the number of commands to process per step and player.
 commandLimitRemaining = 10;
 
-/*if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, player.class)
+if global.BotDominationBubble[0]
 {
-    class = getClass(player.team, player.class)
+    bubble = choose(43, 43, 43, 36, 36, 25)// Different success bubbles
+
+    write_ubyte(global.sendBuffer, CHAT_BUBBLE);
+    write_ubyte(global.sendBuffer, global.BotDominationBubble[1]);
+    write_ubyte(global.sendBuffer, bubble);
+            
+    setChatBubble(ds_list_find_value(global.players, global.BotDominationBubble[1]), bubble);
+
+    global.BotDominationBubble[0] = 0
+    global.BotDominationBubble[1] = 0
+}
+
+if player.team != TEAM_SPECTATOR and player.class != getClass(player.team, player.class, 0)
+{
+    class = getClass(player.team, player.class, 0)
     if(getCharacterObject(player.team, class) != -1)
     {
         if(player.object != -1)
@@ -43,7 +57,7 @@ commandLimitRemaining = 10;
         ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
     }
     break;
-}*/
+}
 
 with(player) {
     if(!variable_local_exists("commandReceiveState")) {
@@ -240,7 +254,7 @@ while(commandLimitRemaining > 0) {
 
             if playerId != 0 and player.isRcon == 0// The kicker isn't the host nor a rcon...
             {
-                show_message("Someone has tried to abuse OHU and has tried to kick someone out of chat.#Kicking.")
+                print("Someone has tried to abuse OHU and has tried to kick someone out of chat.#Kicking.")
                 string_array[1] = player.name// This is used by the kicking script, it's normally the first arg you type.
                 execute_string(ds_list_find_value(global.executionList, ds_list_find_index(global.commandList, "kick")))
             }
@@ -345,7 +359,7 @@ while(commandLimitRemaining > 0) {
             var class;
             class = read_ubyte(socket);
             
-            class = getClass(player.team, class)
+            class = getClass(player.team, class, 1)
             
             if(getCharacterObject(player.team, class) != -1)
             {
@@ -377,7 +391,9 @@ while(commandLimitRemaining > 0) {
                 }
                 else if(player.alarm[5]<=0)
                     player.alarm[5] = 1;
-                player.class = class;
+                
+                player.class = class
+                
                 ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
             }
             break;
