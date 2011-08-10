@@ -1,8 +1,7 @@
 // Special Pyro fighting script.
 // Gotta take ammo in consideration as well. Sometime.
 
-
-if sign(object.x-nearestTarget.x) == -1
+if sign(object.x-nearestTarget.x) == -1 and (point_distance(object.x, object.y, nearestTarget.x, nearestTarget.y) < point_distance(object.x, object.x, target.x, target.y))// Only follow an enemy if you aren't near to an objcetive
 {
     if reverse
     {
@@ -13,9 +12,20 @@ if sign(object.x-nearestTarget.x) == -1
         direction_ = 'right'
     }
 }
-else
+else if (point_distance(object.x, object.y, nearestTarget.x, nearestTarget.y) < point_distance(object.x, object.x, target.x, target.y))
 {
     if reverse
+    {
+        direction_ = 'right'
+    }
+    else
+    {
+        direction_ = 'left'
+    }
+}
+else
+{
+    if sign(target.x-object.x) == 1
     {
         direction_ = 'right'
     }

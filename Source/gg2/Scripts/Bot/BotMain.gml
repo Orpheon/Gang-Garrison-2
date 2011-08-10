@@ -120,7 +120,7 @@ else
         }
     }
     
-    if target.x > object.x and bot_decide_first_time = 1 //direction is referring to the direction I want to go. Red wants to go right.
+    if target.x > object.x and (bot_decide_first_time = 1 or !instance_exists(IntelligenceBaseBlue)) //direction is referring to the direction I want to go. Red wants to go right.
     {
         direction_ = "right"
         bot_decide_first_time = 0 //This checks that it only chooses the direction once at spawn and that's it.
@@ -129,7 +129,7 @@ else
             ctf_2dfort_n() //Get nodes. Later on this will find out which map and go there.
         }
     }
-    else if bot_decide_first_time = 1
+    else if bot_decide_first_time = 1 or !instance_exists(IntelligenceBaseBlue)
     {
         direction_ = "left"
         bot_decide_first_time = 0

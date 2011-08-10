@@ -136,6 +136,10 @@ if(global.winners != -1 and !global.mapchanging)
             global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
         }
     }
+    else
+    {
+        global.mapChangeCommanded = 0
+    }
     global.mapchanging = 1;
     impendingMapChange = 300; // in 300 frames (ten seconds), we'll do a map change
     
@@ -223,8 +227,6 @@ if(impendingMapChange == 0)
     }
     global.bot_num = 0
 }
-
-global.mapChangeCommanded = 0
 
 var i;
 for(i=1; i<ds_list_size(global.players); i+=1)

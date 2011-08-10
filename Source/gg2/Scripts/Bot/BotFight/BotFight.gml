@@ -1,11 +1,23 @@
-if sign(nearestTarget.hspeed) == 1
+if sign(nearestTarget.hspeed) == 1 and (point_distance(object.x, object.y, nearestTarget.x, nearestTarget.y) < point_distance(object.x, object.x, target.x, target.y))// Only follow an enemy if you aren't near to an objcetive
 {
     direction_ = 'right'
 }
-else
+else if (point_distance(object.x, object.y, nearestTarget.x, nearestTarget.y) < point_distance(object.x, object.x, target.x, target.y))
 {
     direction_ = 'left'
 }
+else
+{
+    if sign(target.x-object.x) == 1
+    {
+        direction_ = 'right'
+    }
+    else
+    {
+        direction_ = 'left'
+    }
+}
+
 
 if attack_later == 0
 {

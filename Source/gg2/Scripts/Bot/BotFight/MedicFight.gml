@@ -131,7 +131,7 @@ if class == CLASS_MEDIC
 
         LMB = 1
         
-        if (object.hp < 30 or nearestFriend.hp < 30) and object.currentWeapon.uberCharge == 2000
+        if (object.hp < 50 or nearestFriend.hp < 50) and object.currentWeapon.uberCharge == 2000
         {
             RMB = 1// Uber.
         }

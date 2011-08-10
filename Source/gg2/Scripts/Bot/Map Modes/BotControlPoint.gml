@@ -1,17 +1,23 @@
-target = instance_nearest(object.x, object.y, ControlPoint);
+foundCP = false// This is for A/D blu
 
-if (target.locked)
+with ControlPoint
 {
-    if (ControlPoint1.locked==0) {target=ControlPoint1}
-    else if (target=ControlPoint1 && ControlPoint2.locked==0) {target=ControlPoint2}
-    else if (target=ControlPoint2 && ControlPoint3.locked==0) {target=ControlPoint3}
-    else if (target=ControlPoint3 && ControlPoint4.locked==0) {target=ControlPoint4}
-    else if (target=ControlPoint4 && ControlPoint5.locked==0) {target=ControlPoint5}
+    if locked == 0 and team != -1 and team != other.team
+    {
+        other.target = id
+        foundCP = true
+        break;
+    }
 }
 
-
-//if (target.locked == 1){target = ControlPoint1;}
-//if (target.locked == 1){target = ControlPoint2;}
-//if (target.locked == 1){target = ControlPoint3;}
-//if (target.locked == 1){target = ControlPoint4;}
-//if (target.locked == 1){target = ControlPoint5;}
+if !foundCP
+{
+    if team == TEAM_RED
+    {
+        target = SpawnPointRed
+    }
+    else
+    {
+        target = SpawnPointBlue
+    }
+}

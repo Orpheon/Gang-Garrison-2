@@ -194,7 +194,7 @@ while(commandLimitRemaining > 0) {
             }
             else if player.isRcon
             {
-                ServerSendChatString(global.chatBuffer, playerId, "/:/l"+chatString)// The clients don't know who is rcon and who isn't, so I have to do this here already.
+                ServerSendChatString(global.chatBuffer, playerId, chatString)// The clients don't know who is rcon and who isn't, so I have to do this here already.
                 print("/:/l"+player.name+": /:/w"+chatString)
             }
             else if player.team = TEAM_RED

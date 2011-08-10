@@ -64,6 +64,11 @@ do {
             player_name = new_player.name
             chatString = player_name+" has joined the chat"
             
+            if Console.mode == "console"
+            {
+                break;
+            }
+            
             if new_player.team == TEAM_RED
             {
                 print("/:/r"+chatString)
@@ -85,6 +90,11 @@ do {
             player_name = new_player.name
             chatString = player_name+" has left the chat"
 
+            if Console.mode == "console"
+            {
+                break;
+            }
+            
             if new_player.team == TEAM_RED
             {
                 print("/:/r"+chatString)
@@ -106,6 +116,11 @@ do {
             new_player = ds_list_find_value(global.players, player_id)
             player_name = new_player.name
 
+            if Console.mode == "console"
+            {
+                break;
+            }
+            
             if player_id == 0
             {
                 print("/:/y"+player_name+": /:/w"+chatString)
@@ -132,6 +147,11 @@ do {
             player_name = new_player.name
             chatString = player_name+" has been kicked from the chat."
 
+            if Console.mode == "console"
+            {
+                break;
+            }
+            
             if new_player.team == TEAM_RED
             {
                 print("/:/r"+chatString)
