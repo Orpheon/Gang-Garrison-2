@@ -16,43 +16,6 @@
         <argument kind="STRING">afktimeout=9000;
 afktimer=afktimeout;
 oldScoreKeyDown=false;
-
-global.myConsole = instance_create(x, y, Console)
-
-// Auto-exec
-if file_exists("autoexec.txt")
-{
-    with Console
-    {
-        text = file_text_open_read("autoexec.txt")
-
-        commands = file_text_read_string(text)
-    
-        command_array[] = 0
-        q = 0
-
-        while commands != ""
-        {
-            index = string_pos("|", commands)
-            if index != 0
-            {
-                command_array[q] = string_copy(commands, 1, index-1)
-                commands = string_delete(commands, 1, index)
-            }
-            else
-            {
-                command_array[q] = commands
-                commands = ""
-            }
-            q += 1
-        }
-
-        for(a=0; a&lt;q; a+=1)
-        {
-            processCommand(command_array[a])
-        }
-    }
-}
 </argument>
       </arguments>
     </action>

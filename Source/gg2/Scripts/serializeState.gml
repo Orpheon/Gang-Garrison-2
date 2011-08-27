@@ -27,6 +27,7 @@
     }
 
     if(argument0 == FULL_UPDATE) {
+    
         serialize(IntelligenceRed);
         serialize(IntelligenceBlue);
         

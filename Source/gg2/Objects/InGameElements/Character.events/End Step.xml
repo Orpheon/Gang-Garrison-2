@@ -21,14 +21,6 @@
             if (lastDamageDealer.object.healer)
                 assistant = lastDamageDealer.object.healer;
                 
-        if lastDamageDealer.object_index == BotPlayer and random(7) &lt; 2// Always emoting leads to a bit of spam
-        {
-        // If you've been killed by a bot, the bot will cry out in joy.
-            global.BotDominationBubble[0] = 1
-            global.BotDominationBubble[1] = ds_list_find_index(global.players, lastDamageDealer)
-        }
-
-                
     sendEventPlayerDeath(player, lastDamageDealer, assistant, lastDamageSource);
     doEventPlayerDeath(player, lastDamageDealer, assistant, lastDamageSource);
     with(GameServer) {

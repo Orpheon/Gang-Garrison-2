@@ -14,9 +14,8 @@
       <appliesTo>.self</appliesTo>
       <arguments>
         <argument kind="STRING">{
-    receiveCompleteMessage(global.serverSocket, 2, global.deserializeBuffer);
-    readyToShoot = read_ubyte(global.deserializeBuffer);
-    alarm[0] = read_ubyte(global.deserializeBuffer);    
+    readyToShoot = read_ubyte(global.socketBuffer);
+    alarm[0] = read_ubyte(global.socketBuffer);    
 }
 </argument>
       </arguments>

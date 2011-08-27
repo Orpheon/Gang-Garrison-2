@@ -1,14 +1,16 @@
 {
     with(Client)
         instance_destroy();
-        
+
     global.players = ds_list_create();
-    global.tcpListener = -1;
-    global.serverSocket = -1;
-    
+
+    global.socketAcceptor = udp_bind(global.hostingPort)
+
+    global.serverSocket = global.socketAcceptor// Need to throughly clean this afterwards. global.serverSocket isn't needed anymore.
+
     global.currentMapIndex = 0;
     global.currentMapArea = 1;
-    
+
     serverbalance=0;
     balancecounter=0;
     randomize();
@@ -17,45 +19,28 @@
     updatePlayer = 1;
     impendingMapChange = -1; // timer variable used by GameServerBeginStep, when it hits 0, the server executes a map change to global.nextMap
     syncTimer = 0; //called in GameServerBeginsStep on CP/intel cap to update everyone with timer/caps/cp status
-    
+
     // Player 0 is reserved for the Server.
     serverPlayer = instance_create(0,0,Player);
     serverPlayer.name = global.playerName;
     ds_list_add(global.players, serverPlayer);
 
-    global.tcpListener = tcp_listen(global.hostingPort);
-    if(socket_has_error(global.tcpListener))
-    {
-        show_message("Unable to host: " + socket_error(global.tcpListener));
-        instance_destroy();
-        exit;
-    }
-    global.serverSocket = tcp_connect("127.0.0.1", global.hostingPort);    
-    if(socket_has_error(global.serverSocket))
-    {
-        show_message("Unable to connect to self. Epic fail, dude.");
-        instance_destroy();
-        exit;
-    }
+    newSocket = udp_bind(0)
     
-    var loopbackStartTime;
-    loopbackStartTime = current_time;
-    do {
-        if(current_time - loopbackStartTime > 500) // 0.5s should be enough to create a loopback connection...
-        {
-            show_message("Unable to host: Maybe the port is already in use.");
-            instance_destroy();
-            exit;
-        }
-        serverPlayer.socket = socket_accept(global.tcpListener);
-        io_handle(); // Make sure the game doesn't appear to freeze
-    } until(serverPlayer.socket>=0);
+    serverPlayer.ip = "127.0.0.1"
+    serverPlayer.port = socket_local_port(newSocket)
+    
+    socket_destroy(newSocket)
+
+    // This is only for the server; so that it knows where to send stuff too.
+    global.serverIP = "127.0.0.1"
+    global.serverPort = global.hostingPort
 
     global.playerID = 0;
     global.myself = serverPlayer;
     global.myself.authorized = true;
     playerControl = instance_create(0,0,PlayerControl);
-        
+
     global.currentMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
     if(file_exists("Maps/" + global.currentMap + ".png")) { // if this is an external map
         // get the md5 and url for the map
@@ -70,9 +55,7 @@
             game_end();
         }
     }
-    
+
     global.joinedServerName = global.serverName; // so no errors of unknown variable occur when you create a server
-    global.mapchanging=0; 
-    
-    GameServerDefineCommands();
+    global.mapchanging=0;
 }

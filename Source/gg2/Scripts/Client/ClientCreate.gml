@@ -11,6 +11,10 @@
     global.deserializeBuffer = buffer_create();
     global.isHost = false;
     global.randomSeed=0;
+    
+    global.lastPacketID = -1
+    
+    global.socketBuffer = buffer_create()
 
     global.myself = -1;
     playerControl = -1;
@@ -19,7 +23,10 @@
     global.clientFrame = 0;
     global.serverFrame = 0;
     
-    global.serverSocket = tcp_connect(global.serverIP, global.serverPort);
+    // This is used to spam the server with requests until it gets accepted. Also disconnectionTimer
+    connectionTimer = -1;
+    
+    global.serverSocket = udp_bind(0);
     
     //Uses the lobby name to create a global variable for use with scoreboard
     //deletes the part up to "] ", which is the end of the map listing
@@ -39,7 +46,6 @@
         
     buffer_clear(global.sendBuffer);
     ClientPlayerJoin(global.playerName);
-    write_ubyte(global.sendBuffer, OHU_HELLO)
     write_buffer(global.serverSocket, global.sendBuffer);
-    socket_send(global.serverSocket);
+    udp_send(global.serverSocket, global.serverIP, global.serverPort);
 }

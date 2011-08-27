@@ -16,60 +16,15 @@
         <argument kind="STRING">{
     object = -1;
     team = TEAM_SPECTATOR;
-    class = CLASS_SCOUT
-    socket = -1;
+    class = CLASS_SCOUT;
+    ip = "";// Refers to the player ip, to send stuff
+    port = 0;// See above
     name = "";
-    isOHU = 0
-    isRcon = 0
+    ACKbuffer = buffer_create()// The buffer for important data, global.eventBuffer gets appended to this.
+    lastAckedIndex = -1// Last ACK the player has done.
+    disconnectionTimer = 0// Timer for AFK
+    kick = 0// Kicking
     
-    global.IDIndex += 1
-    
-    if global.IDIndex &gt; 999
-    {      
-        global.IDIndex = 0
-    }
-    
-    var foundID, specID, IDTaken;
-    
-    foundID = 0
-    specID = global.IDIndex
-        
-    while foundID == 0
-    {
-        IDTaken = 0
-        
-        for(i=0; i&lt;ds_list_size(global.players); i+=1)
-        {
-            if real(ds_list_find_value(global.players, i).ServerID) == foundID
-            {
-                specID += 1
-                IDTaken = 1
-                break;
-            }
-        }
-            
-        if IDTaken == 0
-        {
-            foundID = 1
-        }
-    }
-    
-    global.IDIndex = specID
-
-    ServerID = specID
-    
-    if ServerID &lt; 10
-    {
-        ServerID = "00"+string(ServerID)
-    }
-    else if ServerID &lt; 100
-    {
-        ServerID = "0"+string(ServerID)
-    }
-    else
-    {
-        ServerID = string(ServerID)
-    }
     
     //fuck your shit I'm making statistic arrays
     stats[KILLS] = 0;

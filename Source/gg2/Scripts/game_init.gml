@@ -4,7 +4,7 @@
     if file_exists("game_errors.log") file_delete("game_errors.log");
     
     var customMapRotationFile;
-    
+
     //import wav files for music
     global.MenuMusic=sound_add(choose("Music/menumusic1.wav","Music/menumusic2.wav","Music/menumusic3.wav","Music/menumusic4.wav"), 1, true);
     global.IngameMusic=sound_add("Music/ingamemusic.wav", 1, true);
@@ -16,16 +16,24 @@
     if(global.FaucetMusic != -1)
         sound_volume(global.FaucetMusic, 0.8);
         
+
     global.sendBuffer = buffer_create();
     global.eventBuffer = buffer_create();
     global.tempBuffer = buffer_create();
+    global.backupBuffer = buffer_create()
     global.HudCheck = false;
-    global.map_rotation = ds_list_create();    
+    global.map_rotation = ds_list_create();
     
-    OHU_Init()
+    global.frameCount = 0
+    
+    global.eventBufferLengthArray[] = 0
+    for(i=0; i<=31999; i+=1)
+    {
+        global.eventBufferLengthArray[i] = 0// Fill the array with 0, because that is the default length
+    }
     
     global.CustomMapCollisionSprite = -1;
-        
+    
     window_set_region_scale(-1, false);
     
     ini_open("gg2.ini");
@@ -67,35 +75,6 @@
     global.totalMapAreas=1;
     global.setupTimer=1800;
     global.joinedServerName="";
-    
-    global.randomRotation = ini_read_real("Server", "Randomize Rotation", 0)
-    
-    //Classlimits:
-    global.classlimits[CLASS_SCOUT] = ini_read_real("Server", "Runner Class Limit", 9999)
-    global.classlimits[CLASS_PYRO] = ini_read_real("Server", "Firebug Class Limit", 9999)
-    global.classlimits[CLASS_SOLDIER] = ini_read_real("Server", "Rocketman Class Limit", 9999)
-    global.classlimits[CLASS_HEAVY] = ini_read_real("Server", "Overweight Class Limit", 9999)
-    global.classlimits[CLASS_DEMOMAN] = ini_read_real("Server", "Detonator Class Limit", 9999)
-    global.classlimits[CLASS_MEDIC] = ini_read_real("Server", "Healer Class Limit", 9999)
-    global.classlimits[CLASS_ENGINEER] = ini_read_real("Server", "Constructor Class Limit", 9999)
-    global.classlimits[CLASS_SPY] = ini_read_real("Server", "Infiltrator Class Limit", 9999)
-    global.classlimits[CLASS_SNIPER] = ini_read_real("Server", "Rifleman Class Limit", 9999)
-    global.classlimits[CLASS_QUOTE] = ini_read_real("Server", "Quote Class Limit", 9999)
-    
-    // Bot options
-    global.bot_num_wished = ini_read_real("Bots", "Number of Bots", 10)
-    global.bot_mode = ini_read_real("Bots", "Mode", 0)
-    global.bot_coop = ini_read_real("Bots", "Co-op enabled", 0)
-    global.bot_class_array[0] = ini_read_real("Bots", "Runner enabled", 1)
-    global.bot_class_array[1] = ini_read_real("Bots", "Firebug enabled", 1)
-    global.bot_class_array[2] = ini_read_real("Bots", "Rocketman enabled", 1)
-    global.bot_class_array[3] = ini_read_real("Bots", "Overweight enabled", 1)
-    global.bot_class_array[4] = ini_read_real("Bots", "Healer enabled", 1)
-    global.bot_class_array[5] = ini_read_real("Bots", "Constructor enabled", 1)
-    global.bot_class_array[6] = ini_read_real("Bots", "Rifleman enabled", 1)
-
-    global.bot_num = 0
-    global.bot_offset = 0
         
     ini_write_string("Settings", "PlayerName", global.playerName);
     ini_write_real("Settings", "Fullscreen", global.fullscreen);
@@ -122,27 +101,7 @@
     ini_write_real("Server", "Respawn Time", global.Server_RespawntimeSec);
     ini_write_real("Server", "Time Limit", global.timeLimitMins);
     ini_write_string("Server", "Password", global.serverPassword);
-    ini_write_real("Server", "Runner Class Limit", global.classlimits[CLASS_SCOUT])
-    ini_write_real("Server", "Firebug Class Limit", global.classlimits[CLASS_PYRO])
-    ini_write_real("Server", "Soldier Class Limit", global.classlimits[CLASS_SOLDIER])
-    ini_write_real("Server", "Overweight Class Limit", global.classlimits[CLASS_HEAVY])
-    ini_write_real("Server", "Detonator Class Limit", global.classlimits[CLASS_DEMOMAN])
-    ini_write_real("Server", "Healer Class Limit", global.classlimits[CLASS_MEDIC])
-    ini_write_real("Server", "Constructor Class Limit", global.classlimits[CLASS_ENGINEER])
-    ini_write_real("Server", "Infiltrator Class Limit", global.classlimits[CLASS_SPY])
-    ini_write_real("Server", "Rifleman Class Limit", global.classlimits[CLASS_SNIPER])
-    ini_write_real("Server", "Quote Class Limit", global.classlimits[CLASS_QUOTE])
-    ini_write_real("Bots", "Number of Bots", global.bot_num_wished)
-    ini_write_real("Bots", "Mode", global.bot_mode)
-    ini_write_real("Bots", "Co-op enabled", global.bot_coop);
-    ini_write_real("Bots", "Runner enabled", global.bot_class_array[0])
-    ini_write_real("Bots", "Firebug enabled", global.bot_class_array[1])
-    ini_write_real("Bots", "Rocketman enabled", global.bot_class_array[2])
-    ini_write_real("Bots", "Overweight enabled", global.bot_class_array[3])
-    ini_write_real("Bots", "Healer enabled", global.bot_class_array[4])
-    ini_write_real("Bots", "Constructor enabled", global.bot_class_array[5])
-    ini_write_real("Bots", "Rifleman enabled", global.bot_class_array[6])
-   
+    
     //screw the 0 index we will start with 1
     //map_truefort 
     maps[1] = ini_read_real("Maps", "ctf_truefort", 1);
@@ -355,26 +314,6 @@ global.launchMap = "";
         room_goto_fix(Menu);
     }
     
-    if global.randomRotation
-    {
-        copy_list = ds_list_create()
-        
-        while ds_list_size(global.map_rotation) > 0
-        {
-            index = random_range(0, ds_list_size(global.map_rotation)-1)
-            ds_list_add(copy_list, ds_list_find_value(global.map_rotation, index))
-            ds_list_delete(global.map_rotation, index)
-        }
-        
-        for (s=0; s<ds_list_size(copy_list); s+=1)
-        {
-            ds_list_add(global.map_rotation, ds_list_find_value(copy_list, s))
-        }
-        
-        ds_list_destroy(copy_list)
-    }
-        
-    
     // custom dialog box graphics
     message_background(popupBackgroundB);
     message_button(popupButtonS);
@@ -405,5 +344,4 @@ global.launchMap = "";
     ini_close();
     
     calculateMonthAndDay();
-    
 }

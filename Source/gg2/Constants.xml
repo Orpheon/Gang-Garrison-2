@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <constants>
-  <constant name="VERSION" value="23500"/>
-  <constant name="PROTOCOL_UUID" value="&quot;bb9dc83d-4ffc-9963-b3a8-23ea87d30b2c&quot;"/>
+  <constant name="VERSION" value="23600"/>
+  <constant name="PROTOCOL_UUID" value="&quot;5e12b088-415a-91f1-1194-9599f8a087c2&quot;"/>
   <constant name="HELLO" value="0"/>
   <constant name="PLAYER_JOIN" value="1"/>
   <constant name="PLAYER_LEAVE" value="2"/>
@@ -44,6 +44,9 @@
   <constant name="SCOPE_IN" value="40"/>
   <constant name="SCOPE_OUT" value="41"/>
   <constant name="KOTH_UNLOCKCP" value="42"/>
+  <constant name="ACK" value="43"/>
+  <constant name="ACK_REQUEST" value="44"/>
+  <constant name="PACKET_END" value="45"/>
   <constant name="TEAM_RED" value="0"/>
   <constant name="TEAM_BLUE" value="1"/>
   <constant name="TEAM_SPECTATOR" value="2"/>
@@ -131,15 +134,4 @@
   <constant name="MOUSE_LEFT" value="9001"/>
   <constant name="MOUSE_RIGHT" value="9002"/>
   <constant name="HP_PER_POINT" value="400"/>
-  <constant name="OHU_HELLO" value="50"/>
-  <constant name="OHU_MESSAGE" value="51"/>
-  <constant name="OHU_CHAT" value="52"/>
-  <constant name="OHU_CHAT_JOIN" value="53"/>
-  <constant name="OHU_CHAT_LEAVE" value="54"/>
-  <constant name="OHU_CHAT_KICK" value="55"/>
-  <constant name="OHU_CHAT_PRIVATE" value="56"/>
-  <constant name="OHU_RCON_PASS" value="57"/>
-  <constant name="OHU_RCON_PASS_WRONG" value="58"/>
-  <constant name="OHU_RCON_COMMAND" value="59"/>
-  <constant name="OHU_RCON_HELLO" value="60"/>
 </constants>

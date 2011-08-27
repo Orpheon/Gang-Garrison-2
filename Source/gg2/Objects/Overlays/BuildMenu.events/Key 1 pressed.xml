@@ -34,7 +34,7 @@ else if collision_circle(global.myself.object.x,global.myself.object.y,50,Sentry
 else if (collision_point(global.myself.object.x,global.myself.object.y,SpawnRoom,0,0) &lt; 0)
 {
     write_ubyte(global.serverSocket, BUILD_SENTRY);
-    socket_send(global.serverSocket);
+    udp_send(global.serverSocket, global.serverIP, global.serverPort);
 }
 </argument>
       </arguments>

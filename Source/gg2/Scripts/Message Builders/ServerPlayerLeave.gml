@@ -1,2 +1,2 @@
-write_ubyte(global.sendBuffer, PLAYER_LEAVE);
-write_ubyte(global.sendBuffer, argument0);
+write_ubyte(global.eventBuffer, PLAYER_LEAVE);
+write_ubyte(global.eventBuffer, argument0);

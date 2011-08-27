@@ -23,7 +23,7 @@
         ServerPlayerChangeclass(i, player.class, argument0);
         ServerPlayerChangeteam(i, player.team, argument0);
     }
-    
+
     serializeState(FULL_UPDATE, argument0);
     
     if global.serverPassword != "" write_ubyte(argument0, PASSWORD_REQUEST);

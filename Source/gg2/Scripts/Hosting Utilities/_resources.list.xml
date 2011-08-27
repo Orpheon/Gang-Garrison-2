@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<resources>
-  <resource name="OHU_Init" type="RESOURCE"/>
-  <resource name="processCommand" type="RESOURCE"/>
-  <resource name="print" type="RESOURCE"/>
-  <resource name="addCommand" type="RESOURCE"/>
-  <resource name="loadPlugins" type="RESOURCE"/>
-  <resource name="Classlimits" type="GROUP"/>
-</resources>

@@ -12,6 +12,4 @@
   <resource name="CreditsController" type="RESOURCE"/>
   <resource name="DevMessageChecker" type="RESOURCE"/>
   <resource name="HaxxyController" type="RESOURCE"/>
-  <resource name="BotMenu" type="RESOURCE"/>
-  <resource name="ClassLimitMenu" type="RESOURCE"/>
 </resources>

@@ -13,8 +13,7 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">receiveCompleteMessage(global.serverSocket,2,global.deserializeBuffer);
-hp = read_short(global.deserializeBuffer);
+        <argument kind="STRING">hp = read_short(global.socketBuffer);
 </argument>
       </arguments>
     </action>

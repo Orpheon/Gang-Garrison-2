@@ -13,10 +13,9 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">receiveCompleteMessage(global.serverSocket,5,global.deserializeBuffer);
-global.timeLimitMins = read_ubyte(global.deserializeBuffer);
+        <argument kind="STRING">global.timeLimitMins = read_ubyte(global.socketBuffer);
 timeLimit=global.timeLimitMins*30*60;
-timer=read_uint(global.deserializeBuffer);
+timer=read_uint(global.socketBuffer);
 
 </argument>
       </arguments>

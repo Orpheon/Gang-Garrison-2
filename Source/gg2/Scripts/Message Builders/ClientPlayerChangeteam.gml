@@ -1,2 +1,2 @@
-write_ubyte(global.sendBuffer, PLAYER_CHANGETEAM);
-write_ubyte(global.sendBuffer, argument0);
+write_ubyte(global.tempBuffer, PLAYER_CHANGETEAM);
+write_ubyte(global.tempBuffer, argument0);

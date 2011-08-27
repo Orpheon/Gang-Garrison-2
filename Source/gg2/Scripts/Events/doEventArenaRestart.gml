@@ -8,7 +8,6 @@ with(ArenaHUD) {
 ArenaControlPoint.team = -1;
 ArenaControlPoint.locked = 1;
 with Player humiliated = 0;
-with BotPlayer humiliated = 0;
 with Sentry instance_destroy();
 with SentryGibs instance_destroy();
     

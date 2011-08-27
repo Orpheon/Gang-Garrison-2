@@ -15,9 +15,8 @@
       <arguments>
         <argument kind="STRING">var healTargetId;
 
-receiveCompleteMessage(global.serverSocket, 2, global.deserializeBuffer);
-ammoCount = read_ubyte(global.deserializeBuffer); 
-healTargetId = read_ubyte(global.deserializeBuffer);
+ammoCount = read_ubyte(global.socketBuffer); 
+healTargetId = read_ubyte(global.socketBuffer);
 if(healTargetId != 255) {
     healTarget = ds_list_find_value(global.players, healTargetId);
 } else {

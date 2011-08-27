@@ -1,36 +1,15 @@
 if(serverbalance != 0)
     balancecounter+=1;
 
-if global.bot_mode == 2
-{
-    global.bot_num_wished = instance_number(Player)+1
-}
-
 // Register with Lobby Server every 30 seconds
 if(global.useLobbyServer and (frame mod 900)==0)
+{
     sendLobbyRegistration();
+}
 frame += 1;
 
 buffer_clear(global.sendBuffer);
 
-if global.bot_num_wished < 0
-{
-    global.bot_num_wished = 0
-}
-
-while global.bot_num < global.bot_num_wished
-{
-    CreateBot()
-}
-while global.bot_num > global.bot_num_wished
-{
-    DestroyBot()
-}
-
-acceptJoiningPlayer();
-with(JoiningPlayer)
-    serviceJoiningPlayer();
-    
 // Service all players
 var i;
 for(i=0; i<ds_list_size(global.players); i+=1)
@@ -38,51 +17,8 @@ for(i=0; i<ds_list_size(global.players); i+=1)
     var player;
     player = ds_list_find_value(global.players, i);
     
-    if player.object_index == BotPlayer
+    if(player.kick)
     {
-        with player
-        {
-            event_user(14)
-        }
-        
-        if player.build == 1 //Building a sentry
-        {
-            if(player.object != -1)
-            {
-                if(player.class == CLASS_ENGINEER
-                and collision_circle(player.object.x, player.object.y, 50, Sentry, false, true) < 0
-                and player.object.nutsNBolts == 100 and (collision_point(player.object.x,player.object.y,SpawnRoom,0,0) < 0)
-                and player.sentry == -1 and !player.object.onCabinet)
-                {
-                    buildSentry(player);
-                    write_ubyte(global.sendBuffer, BUILD_SENTRY);
-                    write_ubyte(global.sendBuffer, i);
-                }
-            }
-
-        }
-        else if player.build == -1 //Destroying a sentry.
-        {
-            if(player.sentry != -1) {
-                with(player.sentry) {
-                    instance_destroy();
-                }
-            }
-            player.sentry = -1;
-        }
-        
-        continue
-    }
-        
-    if(socket_has_error(player.socket))
-    {
-        if ds_list_find_index(global.chatters, player) >= 0
-        {
-            // Remove the player from the chat:
-            ds_list_delete(global.chatters, ds_list_find_index(global.chatters, player))
-            write_ubyte(global.chatBuffer, OHU_CHAT_LEAVE)
-            write_ubyte(global.chatBuffer, i)
-        }
         removePlayer(player);
         ServerPlayerLeave(i);
         i-=1;
@@ -96,13 +32,13 @@ for(i=0; i<ds_list_size(global.players); i+=1)
             {
                 write_ubyte(player.socket, KICK);
                 write_ubyte(player.socket, KICK_PASSWORDCOUNT);
-                socket_destroy(player.socket);
-                player.socket = -1;
+                player.kick = 1
             }
         }
-        processClientCommands(player, i);        
     }
 }
+
+processClientCommands();
 
 if(syncTimer == 1 || ((frame mod 3600)==0) || global.setupTimer == 180)
 {
@@ -120,34 +56,27 @@ if(impendingMapChange > 0)
 
 if(global.winners != -1 and !global.mapchanging)
 {
-    if !global.mapChangeCommanded
+    if(global.winners == TEAM_RED and global.currentMapArea < global.totalMapAreas)
     {
-        if(global.winners == TEAM_RED and global.currentMapArea < global.totalMapAreas)
-        {
-            global.nextMap = global.currentMap;
-            global.currentMapArea += 1;
-        }
-        else
-        { 
-            global.currentMapIndex += 1;
-            global.currentMapArea = 1;
-            if(global.currentMapIndex == ds_list_size(global.map_rotation)) 
-                global.currentMapIndex = 0;
-            global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
-        }
+        global.nextMap = global.currentMap;
+        global.currentMapArea += 1;
     }
     else
-    {
-        global.mapChangeCommanded = 0
+    { 
+        global.currentMapIndex += 1;
+        global.currentMapArea = 1;
+        if(global.currentMapIndex == ds_list_size(global.map_rotation)) 
+            global.currentMapIndex = 0;
+        global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
     }
     global.mapchanging = 1;
     impendingMapChange = 300; // in 300 frames (ten seconds), we'll do a map change
     
-    write_ubyte(global.sendBuffer, MAP_END);
-    write_ubyte(global.sendBuffer, string_length(global.nextMap));
-    write_string(global.sendBuffer, global.nextMap);
-    write_ubyte(global.sendBuffer, global.winners);
-    write_ubyte(global.sendBuffer, global.currentMapArea);
+    write_ubyte(global.eventBuffer, MAP_END);
+    write_ubyte(global.eventBuffer, string_length(global.nextMap));
+    write_string(global.eventBuffer, global.nextMap);
+    write_ubyte(global.eventBuffer, global.winners);
+    write_ubyte(global.eventBuffer, global.currentMapArea);
     
     if(!instance_exists(ScoreTableController))
         instance_create(0,0,ScoreTableController);
@@ -175,7 +104,7 @@ if(impendingMapChange == 0)
             game_end();
         }
     }
-    ServerChangeMap(global.currentMap, global.currentMapURL, global.currentMapMD5, global.sendBuffer);
+    ServerChangeMap(global.currentMap, global.currentMapURL, global.currentMapMD5, global.eventBuffer);
     impendingMapChange = -1;
     
     with(Player)
@@ -213,63 +142,37 @@ if(impendingMapChange == 0)
         timesChangedCapLimit = 0;
         alarm[5]=1;
     }
-    
-    for (i=0; i<ds_list_size(global.players)-1; i+=1)
-    {
-        player = ds_list_find_value(global.players, i)
-        
-        if player.object_index == BotPlayer
-        {
-            removePlayer(player)
-            ServerPlayerLeave(i)
-            i -= 1 //This is what was causing me all those errors. Graaah.
-        }
-    }
-    global.bot_num = 0
 }
+
+
+global.frameCount += 1
+if global.frameCount > 31999
+{
+    global.frameCount = 0
+}
+
+global.eventBufferLengthArray[global.frameCount] = buffer_size(global.eventBuffer)+5*sign(buffer_size(global.eventBuffer))// 5 = byte for PACKET_ID + short for global.frameCount + short for buffer length array.
+                                                                                                                          //Of course only add if there's something in the eventBuffer (hence the *sign())
 
 var i;
 for(i=1; i<ds_list_size(global.players); i+=1)
 {
     var player;
     player = ds_list_find_value(global.players, i);
-    if player.object_index == BotPlayer
-    {
-        continue;
-    }
-    write_buffer(player.socket, global.eventBuffer);
-    write_buffer(player.socket, global.sendBuffer);
     
-    if player.isOHU == 1
+    if buffer_size(global.eventBuffer) > 0
     {
-        write_buffer(player.socket, global.rconBuffer);
+//        show_message("Server:#Player="+string(i)+"; ACKbufferSize="+string(buffer_size(player.ACKbuffer))+"; frame="+string(global.frameCount)+"; eventBufferSize="+string(buffer_size(global.eventBuffer)))
+        write_ubyte(player.ACKbuffer, ACK_REQUEST)
+        write_ushort(player.ACKbuffer, global.frameCount)
+        write_ushort(player.ACKbuffer, global.eventBufferLengthArray[global.frameCount]-5)
+        write_buffer(player.ACKbuffer, global.eventBuffer)
     }
     
-    if ds_list_find_index(global.chatters, player) >= 0
-    {
-        write_buffer(player.socket, global.chatBuffer)// Public chat
-    
-        if player.team == TEAM_RED// Private chats
-        {
-            write_buffer(player.socket, global.chatBufferRed)
-        }
-        else if player.team == TEAM_BLUE
-        {
-            write_buffer(player.socket, global.chatBufferBlue)
-        }
-        else if player.team = TEAM_SPECTATOR
-        {
-            write_buffer(player.socket, global.chatBufferSpectator)
-        }
-    }
-    socket_send(player.socket);
+    write_buffer(global.socketAcceptor, player.ACKbuffer)
+    write_buffer(global.socketAcceptor, global.sendBuffer)
+    write_ubyte(global.socketAcceptor, PACKET_END)
+    udp_send(global.socketAcceptor, player.ip, player.port)
 }
-
-
-
 buffer_clear(global.eventBuffer);
-buffer_clear(global.chatBufferBlue);
-buffer_clear(global.chatBufferRed);
-buffer_clear(global.chatBufferSpectator);
-buffer_clear(global.chatBuffer);
-buffer_clear(global.rconBuffer);
+buffer_clear(global.socketAcceptor)

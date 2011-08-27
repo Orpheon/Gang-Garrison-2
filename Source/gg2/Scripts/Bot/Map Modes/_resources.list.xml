@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<resources>
-  <resource name="BotIntel" type="RESOURCE"/>
-  <resource name="BotControlPoint" type="RESOURCE"/>
-  <resource name="BotKoth" type="RESOURCE"/>
-  <resource name="BotGen" type="RESOURCE"/>
-  <resource name="BotArena" type="RESOURCE"/>
-</resources>

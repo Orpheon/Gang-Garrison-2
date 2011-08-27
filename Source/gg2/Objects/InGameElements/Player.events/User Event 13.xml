@@ -14,23 +14,21 @@
       <appliesTo>.self</appliesTo>
       <arguments>
         <argument kind="STRING">    if(global.updateType == FULL_UPDATE) {
-        receiveCompleteMessage(global.serverSocket,12,global.deserializeBuffer);
-        stats[KILLS] = read_ubyte(global.deserializeBuffer);
-        stats[DEATHS] = read_ubyte(global.deserializeBuffer);
-        stats[CAPS] = read_ubyte(global.deserializeBuffer);
-        stats[ASSISTS] = read_ubyte(global.deserializeBuffer);
-        stats[DESTRUCTION] = read_ubyte(global.deserializeBuffer);
-        stats[STABS] = read_ubyte(global.deserializeBuffer);
-        stats[HEALING] = read_ushort(global.deserializeBuffer);
-        stats[DEFENSES] = read_ubyte(global.deserializeBuffer);
-        stats[INVULNS] = read_ubyte(global.deserializeBuffer);
-        stats[BONUS] = read_ubyte(global.deserializeBuffer);
-        stats[POINTS] = read_ubyte(global.deserializeBuffer);
+        stats[KILLS] = read_ubyte(global.socketBuffer);
+        stats[DEATHS] = read_ubyte(global.socketBuffer);
+        stats[CAPS] = read_ubyte(global.socketBuffer);
+        stats[ASSISTS] = read_ubyte(global.socketBuffer);
+        stats[DESTRUCTION] = read_ubyte(global.socketBuffer);
+        stats[STABS] = read_ubyte(global.socketBuffer);
+        stats[HEALING] = read_ushort(global.socketBuffer);
+        stats[DEFENSES] = read_ubyte(global.socketBuffer);
+        stats[INVULNS] = read_ubyte(global.socketBuffer);
+        stats[BONUS] = read_ubyte(global.socketBuffer);
+        stats[POINTS] = read_ubyte(global.socketBuffer);
     }
  
     var charObj, subobjects;
-    receiveCompleteMessage(global.serverSocket,1,global.deserializeBuffer);
-    subobjects = read_ubyte(global.deserializeBuffer);
+    subobjects = read_ubyte(global.socketBuffer);
     
     // If the player has a character object on the server
     if(subobjects &amp; $01 != 0) {

@@ -11,6 +11,4 @@
   <resource name="GameElements" type="GROUP"/>
   <resource name="Event Sprites" type="GROUP"/>
   <resource name="DevMessagesCheckerS" type="RESOURCE"/>
-  <resource name="ConsoleBarS" type="RESOURCE"/>
-  <resource name="ConsoleBackgroundS" type="RESOURCE"/>
 </resources>

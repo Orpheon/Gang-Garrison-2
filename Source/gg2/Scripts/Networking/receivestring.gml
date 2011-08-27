@@ -1,24 +1,12 @@
-/* Receive a string with length prefix. Blocks until the complete string is read */
+/* Read a string with a length prefix.
 
-var size,buffer,result;
-buffer = buffer_create();
-if(receiveCompleteMessage(argument0, argument1, buffer) > 0) {
-    buffer_destroy(buffer);
-    return "";
-}
+argument0 = buffer
+*/
 
-if(argument1 == 1) {
-    size = read_ubyte(buffer);
-} else {
-    size = read_ushort(buffer);
-}
+var length, result;
 
-if(receiveCompleteMessage(argument0, size, buffer) > 0) {
-    buffer_destroy(buffer);
-    return "";
-}
+length = read_ubyte(argument0)
 
-result = read_string(buffer, size);
-buffer_destroy(buffer);
+result = read_string(argument0, length)
 
-return result;
+return result

@@ -2,17 +2,8 @@ var noOfPlayers, serverDescription;
 noOfPlayers = ds_list_size(global.players);
 if(global.dedicatedMode)
     noOfPlayers -= 1;
-    
-noOfPlayers -= instance_number(BotPlayer)
 
-if global.bot_num_wished > 0
-{
-    serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]+["+string(global.bot_num_wished)+"]Bots"+" - OHU";
-}
-else
-{
-    serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]"+" - OHU";
-}
+serverDescription = "[" + global.currentMap +"] " + global.serverName + " [" + string(noOfPlayers) + "/" + string(global.playerLimit) + "]";
 if(global.serverPassword != "")
     serverDescription = "!private!" + serverDescription;
 

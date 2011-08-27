@@ -15,8 +15,7 @@
       <arguments>
         <argument kind="STRING">{
     game_end();
-}
-</argument>
+}</argument>
       </arguments>
     </action>
   </actions>
