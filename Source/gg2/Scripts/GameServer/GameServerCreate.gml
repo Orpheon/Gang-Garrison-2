@@ -8,6 +8,8 @@
 
     global.serverSocket = global.socketAcceptor// Need to throughly clean this afterwards. global.serverSocket isn't needed anymore.
 
+    global.lobbySocket = tcp_listen(global.hostingPort)
+    
     global.currentMapIndex = 0;
     global.currentMapArea = 1;
 
@@ -25,8 +27,8 @@
     serverPlayer.name = global.playerName;
     ds_list_add(global.players, serverPlayer);
 
-    newSocket = udp_bind(0)
-    
+    newSocket = udp_bind(0)// Get a random port and assign it to the server player, it gets destroyed afterwards.
+
     serverPlayer.ip = "127.0.0.1"
     serverPlayer.port = socket_local_port(newSocket)
     

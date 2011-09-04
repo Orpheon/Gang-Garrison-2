@@ -30,6 +30,10 @@ while true
                 break;
             }
         }
+        else
+        {
+            player.AfkTimer = 0
+        }
     }
     else
     {
@@ -298,10 +302,11 @@ while true
                  break;
                                                       
             case PASSWORD_SEND:
+            
                 passwordLength = read_ubyte(global.receiveBuffer)
                 password = read_string(global.receiveBuffer, passwordLength);
                 if(global.serverPassword != password) {
-                    write_ubyte(player.personalACKbuffer, PASSWORD_WRONG);
+                    //write_ubyte(player.ACKbuffer, PASSWORD_WRONG);
                     player.kick = 1
                 } else {
                     player.authorized = true;
@@ -313,8 +318,8 @@ while true
                 nameLength = read_ubyte(global.receiveBuffer);
                 if(nameLength > MAX_PLAYERNAME_LENGTH)
                 {
-                    write_ubyte(player.personalACKbuffer, KICK);
-                    write_ubyte(player.personalACKbuffer, KICK_NAME);
+                    //write_ubyte(player.ACKbuffer, KICK);
+                    //write_ubyte(player.ACKbuffer, KICK_NAME);
                     player.kick = 1
                 }
                 else
@@ -331,7 +336,7 @@ while true
                             name = "I <3 Bacon";
                         }
                         write_ubyte(global.eventBuffer, PLAYER_CHANGENAME);
-                        write_ubyte(global.eventBuffer, playerId);
+                        write_ubyte(global.eventBuffer, other.playerId);
                         write_ubyte(global.eventBuffer, string_length(name));
                         write_string(global.eventBuffer, name);
                     }

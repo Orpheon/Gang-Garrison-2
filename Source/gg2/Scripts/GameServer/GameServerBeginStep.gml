@@ -1,13 +1,6 @@
 if(serverbalance != 0)
     balancecounter+=1;
 
-// Register with Lobby Server every 30 seconds
-if(global.useLobbyServer and (frame mod 900)==0)
-{
-    sendLobbyRegistration();
-}
-frame += 1;
-
 buffer_clear(global.sendBuffer);
 
 // Service all players
@@ -144,6 +137,13 @@ if(impendingMapChange == 0)
     }
 }
 
+// Register with Lobby Server every 30 seconds
+if(global.useLobbyServer and (frame mod 900)==0)
+{
+    sendLobbyRegistration();
+}
+
+frame += 1;
 
 global.frameCount += 1
 if global.frameCount > 31999
@@ -159,7 +159,14 @@ for(i=1; i<ds_list_size(global.players); i+=1)
 {
     var player;
     player = ds_list_find_value(global.players, i);
-    
+
+    // AFK stuff; disconnect if not here anymore.
+    player.AfkTimer += 1
+    if player.AfkTimer > 30*15
+    {
+        player.kick = 1
+    }
+
     if buffer_size(global.eventBuffer) > 0
     {
 //        show_message("Server:#Player="+string(i)+"; ACKbufferSize="+string(buffer_size(player.ACKbuffer))+"; frame="+string(global.frameCount)+"; eventBufferSize="+string(buffer_size(global.eventBuffer)))
@@ -168,11 +175,10 @@ for(i=1; i<ds_list_size(global.players); i+=1)
         write_ushort(player.ACKbuffer, global.eventBufferLengthArray[global.frameCount]-5)
         write_buffer(player.ACKbuffer, global.eventBuffer)
     }
-    
+
     write_buffer(global.socketAcceptor, player.ACKbuffer)
     write_buffer(global.socketAcceptor, global.sendBuffer)
     write_ubyte(global.socketAcceptor, PACKET_END)
     udp_send(global.socketAcceptor, player.ip, player.port)
 }
 buffer_clear(global.eventBuffer);
-buffer_clear(global.socketAcceptor)

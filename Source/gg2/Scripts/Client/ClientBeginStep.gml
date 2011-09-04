@@ -9,20 +9,27 @@ roomchange = 0
         room_goto_fix(Menu);
         exit; 
     }
-    receivedInfo = udp_receive(global.serverSocket)
-
-    if buffer_size(global.backupBuffer) > 0// You received stuff last frame you'd like to get rid of
-    {
-        buffer_clear(global.serverSocket)// Ignore the last message if there was one, everything important will come again.
-    }
 
     write_buffer(global.socketBuffer, global.backupBuffer)
-    write_buffer(global.socketBuffer, global.serverSocket)
-
+    
+    gotInfo = 0
+    do
+    {
+        write_buffer(global.socketBuffer, global.serverSocket)
+        receivedInfo = udp_receive(global.serverSocket)
+    }
+    until !receivedInfo
+    
     buffer_clear(global.backupBuffer)
-    buffer_clear(global.serverSocket)
+    
+    if buffer_size(global.socketBuffer) > 0
+    {
+        gotInfo = 1
+    }
 
     while buffer_bytes_left(global.socketBuffer) > 0 and buffer_size(global.socketBuffer) > 0{
+    
+        
 
         if roomchange
         {
@@ -37,6 +44,10 @@ roomchange = 0
 
         switch(read_ubyte(global.socketBuffer)) {
 
+            case IGNORE_MESSAGE:
+                // Ignore
+                break;        
+        
             case HELLO:
 
                 sameVersion = true;
@@ -63,7 +74,6 @@ roomchange = 0
                     global.playerID = read_ubyte(global.socketBuffer)-1;// -1 because the new player is already included in global.players
                     global.randomSeed = read_double(global.socketBuffer);
                     global.currentMapArea = read_ubyte(global.socketBuffer);
-                    global.serverPort = socket_remote_port(global.serverSocket)
                 }
                 break;
 
@@ -438,7 +448,7 @@ roomchange = 0
                 exit; 
         }
     }
-    if !receivedInfo{
+    if !gotInfo{
         if connectionTimer < 0
         {
             buffer_clear(global.sendBuffer);

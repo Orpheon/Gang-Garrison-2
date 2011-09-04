@@ -22,7 +22,7 @@
     name = "";
     ACKbuffer = buffer_create()// The buffer for important data, global.eventBuffer gets appended to this.
     lastAckedIndex = -1// Last ACK the player has done.
-    disconnectionTimer = 0// Timer for AFK
+    AfkTimer = 0
     kick = 0// Kicking
     
     

@@ -45,12 +45,36 @@ var socket, joiningPlayer, totalClientNumber;
             player.name = string_copy(player.name, 0, MAX_PLAYERNAME_LENGTH);
             player.name = string_replace_all(player.name, "#", " ");
 
+            global.frameCount += 1// This is to prevent eventBuffer length conflicts for different players without even more player variables.
+            if global.frameCount > 31999
+            {
+                global.frameCount = 0
+            }
+
             for (i=1; i<ds_list_size(global.players)-1; i+=1)// "-1" because the new player shouldn't receive this, he'll get himself inside the ServerJoinUpdate.
             {                                                //"i=1" because no need to save stuff in the server player buffer, it'll never get sent.
                 oldPlayer = ds_list_find_value(global.players, i)
+                
+                // Fill in the missing bytes of that "frame" for all the players; gotta fix this someday
+                for (a=0; a<global.eventBufferLengthArray[global.frameCount-1]; a+=1)
+                {
+                    write_ubyte(oldPlayer.ACKbuffer, IGNORE_MESSAGE)
+                }
+                
                 write_ubyte(oldPlayer.ACKbuffer, ACK_REQUEST)
                 write_ushort(oldPlayer.ACKbuffer, global.frameCount)
                 write_ushort(oldPlayer.ACKbuffer, 2+string_length(player.name))
                 ServerPlayerJoin(oldPlayer.name, oldPlayer.ACKbuffer);
+            }
+            global.eventBufferLengthArray[global.frameCount] = 7+string_length(player.name)// See end of GameServerBeginStep for details about this 5.
+            
+            
+            // Because of the faulty architecture of the global.eventBufferLengthArray system, I need to make sure all players have the same amount of data in their buffers.
+            // Hence an IGNORE_MESSAGE byte
+            
+            // This is for the newly joined player.
+            for (i=0; i<global.eventBufferLengthArray[global.frameCount]; i+=1)
+            {
+                write_ubyte(player.ACKbuffer, IGNORE_MESSAGE)
             }
         }
