@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">/*with BotPlayer
+{
+    if !ds_list_empty(directionList) and object != -1
+    {
+
+        draw_set_color(c_yellow)
+        draw_set_alpha(1)
+    
+        var point1, point2;
+    
+        for (i=0; i&lt;ds_list_size(directionList)-1; i+=1)
+        {
+            point1 = ds_list_find_value(directionList, i)
+            point2 = ds_list_find_value(directionList, i+1)
+            draw_line_width(point1.x, point1.y, point2.x, point2.y, 5)
+        }
+
+        draw_line_width(object.x, object.y, ds_list_find_value(directionList, 0).x, ds_list_find_value(directionList, 0).y, 5)
+    }
+    
+    if target != -1
+    {
+        draw_set_alpha(1)
+        draw_set_color(c_green)
+        draw_circle(target.x, target.y, 8, 0)
+    }
+}
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

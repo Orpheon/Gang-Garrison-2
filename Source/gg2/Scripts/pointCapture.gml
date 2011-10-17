@@ -23,6 +23,12 @@ with(Character) {
             soundPlayed = true;
         }
     }
+    
+    if player.object_index == BotPlayer
+    {
+        player.target = -1
+        ds_list_clear(player.directionList)
+    }
 }
 
 var capperList;

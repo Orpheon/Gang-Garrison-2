@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="ScoutFight" type="RESOURCE"/>
+  <resource name="PyroFight" type="RESOURCE"/>
+  <resource name="SoldierFight" type="RESOURCE"/>
+  <resource name="HeavyFight" type="RESOURCE"/>
+  <resource name="EngineerFight" type="RESOURCE"/>
+  <resource name="SniperFight" type="RESOURCE"/>
+</resources>

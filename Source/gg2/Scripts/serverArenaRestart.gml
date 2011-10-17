@@ -69,5 +69,11 @@
         alarm[5] = 1;
     }
     
+    with BotPlayer {
+        canSpawn = 1;
+        if object != -1 with object instance_destroy();
+        alarm[5] = 1;
+    }
+    
     sendEventArenaRestart();
     doEventArenaRestart();

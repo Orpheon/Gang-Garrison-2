@@ -18,8 +18,14 @@
         sendEventScoreIntel(player);
         doEventScoreIntel(player);
         GameServer.syncTimer = 1;
+
+        if player.object_index == BotPlayer
+        {
+            with player BotInit()
+        }
     }
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>

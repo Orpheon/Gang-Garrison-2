@@ -13,6 +13,7 @@ for(i=0; i < blueMVPs; i+=1) {
 }
 endCount = 1;
 with Player if team != ArenaHUD.winners humiliated = 1;
+with BotPlayer if team != ArenaHUD.winners humiliated = 1;
 with Sentry if team != ArenaHUD.winners event_user(1);
 
 if global.myself.team == ArenaHUD.winners 

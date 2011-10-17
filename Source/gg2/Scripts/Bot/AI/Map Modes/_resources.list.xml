@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="BotCTF" type="RESOURCE"/>
+  <resource name="BotCP" type="RESOURCE"/>
+  <resource name="BotDefault" type="RESOURCE"/>
+</resources>

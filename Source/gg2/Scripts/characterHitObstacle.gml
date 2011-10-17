@@ -2,6 +2,7 @@
 // this handles movement, climbing stairs, stopping at walls, etc.
 // Should be run in the collision event.
 
+
 {
     var oldx, oldy, oldhspeed, oldvspeed, distleft, hleft, vleft;
     oldx=x;

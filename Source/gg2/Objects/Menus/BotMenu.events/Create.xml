@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="CREATE" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">virtualitem = -1;
+xbegin = 40;
+ybegin = 200;
+spacing = 30;
+width = 300; 
+items = 10;
+valueoffset = 200;
+editing = -1;
+canClick = false;
+alarm[0] = 15;
+    
+item[0] = "Number of Bots:";
+item[1] = "Bot Mode:";
+item[2] = "Learning: ";
+item[3] = "Scout:";
+item[4] = "Pyro:";
+item[5] = "Soldier:";
+item[6] = "Heavy:";
+item[7] = "Engineer:";
+item[8] = "Sniper:";
+item[9] = "Back";
+    
+value[0] = global.botNumber
+
+if global.botMode == 0
+{
+    value[1] = "Mixed VS Mixed"
+}
+else if global.botMode == 1
+{
+    value[1] = "Bots VS Humans; Fixed"
+}
+else
+{
+    value[1] = "Bots VS Humans; Dynamic"
+}
+
+if global.botLearningMode
+{
+    value[2] = "On"
+}
+else
+{
+    value[2] = "Off"
+}
+
+if global.botClasses[CLASS_SCOUT]
+{
+    value[3] = "Enabled"
+}
+else
+{
+    value[3] = "Disabled"
+}
+
+if global.botClasses[CLASS_PYRO]
+{
+    value[4] = "Enabled"
+}
+else
+{
+    value[4] = "Disabled"
+}
+
+if global.botClasses[CLASS_SOLDIER]
+{
+    value[5] = "Enabled"
+}
+else
+{
+    value[5] = "Disabled"
+}
+
+if global.botClasses[CLASS_HEAVY]
+{
+    value[6] = "Enabled"
+}
+else
+{
+    value[6] = "Disabled"
+}
+
+if global.botClasses[CLASS_ENGINEER]
+{
+    value[7] = "Enabled"
+}
+else
+{
+    value[7] = "Disabled"
+}
+
+if global.botClasses[CLASS_SNIPER]
+{
+    value[8] = "Enabled"
+}
+else
+{
+    value[8] = "Disabled"
+}
+
+value[9] = ""
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

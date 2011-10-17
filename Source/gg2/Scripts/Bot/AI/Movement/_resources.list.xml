@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="BotAvoidObstacle" type="RESOURCE"/>
+  <resource name="FindNodePath" type="RESOURCE"/>
+  <resource name="FindNearestNode" type="RESOURCE"/>
+  <resource name="getNodeList" type="RESOURCE"/>
+</resources>

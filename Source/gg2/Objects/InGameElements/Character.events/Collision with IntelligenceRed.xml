@@ -19,6 +19,15 @@ if(global.isHost) {
         sendEventGrabIntel(player);
         doEventGrabIntel(player);
     }
+    
+    with BotPlayer
+    {
+        if team == TEAM_BLUE and target == IntelligenceRed
+        {
+            target = -1
+            ds_list_clear(directionList)
+        }
+    }
 }
 </argument>
       </arguments>

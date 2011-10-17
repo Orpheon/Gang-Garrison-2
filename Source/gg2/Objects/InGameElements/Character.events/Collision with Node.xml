@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="COLLISION" with="Node">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if lastNode != -1 and global.botLearningMode
+{
+    if ds_list_find_index(lastNode.connections, other.id) &gt;= 0
+    {
+        if distanceTraveled &lt; ds_list_find_value(lastNode.distance, ds_list_find_index(lastNode.connections, other.id))
+        {
+            // The distance between them is shorter than the bots think
+            // Correct the fault
+            ds_list_replace(lastNode.distance, ds_list_find_index(lastNode.connections, other.id), distanceTraveled)
+            global.changedNodeMap = 1
+        }
+    }
+}
+
+lastNode = other.id
+distanceTraveled = 0
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

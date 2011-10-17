@@ -21,6 +21,13 @@
             if (lastDamageDealer.object.healer)
                 assistant = lastDamageDealer.object.healer;
                 
+    if player.object_index == BotPlayer
+    {
+        with player
+        {
+            BotInit()// Reset everything after death
+        }
+    }
     sendEventPlayerDeath(player, lastDamageDealer, assistant, lastDamageSource);
     doEventPlayerDeath(player, lastDamageDealer, assistant, lastDamageSource);
     with(GameServer) {
@@ -93,6 +100,12 @@ onCabinet = place_meeting(x, y, HealingCabinet);
 // Last x/y position for death cam if player is dead
 player.lastKnownx=x;
 player.lastKnowny=y;
+
+// Record the distance since the last node.
+if lastNode != -1
+{
+    distanceTraveled += abs(hspeed)
+}
 </argument>
       </arguments>
     </action>

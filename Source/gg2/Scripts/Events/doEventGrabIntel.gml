@@ -25,3 +25,15 @@ if(argument0.object != -1) {
     argument0.object.intel = true;
     argument0.object.animationOffset = CHARACTER_ANIMATION_INTEL;
 }
+
+var player;
+player = argument0
+
+with BotPlayer
+{
+    if team == player.team and task != 'hunt'
+    {
+        target = player.object
+        ds_list_clear(directionList)
+    }
+}

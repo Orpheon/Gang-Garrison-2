@@ -60,6 +60,15 @@
     if(variable_local_exists("jumpFlameParticleType")) {
             part_type_destroy(jumpFlameParticleType);
     }
+    
+    with BotPlayer
+    {
+        if target == other.id
+        {
+            target = -1
+            ds_list_clear(directionList)
+        }
+    }
 }
 </argument>
       </arguments>

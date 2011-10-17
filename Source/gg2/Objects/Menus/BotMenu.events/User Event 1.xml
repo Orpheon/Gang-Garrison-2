@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="OTHER" id="11">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">global.botMode += 1
+if global.botMode &gt;= 3
+{
+    global.botMode = 0
+}
+
+if global.botMode == 0
+{
+    value[1] = "Mixed VS Mixed"
+}
+else if global.botMode == 1
+{
+    value[1] = "Bots VS Humans; Fixed"
+}
+else
+{
+    value[1] = "Bots VS Humans; Dynamic"
+}
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

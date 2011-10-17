@@ -112,6 +112,13 @@ while(commandLimitRemaining > 0) {
                 else if(team == TEAM_BLUE)
                     redSuperiority -= 1;
             }
+            with(BotPlayer)
+            {
+                if(team == TEAM_RED)
+                    redSuperiority += 1;
+                else if(team == TEAM_BLUE)
+                    redSuperiority -= 1;
+            }
             if(redSuperiority > 0)
                 balance = TEAM_RED;
             else if(redSuperiority < 0)
@@ -147,6 +154,19 @@ while(commandLimitRemaining > 0) {
                     }
                     else if(player.alarm[5]<=0)
                         player.alarm[5] = 1;
+                        
+                    if player.team != newTeam and global.botMode == 2
+                    {
+                        if newTeam == TEAM_SPECTATOR
+                        {
+                            BotPlayer.destroy = 1
+                        }
+                        else
+                        {
+                            CreateBot()
+                        }
+                    }
+
                     player.team = newTeam;
                     ServerPlayerChangeteam(playerId, player.team, global.sendBuffer);
                 }

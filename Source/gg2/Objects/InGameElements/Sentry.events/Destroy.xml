@@ -37,6 +37,15 @@ sentrygibs=instance_create(x,y,SentryGibs);
 sentrygibs.image_speed=0;
 if team == TEAM_RED sentrygibs.image_index=0;
 else sentrygibs.image_index=1;
+
+with BotPlayer
+{
+    if target == other.id
+    {
+        target = -1
+        ds_list_clear(directionList)
+    }
+}
 </argument>
       </arguments>
     </action>

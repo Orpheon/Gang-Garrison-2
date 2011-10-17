@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="BotMain" type="RESOURCE"/>
+  <resource name="Movement" type="GROUP"/>
+  <resource name="Map Modes" type="GROUP"/>
+  <resource name="Aiming" type="GROUP"/>
+  <resource name="Fighting" type="GROUP"/>
+</resources>

@@ -57,6 +57,24 @@
     if(HAXXY_PUBLIC_KEY==md5(global.haxxyKey))
         global.myself.isHaxxyWinner = true;
     playerControl = instance_create(0,0,PlayerControl);
+    
+    // Creation of the bots
+    
+    if global.botMode != 0
+    {
+        global.botChosenTeam = choose(TEAM_RED, TEAM_BLUE)
+    }
+    
+    if global.botMode = 2
+    {
+        CreateBot()// Just one
+    }
+    
+    while instance_number(BotPlayer) < global.botNumber and global.botMode != 2
+    {
+        CreateBot()
+    }
+    
         
     global.currentMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
     if(file_exists("Maps/" + global.currentMap + ".png")) { // if this is an external map

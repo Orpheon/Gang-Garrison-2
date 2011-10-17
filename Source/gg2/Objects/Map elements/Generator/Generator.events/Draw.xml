@@ -22,6 +22,15 @@ if distance_to_point(xviewoffset+xviewsize/2,yviewoffset+yviewsize/2) &gt; 800 e
 
 draw_sprite_ext(sprite_index,image_index,x,y,1,1,0,c_white,1);
 //draw_text_ext_color(x,y-50,hp,0,0,c_black,c_black,c_black,c_black,1);
+
+with BotPlayer
+{
+    if target == other.id
+    {
+        target = -1
+        ds_list_clear(directionList)
+    }
+}
 </argument>
       </arguments>
     </action>

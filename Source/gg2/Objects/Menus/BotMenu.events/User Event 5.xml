@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="OTHER" id="15">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">global.botClasses[CLASS_SOLDIER] = !global.botClasses[CLASS_SOLDIER]
+
+switch global.botClasses[CLASS_SOLDIER]
+{
+    case 0:
+        value[5] = "Disabled"
+        break
+        
+    case 1:
+        value[5] = "Enabled"
+        break
+}
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

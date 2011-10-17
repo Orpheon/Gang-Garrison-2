@@ -25,6 +25,9 @@
     
     global.CustomMapCollisionSprite = -1;
     
+    global.botNameCounter = 1
+    global.changedNodeMap = 0
+    
     window_set_region_scale(-1, false);
     
     ini_open("gg2.ini");
@@ -63,6 +66,19 @@
     global.autobalance = ini_read_real("Server", "AutoBalance",1);
     global.Server_RespawntimeSec = ini_read_real("Server", "Respawn Time", 5);
     global.haxxyKey = ini_read_string("Haxxy", "SecretHaxxyKey", "");
+    // Bots
+    global.botNumber = ini_read_real("Bots", "Number (in total)", 0)
+    global.botMode = ini_read_real("Bots", "Fight mode", 0)
+    global.botNamePrefix = ini_read_string("Bots", "Bot Name Prefix", "")
+    global.botLearningMode = ini_read_real("Bots", "Bot learning", 0)
+    global.botClasses[CLASS_SCOUT] = ini_read_real("Bots", "Runners enabled", 1)
+    global.botClasses[CLASS_PYRO] = ini_read_real("Bots", "Firebugs enabled", 1)
+    global.botClasses[CLASS_SOLDIER] = ini_read_real("Bots", "Rocketmen enabled", 1)
+    global.botClasses[CLASS_HEAVY] = ini_read_real("Bots", "Overweights enabled", 1)
+    global.botClasses[CLASS_ENGINEER] = ini_read_real("Bots", "Constructors enabled", 1)
+    global.botClasses[CLASS_SNIPER] = ini_read_real("Bots", "Riflemen enabled", 1)
+
+    
     global.currentMapArea=1;
     global.totalMapAreas=1;
     global.setupTimer=1800;
@@ -94,6 +110,18 @@
     ini_write_real("Server", "Time Limit", global.timeLimitMins);
     ini_write_string("Server", "Password", global.serverPassword);
     ini_write_string("Haxxy", "SecretHaxxyKey", global.haxxyKey);
+
+    ini_write_real("Bots", "Number (in total)", global.botNumber)
+    ini_write_real("Bots", "Fight mode", global.botMode)
+    ini_write_real("Bots", "Bot Learning", global.botLearningMode)
+    ini_write_string("Bots", "Bot Name Prefix", global.botNamePrefix)
+    ini_write_real("Bots", "Runners enabled", global.botClasses[CLASS_SCOUT])
+    ini_write_real("Bots", "Firebugs enabled", global.botClasses[CLASS_PYRO])
+    ini_write_real("Bots", "Rocketmen enabled", global.botClasses[CLASS_SOLDIER])
+    ini_write_real("Bots", "Overweights enabled", global.botClasses[CLASS_HEAVY])
+    ini_write_real("Bots", "Constructors enabled", global.botClasses[CLASS_ENGINEER])
+    ini_write_real("Bots", "Riflemen enabled", global.botClasses[CLASS_SNIPER])
+    
     
     //screw the 0 index we will start with 1
     //map_truefort 

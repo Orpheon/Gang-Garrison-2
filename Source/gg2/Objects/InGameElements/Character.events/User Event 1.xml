@@ -17,7 +17,8 @@
     pressedKeys |= keyState &amp; ~lastKeyState;
     releasedKeys |= ~keyState &amp; lastKeyState;
     lastKeyState = keyState;
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>
