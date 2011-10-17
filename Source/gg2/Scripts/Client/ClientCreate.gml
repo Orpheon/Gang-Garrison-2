@@ -6,18 +6,17 @@
         exit;
     }
     nocreate=false;
+    usePreviousPwd = false;
     
     global.players = ds_list_create();
     global.deserializeBuffer = buffer_create();
     global.isHost = false;
-    global.randomSeed=0;
 
     global.myself = -1;
-    playerControl = -1;
-    lastSentKeystate = 0;
-    
-    global.clientFrame = 0;
-    global.serverFrame = 0;
+    gotServerHello = false;  
+    returnRoom = Menu;
+    downloadingMap = false;
+    downloadMapBuffer = -1;
     
     global.serverSocket = tcp_connect(global.serverIP, global.serverPort);
     
@@ -42,5 +41,7 @@
     write_buffer(global.serverSocket, global.sendBuffer);
     if(global.haxxyKey != "")
         write_byte(global.serverSocket, I_AM_A_HAXXY_WINNER);
+    write_ubyte(global.serverSocket, HELLO);
+    write_buffer(global.serverSocket, global.protocolUuid);
     socket_send(global.serverSocket);
 }

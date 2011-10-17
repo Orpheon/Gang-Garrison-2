@@ -89,8 +89,9 @@ while(commandLimitRemaining > 0) {
                                 doEventPlayerDeath(player, lastDamageDealer, assistant, FINISHED_OFF);
                             }
                         }
-                        else
-                            instance_destroy();
+                        else 
+                        instance_destroy(); 
+                        
                     }
                 }
                 else if(player.alarm[5]<=0)
@@ -241,45 +242,16 @@ while(commandLimitRemaining > 0) {
             }
             break;
              
-        case SCOPE_IN:
-             if player.object != -1 {
+        case TOGGLE_ZOOM:
+            if player.object != -1 {
                 if player.class == CLASS_SNIPER {
-                   write_ubyte(global.sendBuffer, SCOPE_IN);
-                   write_ubyte(global.sendBuffer, playerId);
-                   with player.object {
-                        zoomed = true;
-                        runPower = 0.6;
-                        jumpStrength = 6;
-                   }
+                    write_ubyte(global.sendBuffer, TOGGLE_ZOOM);
+                    write_ubyte(global.sendBuffer, playerId);
+                    toggleZoom(player.object);
                 }
-             }
-             break;
-                
-        case SCOPE_OUT:
-             if player.object != -1 {
-                if player.class == CLASS_SNIPER {
-                   write_ubyte(global.sendBuffer, SCOPE_OUT);
-                   write_ubyte(global.sendBuffer, playerId);
-                   with player.object {
-                        zoomed = false;
-                        runPower = 0.9;
-                        jumpStrength = 8;
-                   }
-                }
-             }
-             break;
-                                                      
-        case PASSWORD_SEND:
-            password = read_string(socket, socket_receivebuffer_size(socket));
-            if(global.serverPassword != password) {
-                write_ubyte(player.socket, PASSWORD_WRONG);
-                socket_destroy(player.socket);
-                player.socket = -1;
-            } else {
-                player.authorized = true;
             }
             break;
-            
+                                                      
         case PLAYER_CHANGENAME:
             var nameLength;
             nameLength = socket_receivebuffer_size(socket);
@@ -312,7 +284,8 @@ while(commandLimitRemaining > 0) {
             break;
             
         case INPUTSTATE:
-            if(player.object != -1 && player.authorized == true) {
+            if(player.object != -1)
+            {
                 with(player.object)
                 {
                     keyState = read_ubyte(socket);
@@ -320,11 +293,30 @@ while(commandLimitRemaining > 0) {
                     aimDirection = netAimDirection*360/65536;
                     event_user(1);
                 }
-            } else if(player.authorized == false) { //disconnect them
+            }
+            break;
+        
+        case I_AM_A_HAXXY_WINNER:
+            write_ubyte(socket, HAXXY_CHALLENGE_CODE);
+            player.challenge = "";
+            repeat(16)
+                player.challenge += chr(irandom_range(1,255));
+            write_string(socket, player.challenge);
+            break;
+            
+        case HAXXY_CHALLENGE_RESPONSE:
+            var answer, i;
+            answer = "";
+            for(i=1;i<=16;i+=1)
+                answer += chr(read_ubyte(socket) ^ ord(string_char_at(player.challenge, i)));
+            if(HAXXY_PUBLIC_KEY==md5(answer)) {
+                player.isHaxxyWinner = true;
+            } else {
                 socket_destroy_abortive(player.socket);
                 player.socket = -1;
             }
             break;
+<<<<<<< HEAD
         
         case I_AM_A_HAXXY_WINNER:
             write_ubyte(socket, O_RLY);
@@ -346,6 +338,8 @@ while(commandLimitRemaining > 0) {
                 player.socket = -1;
             }
             break;
+=======
+>>>>>>> master
         }
         break;
     } 

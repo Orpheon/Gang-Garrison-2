@@ -6,7 +6,7 @@
     var customMapRotationFile;
 
     //import wav files for music
-    global.MenuMusic=sound_add(choose("Music/menumusic1.wav","Music/menumusic2.wav","Music/menumusic3.wav","Music/menumusic4.wav"), 1, true);
+    global.MenuMusic=sound_add(choose("Music/menumusic1.wav","Music/menumusic2.wav","Music/menumusic3.wav","Music/menumusic4.wav","Music/menumusic5.wav","Music/menumusic6.wav"), 1, true);
     global.IngameMusic=sound_add("Music/ingamemusic.wav", 1, true);
     global.FaucetMusic=sound_add("Music/faucetmusic.wav", 1, true);
     if(global.MenuMusic != -1)
@@ -79,6 +79,7 @@
     global.botClasses[CLASS_SNIPER] = ini_read_real("Bots", "Riflemen enabled", 1)
 
     
+    global.mapdownloadLimitBps = ini_read_real("Server", "Total bandwidth limit for map downloads in bytes per second", 50000);
     global.currentMapArea=1;
     global.totalMapAreas=1;
     global.setupTimer=1800;
@@ -107,6 +108,7 @@
     ini_write_real("Server", "CapLimit", global.caplimit);
     ini_write_real("Server", "AutoBalance", global.autobalance);
     ini_write_real("Server", "Respawn Time", global.Server_RespawntimeSec);
+    ini_write_real("Server", "Total bandwidth limit for map downloads in bytes per second", global.mapdownloadLimitBps);
     ini_write_real("Server", "Time Limit", global.timeLimitMins);
     ini_write_string("Server", "Password", global.serverPassword);
     ini_write_string("Haxxy", "SecretHaxxyKey", global.haxxyKey);
@@ -152,6 +154,10 @@
     maps[13] = ini_read_real("Maps", "koth_corinth", 13);
     //koth_harvest
     maps[14] = ini_read_real("Maps", "koth_harvest", 14);
+    //dkoth_atalia
+    maps[15] = ini_read_real("Maps", "dkoth_atalia", 15);
+    //dkoth_sixties
+    maps[16] = ini_read_real("Maps", "dkoth_sixties", 16);
     
     //Server respawn time calculator. Converts each second to a frame. (read: multiply by 30 :hehe:)
     if (global.Server_RespawntimeSec == 0)
@@ -180,6 +186,8 @@
     ini_write_real("Maps", "koth_valley", maps[12]);
     ini_write_real("Maps", "koth_corinth", maps[13]);
     ini_write_real("Maps", "koth_harvest", maps[14]);
+    ini_write_real("Maps", "dkoth_atalia", maps[15]);
+    ini_write_real("Maps", "dkoth_sixties", maps[16]);
 
     ini_close();
     
@@ -231,7 +239,7 @@ global.launchMap = "";
         global.serverPort = real(portRaw);
         global.serverIP = IPRaw;
         global.isHost = false;
-        global.client = instance_create(0,0,Client);
+        instance_create(0,0,Client);
     }   
     
     global.customMapdesginated = 0;    
@@ -265,7 +273,7 @@ global.launchMap = "";
         //Set up the map rotation stuff
         var i, sort_list;
         sort_list = ds_list_create();
-        for(i=1; i <= 14; i += 1) {
+        for(i=1; i <= 16; i += 1) {
             if(maps[i] != 0) ds_list_add(sort_list, ((100*maps[i])+i));
         }
         ds_list_sort(sort_list, 1);
@@ -315,6 +323,12 @@ global.launchMap = "";
                 case 14:
                     ds_list_add(global.map_rotation, "koth_harvest");
                 break;
+                case 15:
+                    ds_list_add(global.map_rotation, "dkoth_atalia");
+                break;
+                case 16:
+                    ds_list_add(global.map_rotation, "dkoth_sixties");
+                break;
                     
             }
         }
@@ -329,6 +343,7 @@ global.launchMap = "";
     if(!directory_exists(working_directory + "\Maps")) directory_create(working_directory + "\Maps");
     
     instance_create(0, 0, AudioControl);
+    instance_create(0, 0, SSControl);
     
     if(global.dedicatedMode == 1) {
         AudioControlToggleMute();
@@ -343,8 +358,21 @@ global.launchMap = "";
     message_input_font("Century",9,c_white,0);
     
     // parse the protocol version UUID for later use
-    parseProtocolUuid();
+    global.protocolUuid = buffer_create();
+    parseUuid(PROTOCOL_UUID, global.protocolUuid);
     
+    global.gg2lobbyId = buffer_create();
+    parseUuid(GG2_LOBBY_UUID, global.gg2lobbyId);
+    
+    global.lobbyRegProtocolId = buffer_create();
+    parseUuid(LOBBY_REG_PROTOCOL, global.lobbyRegProtocolId);
+    
+    {
+        var i;
+        global.serverId = buffer_create();
+        for(i=0;i<16;i+=1)
+            write_ubyte(global.serverId, irandom(255));
+    }
     //Key Mapping
     ini_open("controls.gg2");
     global.jump = ini_read_real("Controls", "jump", ord("W"));

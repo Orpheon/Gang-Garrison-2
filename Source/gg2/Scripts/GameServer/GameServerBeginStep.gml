@@ -8,7 +8,13 @@ frame += 1;
 
 buffer_clear(global.sendBuffer);
 
-acceptJoiningPlayer();
+global.runningMapDownloads = 0;
+global.mapBytesRemainingInStep = global.mapdownloadLimitBps/room_speed;
+with(JoiningPlayer)
+    if(state==STATE_CLIENT_DOWNLOADING)
+        global.runningMapDownloads += 1;
+
+acceptJoiningPlayer();        
 with(JoiningPlayer)
     serviceJoiningPlayer();
 
@@ -54,20 +60,7 @@ for(i=0; i<ds_list_size(global.players); i+=1)
         i-=1;
     }
     else
-    {
-        if(player.authorized == false)
-        {
-            player.passwordCount += 1;
-            if(player.passwordCount == 30*30)
-            {
-                write_ubyte(player.socket, KICK);
-                write_ubyte(player.socket, KICK_PASSWORDCOUNT);
-                socket_destroy(player.socket);
-                player.socket = -1;
-            }
-        }
-        processClientCommands(player, i);        
-    }
+        processClientCommands(player, i);
 }
 
 if(syncTimer == 1 || ((frame mod 3600)==0) || global.setupTimer == 180)
@@ -99,7 +92,7 @@ if(global.winners != -1 and !global.mapchanging)
             global.currentMapIndex = 0;
         global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
     }
-    global.mapchanging = 1;
+    global.mapchanging = true;
     impendingMapChange = 300; // in 300 frames (ten seconds), we'll do a map change
     
     write_ubyte(global.sendBuffer, MAP_END);
@@ -123,17 +116,15 @@ if(impendingMapChange == 0)
         global.changedNodeMap = 0
     }
 
-    global.mapchanging = 0;
+    global.mapchanging = false;
     global.currentMap = global.nextMap;
     if(file_exists("Maps/" + global.currentMap + ".png"))
     { // if this is an external map, get the md5 and url for the map
-        global.currentMapURL = CustomMapGetMapURL(global.currentMap);
         global.currentMapMD5 = CustomMapGetMapMD5(global.currentMap);
         room_goto_fix(CustomMapRoom);
     }
     else
     { // internal map, so at the very least, MD5 must be blank
-        global.currentMapURL = "";
         global.currentMapMD5 = "";
         if(gotoInternalMapRoom(global.currentMap) != 0)
         {
@@ -141,7 +132,7 @@ if(impendingMapChange == 0)
             game_end();
         }
     }
-    ServerChangeMap(global.currentMap, global.currentMapURL, global.currentMapMD5, global.sendBuffer);
+    ServerChangeMap(global.currentMap, global.currentMapMD5, global.sendBuffer);
     impendingMapChange = -1;
     
     with(Player)

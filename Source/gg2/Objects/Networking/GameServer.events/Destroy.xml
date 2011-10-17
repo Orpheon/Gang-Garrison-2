@@ -21,6 +21,19 @@ if global.changedNodeMap
 {
     writeNodesToFile()
 }
+with(Player)
+    instance_destroy();
+
+with (BotPlayer)
+	instance_destroy();
+
+with(JoiningPlayer)
+    instance_destroy();
+    
+with(PlayerControl)
+    instance_destroy();
+
+room_goto_fix(Menu);
 </argument>
       </arguments>
     </action>

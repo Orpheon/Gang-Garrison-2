@@ -11,8 +11,6 @@
     
     serverbalance=0;
     balancecounter=0;
-    randomize();
-    global.randomSeed=random_get_seed();
     frame = 0;
     updatePlayer = 1;
     impendingMapChange = -1; // timer variable used by GameServerBeginStep, when it hits 0, the server executes a map change to global.nextMap
@@ -75,15 +73,16 @@
         CreateBot()
     }
     
+    if(HAXXY_PUBLIC_KEY==md5(global.haxxyKey))
+        global.myself.isHaxxyWinner = true;
+    instance_create(0,0,PlayerControl);
         
     global.currentMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
     if(file_exists("Maps/" + global.currentMap + ".png")) { // if this is an external map
         // get the md5 and url for the map
-        global.currentMapURL = CustomMapGetMapURL(global.currentMap);
         global.currentMapMD5 = CustomMapGetMapMD5(global.currentMap);
         room_goto_fix(CustomMapRoom);
     } else { // internal map, so at the very least, MD5 must be blank
-        global.currentMapURL = "";
         global.currentMapMD5 = "";
         if(gotoInternalMapRoom(global.currentMap) != 0) {
             show_message("Error:#Map " + global.currentMap + " is not in maps folder, and it is not a valid internal map.#Exiting.");
@@ -92,7 +91,7 @@
     }
     
     global.joinedServerName = global.serverName; // so no errors of unknown variable occur when you create a server
-    global.mapchanging=0; 
+    global.mapchanging = false; 
     
     GameServerDefineCommands();
 }
