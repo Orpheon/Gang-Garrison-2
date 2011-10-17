@@ -316,7 +316,6 @@ while(commandLimitRemaining > 0) {
                 player.socket = -1;
             }
             break;
-<<<<<<< HEAD
         
         case I_AM_A_HAXXY_WINNER:
             write_ubyte(socket, O_RLY);
@@ -338,8 +337,6 @@ while(commandLimitRemaining > 0) {
                 player.socket = -1;
             }
             break;
-=======
->>>>>>> master
         }
         break;
     } 
