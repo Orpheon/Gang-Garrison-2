@@ -60,6 +60,20 @@ while(commandLimitRemaining > 0) {
         case PLAYER_LEAVE:
             socket_destroy(player.socket);
             player.socket = -1;
+            
+            if global.botMode == 2
+            {
+                with BotPlayer
+                {
+                    destroy = 1
+                    break;
+                }
+            }
+            else if global.botMode == 3
+            {
+                CreateBot()
+            }
+            
             break;
             
         case PLAYER_CHANGECLASS:
@@ -305,27 +319,6 @@ while(commandLimitRemaining > 0) {
             break;
             
         case HAXXY_CHALLENGE_RESPONSE:
-            var answer, i;
-            answer = "";
-            for(i=1;i<=16;i+=1)
-                answer += chr(read_ubyte(socket) ^ ord(string_char_at(player.challenge, i)));
-            if(HAXXY_PUBLIC_KEY==md5(answer)) {
-                player.isHaxxyWinner = true;
-            } else {
-                socket_destroy_abortive(player.socket);
-                player.socket = -1;
-            }
-            break;
-        
-        case I_AM_A_HAXXY_WINNER:
-            write_ubyte(socket, O_RLY);
-            player.challenge = "";
-            repeat(16)
-                player.challenge += chr(irandom_range(1,255));
-            write_string(socket, player.challenge);
-            break;
-            
-        case YES_RLY:
             var answer, i;
             answer = "";
             for(i=1;i<=16;i+=1)

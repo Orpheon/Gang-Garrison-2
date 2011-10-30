@@ -432,9 +432,6 @@ do {
             instance_destroy();
             exit;
         
-        case O_RLY:
-            receiveCompleteMessage(global.serverSocket,16,global.tempBuffer);
-            write_ubyte(global.serverSocket, YES_RLY);
         case HAXXY_CHALLENGE_CODE:
             receiveCompleteMessage(global.serverSocket,16,global.tempBuffer);
             write_ubyte(global.serverSocket, HAXXY_CHALLENGE_RESPONSE);

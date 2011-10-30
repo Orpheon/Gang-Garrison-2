@@ -36,12 +36,12 @@ if jump == 1
     keybyte |= $80
 }
 
-if LMB == 1
+if LMB == 1 and humiliated=0
 {
     keybyte |= $10
 }
 
-if RMB == 1
+if RMB == 1 and humiliated=0
 {
     keybyte |= $08
 }

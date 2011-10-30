@@ -13,9 +13,9 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">global.botClasses[CLASS_SNIPER] = !global.botClasses[CLASS_SNIPER]
+        <argument kind="STRING">global.botClasses[CLASS_ENGINEER] = !global.botClasses[CLASS_ENGINEER]
 
-switch global.botClasses[CLASS_SNIPER]
+switch global.botClasses[CLASS_ENGINEER]
 {
     case 0:
         value[8] = "Disabled"

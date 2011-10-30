@@ -18,7 +18,7 @@ xbegin = 40;
 ybegin = 200;
 spacing = 30;
 width = 300; 
-items = 10;
+items = 11;
 valueoffset = 200;
 editing = -1;
 canClick = false;
@@ -31,23 +31,28 @@ item[3] = "Scout:";
 item[4] = "Pyro:";
 item[5] = "Soldier:";
 item[6] = "Heavy:";
-item[7] = "Engineer:";
-item[8] = "Sniper:";
-item[9] = "Back";
+item[7] = "Medic:";
+item[8] = "Engineer:";
+item[9] = "Sniper:";
+item[10] = "Back";
     
 value[0] = global.botNumber
 
 if global.botMode == 0
 {
-    value[1] = "Mixed VS Mixed"
+    value[1] = "Mixed VS Mixed; Fixed Num of Bots"
 }
 else if global.botMode == 1
 {
-    value[1] = "Bots VS Humans; Fixed"
+    value[1] = "Bots VS Humans; Fixed Num of Bots"
+}
+else if global.botMode == 2
+{
+    value[1] = "Bots VS Humans; Dynamic"
 }
 else
 {
-    value[1] = "Bots VS Humans; Dynamic"
+    value[1] = "Mixed VS Mixed; Fill Server"
 }
 
 if global.botLearningMode
@@ -95,7 +100,7 @@ else
     value[6] = "Disabled"
 }
 
-if global.botClasses[CLASS_ENGINEER]
+if global.botClasses[CLASS_MEDIC]
 {
     value[7] = "Enabled"
 }
@@ -104,7 +109,7 @@ else
     value[7] = "Disabled"
 }
 
-if global.botClasses[CLASS_SNIPER]
+if global.botClasses[CLASS_ENGINEER]
 {
     value[8] = "Enabled"
 }
@@ -113,7 +118,16 @@ else
     value[8] = "Disabled"
 }
 
-value[9] = ""
+if global.botClasses[CLASS_SNIPER]
+{
+    value[9] = "Enabled"
+}
+else
+{
+    value[9] = "Disabled"
+}
+
+value[10] = ""
 </argument>
       </arguments>
     </action>

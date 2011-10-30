@@ -52,20 +52,22 @@
     global.playerID = 0;
     global.myself = serverPlayer;
     global.myself.authorized = true;
-    if(HAXXY_PUBLIC_KEY==md5(global.haxxyKey))
-        global.myself.isHaxxyWinner = true;
-    playerControl = instance_create(0,0,PlayerControl);
-    
+
     // Creation of the bots
     
-    if global.botMode != 0
+    if global.botMode != 0 and global.botMode != 3
     {
         global.botChosenTeam = choose(TEAM_RED, TEAM_BLUE)
     }
     
-    if global.botMode = 2
+    if global.botMode == 2
     {
         CreateBot()// Just one
+    }
+    
+    if global.botMode == 3
+    {
+        global.botNumber = global.playerLimit-sign(!global.dedicatedMode)
     }
     
     while instance_number(BotPlayer) < global.botNumber and global.botMode != 2

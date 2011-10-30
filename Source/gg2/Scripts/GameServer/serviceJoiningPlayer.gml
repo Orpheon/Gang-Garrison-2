@@ -124,7 +124,7 @@ case STATE_EXPECT_NAME:
     if(global.dedicatedMode)
         noOfPlayers -= 1;
         
-    if(noOfPlayers >= global.playerLimit)
+    if(noOfPlayers >= global.playerLimit) and (global.botMode!=3 or instance_number(BotPlayer)==0)
     {
         write_ubyte(socket, SERVER_FULL);
         break;
@@ -142,6 +142,20 @@ case STATE_EXPECT_NAME:
     
     ds_list_add(global.players, player);
     ServerPlayerJoin(player.name, global.sendBuffer);
+    
+    if global.botMode == 2
+    {
+        CreateBot()
+    }
+    else if global.botMode == 3
+    {
+        with BotPlayer// Destroy one bot. Just one.
+        {
+            destroy = 1
+            break;
+        }
+    }
+    
     break;
 }
 

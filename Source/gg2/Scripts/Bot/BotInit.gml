@@ -4,6 +4,9 @@ target = -1
 
 aimModifier = 0
 
+isHealing = 0
+patient = -1
+
 if variable_local_exists("directionList")
 {
     ds_list_clear(directionList)

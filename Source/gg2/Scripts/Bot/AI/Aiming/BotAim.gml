@@ -89,6 +89,10 @@ else
     {
         predictedEnemy_y -= 0.15*power(time, 2)
     }
+    else if class == CLASS_MEDIC// So do needles
+    {
+        predictedEnemy_y -= 0.2*power(time, 2)
+    }
 }
 
 aimDirection = point_direction(object.x, object.y, predictedEnemy_x, predictedEnemy_y)

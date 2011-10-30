@@ -75,9 +75,10 @@
     global.botClasses[CLASS_PYRO] = ini_read_real("Bots", "Firebugs enabled", 1)
     global.botClasses[CLASS_SOLDIER] = ini_read_real("Bots", "Rocketmen enabled", 1)
     global.botClasses[CLASS_HEAVY] = ini_read_real("Bots", "Overweights enabled", 1)
+    global.botClasses[CLASS_MEDIC] = ini_read_real("Bots", "Healer enabled", 1)
     global.botClasses[CLASS_ENGINEER] = ini_read_real("Bots", "Constructors enabled", 1)
-    global.botClasses[CLASS_SNIPER] = ini_read_real("Bots", "Riflemen enabled", 1)
-
+    global.botClasses[CLASS_SNIPER] = ini_read_real("Bots", "Riflemen enabled", 1)   
+ 
     
     global.mapdownloadLimitBps = ini_read_real("Server", "Total bandwidth limit for map downloads in bytes per second", 50000);
     global.currentMapArea=1;
@@ -121,6 +122,7 @@
     ini_write_real("Bots", "Firebugs enabled", global.botClasses[CLASS_PYRO])
     ini_write_real("Bots", "Rocketmen enabled", global.botClasses[CLASS_SOLDIER])
     ini_write_real("Bots", "Overweights enabled", global.botClasses[CLASS_HEAVY])
+    ini_write_real("Bots", "Healers enabled", global.botClasses[CLASS_MEDIC])
     ini_write_real("Bots", "Constructors enabled", global.botClasses[CLASS_ENGINEER])
     ini_write_real("Bots", "Riflemen enabled", global.botClasses[CLASS_SNIPER])
     

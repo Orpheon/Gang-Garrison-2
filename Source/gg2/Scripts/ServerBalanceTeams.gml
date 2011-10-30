@@ -1,4 +1,4 @@
-if global.botMode != 0 and instance_number(BotPlayer) > 0 exit
+if global.botMode != 0 and global.botMode != 4 and instance_number(BotPlayer) > 0 exit
 
 //auto balance 
 if global.autobalance == 1 && !instance_exists(ArenaHUD) {

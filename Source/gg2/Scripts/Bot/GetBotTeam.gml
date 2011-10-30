@@ -1,6 +1,6 @@
 // argument0=the bot object
 
-if global.botMode == 0// Mixed vs Mixed
+if global.botMode == 0 or global.botMode == 3// Mixed vs Mixed
 {
     if calculateTeamBalance() == TEAM_RED
     {

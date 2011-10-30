@@ -23,6 +23,7 @@ ini_write_real("Bots", "Runners enabled", global.botClasses[CLASS_SCOUT])
 ini_write_real("Bots", "Firebugs enabled", global.botClasses[CLASS_PYRO])
 ini_write_real("Bots", "Rocketmen enabled", global.botClasses[CLASS_SOLDIER])
 ini_write_real("Bots", "Overweights enabled", global.botClasses[CLASS_HEAVY])
+ini_write_real("Bots", "Healers enabled", global.botClasses[CLASS_MEDIC])
 ini_write_real("Bots", "Constructors enabled", global.botClasses[CLASS_ENGINEER])
 ini_write_real("Bots", "Riflemen enabled", global.botClasses[CLASS_SNIPER])
 

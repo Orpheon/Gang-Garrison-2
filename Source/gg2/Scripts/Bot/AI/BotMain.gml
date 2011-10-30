@@ -70,7 +70,6 @@ while target == -1
 }
 
 // Aiming and Fighting
-
 if nearestEnemy != -1
 {
     BotAim()
@@ -147,6 +146,10 @@ else if wasFighting
     wasFighting = 0
 }
 
+if class == CLASS_MEDIC
+{
+    MedicAI()
+}
 
 // Movement
 

@@ -13,6 +13,15 @@ killer = argument1;
 assistant = argument2;
 damageSource = argument3;
 
+// Bots should stop considering him as a valable target.
+with BotPlayer
+{
+    if patient == victim.object
+    {
+        patient = -1
+    }
+}
+
 if(!(killer and instance_exists(killer))) {
     killer = noone;
 }

@@ -14,22 +14,26 @@
       <appliesTo>.self</appliesTo>
       <arguments>
         <argument kind="STRING">global.botMode += 1
-if global.botMode &gt;= 3
+if global.botMode &gt;= 4
 {
     global.botMode = 0
 }
 
 if global.botMode == 0
 {
-    value[1] = "Mixed VS Mixed"
+    value[1] = "Mixed VS Mixed; Fixed Num of Bots"
 }
 else if global.botMode == 1
 {
-    value[1] = "Bots VS Humans; Fixed"
+    value[1] = "Bots VS Humans; Fixed Num of Bots"
+}
+else if global.botMode == 2
+{
+    value[1] = "Bots VS Humans; Dynamic"
 }
 else
 {
-    value[1] = "Bots VS Humans; Dynamic"
+    value[1] = "Mixed VS Mixed; Fill Server"
 }
 </argument>
       </arguments>

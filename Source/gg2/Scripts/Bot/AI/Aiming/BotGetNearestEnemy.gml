@@ -1,7 +1,7 @@
 // Finds the nearest enemy
 
 
-var targetQueue, testDist, playercheck, targetAngle, obscured, rotateoffset, nearstEnemy;
+var targetQueue, testDist, playercheck, nearstEnemy, closestEnemy;
 
 nearestEnemy = -1;
 targetQueue = ds_priority_create();
@@ -30,6 +30,7 @@ with(Generator) {
 }
 
 nearestEnemy = -1
+closestEnemy = ds_priority_find_min(targetQueue)
 
 while(nearestEnemy == -1 && !ds_priority_empty(targetQueue)) {
     playercheck = ds_priority_delete_min(targetQueue);
@@ -53,42 +54,6 @@ if nearestEnemy != -1
     return nearestEnemy
 }
 
-
 target_in_sight = 0
 
-targetQueue = ds_priority_create();// no target in sight, just take the nearest one. Just do the entire thing again.
-with(Character) {
-    testDist = distance_to_object(other.object);
-    if(cloakAlpha!=0.5){
-        ds_priority_add(targetQueue, id, testDist);
-    }
-}
-
-with(Sentry) {
-    testDist = distance_to_object(other.object);
-    if(testDist) {
-        ds_priority_add(targetQueue, id, testDist);
-    }
-}
-
-with(Generator) {
-    testDist = distance_to_object(other.object);
-    if(testDist) {
-        ds_priority_add(targetQueue, id, testDist);
-    }
-}
-
-if nearestEnemy == -1 
-{
-    while(nearestEnemy == -1 && !ds_priority_empty(targetQueue)) {
-        playercheck = ds_priority_delete_min(targetQueue);
-        if (playercheck.team != team)
-        {
-            nearestEnemy = playercheck
-        }
-    }
-}
-
-ds_priority_destroy(targetQueue);
-
-return nearestEnemy
+return closestEnemy

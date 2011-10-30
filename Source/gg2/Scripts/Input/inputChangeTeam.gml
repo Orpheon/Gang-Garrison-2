@@ -4,7 +4,6 @@
 if instance_exists(ArenaHUD) {
     if ArenaHUD.roundStart == 0 && ArenaHUD.endCount == 0 && global.myself.object != -1 exit;
 }
-
 if (!global.mapchanging)
 {
     ClassSelectController.done = true;
