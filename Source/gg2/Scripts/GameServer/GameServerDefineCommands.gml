@@ -21,3 +21,6 @@ commandBytes[PLAYER_CHANGENAME] = commandBytesPrefixLength1;
 commandBytes[INPUTSTATE] = 3;
 commandBytes[I_AM_A_HAXXY_WINNER] = 0;
 commandBytes[HAXXY_CHALLENGE_RESPONSE] = 16;
+commandBytes[CHAT_JOIN] = 0;
+commandBytes[CHAT_MESSAGE_PRIVATE] = commandBytesPrefixLength1;
+commandBytes[CHAT_MESSAGE_PUBLIC] = commandBytesPrefixLength1;// Don't intend to really use this, but you never know...

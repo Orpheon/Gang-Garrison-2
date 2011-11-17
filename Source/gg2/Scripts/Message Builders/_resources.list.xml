@@ -4,6 +4,8 @@
   <resource name="ClientPlayerChangeteam" type="RESOURCE"/>
   <resource name="ClientPlayerChangeclass" type="RESOURCE"/>
   <resource name="ClientInputstate" type="RESOURCE"/>
+  <resource name="ClientSendChatMessage" type="RESOURCE"/>
+  <resource name="ClientSendPublicChatMessage" type="RESOURCE"/>
   <resource name="ServerPlayerJoin" type="RESOURCE"/>
   <resource name="ServerPlayerLeave" type="RESOURCE"/>
   <resource name="ServerPlayerChangeteam" type="RESOURCE"/>

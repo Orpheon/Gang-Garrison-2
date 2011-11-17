@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="OHUinit" type="RESOURCE"/>
+  <resource name="Chat" type="GROUP"/>
+  <resource name="Console" type="GROUP"/>
+  <resource name="ClassLimits" type="GROUP"/>
+  <resource name="Replays" type="GROUP"/>
+  <resource name="findPlayer" type="RESOURCE"/>
+  <resource name="loadPlugins" type="RESOURCE"/>
+  <resource name="getColorCode" type="RESOURCE"/>
+  <resource name="getID" type="RESOURCE"/>
+</resources>

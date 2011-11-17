@@ -20,14 +20,15 @@
     ybegin = 300;
     spacing = 30;
     width = 200; 
-    items = 6;
+    items = 7;
     
     item[0] = "Host Game";
     item[1] = "Join (lobby)";
     item[2] = "Join (manual)";
-    item[3] = "Options";
-    item[4] = "Credits";
-    item[5] = "Quit";
+    item[3] = "Watch Replay";
+    item[4] = "Options";
+    item[5] = "Credits";
+    item[6] = "Quit";
     
     if !sound_isplaying(global.MenuMusic) AudioControlPlaySong(global.MenuMusic);
     menuimage=choose(0,1);

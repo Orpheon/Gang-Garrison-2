@@ -23,7 +23,7 @@ else
 write_ushort(lobbyBuffer, 7); // Number of Key/Value pairs that follow
 writeKeyValue(lobbyBuffer, "name", global.serverName);
 writeKeyValue(lobbyBuffer, "game", "Gang Garrison 2");
-writeKeyValue(lobbyBuffer, "game_short", "gg2");
+writeKeyValue(lobbyBuffer, "game_short", "OHU");
 writeKeyValue(lobbyBuffer, "game_ver", GAME_VERSION_STRING);
 writeKeyValue(lobbyBuffer, "game_url", "http://www.ganggarrison.com/");
 writeKeyValue(lobbyBuffer, "map", global.currentMap);

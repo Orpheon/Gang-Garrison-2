@@ -4,17 +4,16 @@
 global.updateType = argument0;
 
 receiveCompleteMessage(global.serverSocket,1,global.tempBuffer);
-if(read_ubyte(global.tempBuffer) != ds_list_size(global.players)) {
+if(read_ubyte(global.tempBuffer) != ds_list_size(global.players) and !(global.isPlayingReplay)) {
 show_message("Wrong number of players while deserializing state");
 }
 
 if argument0 != CAPS_UPDATE {
-
-    for(i=0; i<ds_list_size(global.players); i+=1) {
-   player = ds_list_find_value(global.players, i);
-   with(player) {
-event_user(13);
-   }
+    for(i=0; i<ds_list_size(global.players)-(global.isPlayingReplay and (global.myself!=-1)); i+=1) {
+        player = ds_list_find_value(global.players, i);
+        with(player) {
+            event_user(13);
+        }
     }
 }
 

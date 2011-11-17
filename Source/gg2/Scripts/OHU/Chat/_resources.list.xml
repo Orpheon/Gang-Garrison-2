@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="chatInit" type="RESOURCE"/>
+  <resource name="printChat" type="RESOURCE"/>
+  <resource name="inverseChatMode" type="RESOURCE"/>
+</resources>

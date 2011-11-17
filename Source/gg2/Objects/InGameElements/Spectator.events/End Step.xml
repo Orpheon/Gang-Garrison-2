@@ -21,7 +21,11 @@ moved = false;
 stopTracking = false;
 
 //moving view - mapped keys
-if keyboard_check(global.left)
+if global.chatBoxOpen
+{
+    // Do nothing...
+}
+else if keyboard_check(global.left)
 {
     if x &gt; 400 x-=20;
     moved = true;

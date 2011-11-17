@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="DRAW" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if hidden exit
+
+var xoffset, yoffset, xsize, ysize;
+
+xsize = sprite_width;
+ysize = sprite_height;
+
+draw_set_valign(fa_top);
+draw_set_halign(fa_left);
+draw_set_color(c_white);
+draw_set_font(fnt_gg2_small);
+
+// Drawing the chatbox background
+if (global.chatBoxOpen)
+{
+    draw_sprite(sprite_index,0,x,y);
+    draw_text(x + 15, y+ysize-30,keyboard_string);
+}
+
+// The drawing of the text
+for (i = 0; i &lt; ds_list_size(chatLog); i+=1)
+{
+        var rawString, name, message, pos;
+
+        message = ds_list_find_value(chatLog, i);
+        
+        var color;
+        color = getColorCode(message);
+        draw_text_color(x+10, y+ysize-50-12*(ds_list_size(chatLog)-i),string_copy(message, 2, string_length(message)),color,color,color,color,1);
+}
+
+draw_set_font(fnt_gg2);
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>

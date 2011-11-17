@@ -27,6 +27,10 @@
     
     window_set_region_scale(-1, false);
     
+    global.replayBuffer = buffer_create();// Used by the server to save the replay and by the client to load it.
+    global.isPlayingReplay = 0;
+    global.justEnabledRecording = 0;// Used to know if the recording just began, to save the first bytes.
+    
     ini_open("gg2.ini");
     global.playerName = ini_read_string("Settings", "PlayerName", "Player");
     if string_count("#",global.playerName) > 0 global.playerName = "Player";
@@ -64,6 +68,8 @@
     global.Server_RespawntimeSec = ini_read_real("Server", "Respawn Time", 5);
     global.haxxyKey = ini_read_string("Haxxy", "SecretHaxxyKey", "");
     global.mapdownloadLimitBps = ini_read_real("Server", "Total bandwidth limit for map downloads in bytes per second", 50000);
+    global.recordingEnabled = ini_read_real("Server", "Recording Enabled", 0);
+    global.chatMode = ini_read_real("Server", "Chat enabled (0=no, 1=only team chat, 2=all)", 1)
     global.currentMapArea=1;
     global.totalMapAreas=1;
     global.setupTimer=1800;
@@ -95,6 +101,8 @@
     ini_write_real("Server", "Total bandwidth limit for map downloads in bytes per second", global.mapdownloadLimitBps);
     ini_write_real("Server", "Time Limit", global.timeLimitMins);
     ini_write_string("Server", "Password", global.serverPassword);
+    ini_write_real("Server", "Recording Enabled", global.recordingEnabled);
+    ini_write_real("Server", "Chat enabled (0=no, 1=only team chat, 2=all)", global.chatMode)
     ini_write_string("Haxxy", "SecretHaxxyKey", global.haxxyKey);
     
     //screw the 0 index we will start with 1
@@ -356,12 +364,40 @@ global.launchMap = "";
     global.changeTeam = ini_read_real("Controls", "changeTeam", ord("N"));
     global.changeClass = ini_read_real("Controls", "changeClass", ord("M"));
     global.showScores = ini_read_real("Controls", "showScores", vk_shift);
-    ini_close();
+    global.chatKey = ini_read_real("Controls", "privateChat", vk_enter);
+    global.publicChatKey = ini_read_real("Controls", "publicChat", ord("Y"));
+    ini_close()
     
     calculateMonthAndDay();
 
     if(global.dedicatedMode == 1) {
         AudioControlToggleMute();
         room_goto_fix(Menu);
-    }    
+    }
+    
+    OHUinit()
+    
+    var pluginArray, plugin, first, PluginObject;
+    first = true;
+    pluginArray[0] = 1;
+    while (true) {
+        if (first == true){
+            plugin = file_find_first("Plugins/*.gml",0);
+            first = false;
+        }else{
+            plugin = file_find_next();
+        }
+        if (plugin != "") {
+            pluginArray[0]+=1;
+            pluginArray[pluginArray[0]] = plugin;
+        } else break;
+    } 
+    
+    PluginObject = object_add();
+    for(i=2;i <= pluginArray[0];i+=1) {
+        with (instance_create(0,0,PluginObject)) {
+            execute_file("Plugins/"+string(pluginArray[i]),"Plugins/");
+            instance_destroy();
+        }
+    }
 }

@@ -35,7 +35,7 @@
     xsize = view_wview[0];
     ysize = view_hview[0];
 
-    
+    instance_create(x, y, Console)
 }
 </argument>
       </arguments>

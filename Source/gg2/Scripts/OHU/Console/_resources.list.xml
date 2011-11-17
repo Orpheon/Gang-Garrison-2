@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+  <resource name="consoleInit" type="RESOURCE"/>
+  <resource name="defineConsoleCommands" type="RESOURCE"/>
+  <resource name="print" type="RESOURCE"/>
+  <resource name="parseInput" type="RESOURCE"/>
+  <resource name="out" type="RESOURCE"/>
+</resources>

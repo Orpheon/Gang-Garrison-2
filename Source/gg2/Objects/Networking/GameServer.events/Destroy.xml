@@ -17,6 +17,11 @@
 socket_destroy(global.tcpListener);
 socket_destroy(global.serverSocket);
 
+if global.recordingEnabled
+{
+    endRecording();
+}
+
 with(Player)
     instance_destroy();
 
@@ -25,6 +30,11 @@ with(JoiningPlayer)
     
 with(PlayerControl)
     instance_destroy();
+    
+with ChatBox
+{
+    instance_destroy();
+}
 
 room_goto_fix(Menu);
 </argument>

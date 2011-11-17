@@ -10,6 +10,17 @@ if(tcp_eof(global.serverSocket)) {
     exit;
 }
 
+if global.isPlayingReplay
+{
+    var length;
+    length = read_ubyte(global.replayBuffer);
+    for(i=0; i<length; i+=1)
+    {
+        write_ubyte(global.replaySocket, read_ubyte(global.replayBuffer));
+    }
+    socket_send(global.replaySocket);
+}
+
 if(downloadingMap)
 {
     while(tcp_receive(global.serverSocket, min(1024, downloadMapBytes-buffer_size(downloadMapBuffer))))
@@ -98,16 +109,93 @@ do {
                   
         case INPUTSTATE:
             deserializeState(INPUTSTATE);
-            break;             
+            break;
+            
+        case CHAT_JOIN:
+            var player, index, letter;
         
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer);
+            index = read_ubyte(global.tempBuffer)
+            player = ds_list_find_value(global.players, index);
+            switch player.team
+            {
+                case TEAM_RED:
+                    letter = "r";
+                    break
+                case TEAM_BLUE:
+                    letter = "b";
+                    break
+                case TEAM_SPECTATOR:
+                    letter = 'g';
+                    break;
+            }
+            printChat(letter+player.name+" has joined the chat");// a == brown
+            break;
+            
+        case CHAT_MESSAGE_PRIVATE:
+            var length, message;
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer);
+            length = read_ubyte(global.tempBuffer);
+            receiveCompleteMessage(global.serverSocket, length, global.tempBuffer);
+            message = read_string(global.tempBuffer, length);
+            printChat(message);
+            break;
+            
+        case CHAT_LEAVE:
+            var player, letter;
+        
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer);
+            player = ds_list_find_value(global.players, read_ubyte(global.tempBuffer));
+            switch player.team
+            {
+                case TEAM_RED:
+                    letter = "r";
+                    break
+                case TEAM_BLUE:
+                    letter = "b";
+                    break
+                case TEAM_SPECTATOR:
+                    letter = 'g';
+                    break;
+            }
+            printChat(letter+player.name+" has left the chat");// a == brown
+            break;
+            
+        case CHAT_KICK:
+            var player, letter;
+        
+            receiveCompleteMessage(global.serverSocket, 1, global.tempBuffer);
+            player = ds_list_find_value(global.players, read_ubyte(global.tempBuffer));
+            switch player.team
+            {
+                case TEAM_RED:
+                    letter = "r";
+                    break
+                case TEAM_BLUE:
+                    letter = "b";
+                    break
+                case TEAM_SPECTATOR:
+                    letter = 'g';
+                    break;
+            }
+            printChat(letter+player.name+" has been kicked from the chat");// a == brown;
+            break;
+            
         case PLAYER_JOIN:
             player = instance_create(0,0,Player);
             player.name = receivestring(global.serverSocket, 1);
                   
             ds_list_add(global.players, player);
-            if(ds_list_size(global.players)-1 == global.playerID) {
-                global.myself = player;
-                instance_create(0,0,PlayerControl);
+            
+            if(ds_list_size(global.players)-1 == global.playerID){
+                    global.myself = player;
+                    instance_create(0,0,PlayerControl);
+            }
+            else if global.isPlayingReplay and global.myself != -1
+            {
+                ds_list_delete(global.players, ds_list_find_index(global.players, global.myself));
+                ds_list_add(global.players, global.myself);
+                global.playerID = ds_list_size(global.players)-1
             }
             break;
             
@@ -362,6 +450,7 @@ do {
             break;
 
         case CHANGE_MAP:
+            if instance_exists(ChatBox) ds_list_clear(ChatBox.chatLog);
             roomchange=true;
             global.mapchanging = false;
             global.currentMap = receivestring(global.serverSocket, 1);
@@ -439,6 +528,11 @@ do {
                 write_ubyte(global.serverSocket, read_ubyte(global.tempBuffer) ^ ord(string_char_at(global.haxxyKey, i)));
             socket_send(global.serverSocket);
             break;
+            
+        case REPLAY_END:
+            show_message("This replay is finished.#Exiting to menu")
+            instance_destroy();
+            break;// Is this necessary?
         
         default:
             show_message("The Server sent unexpected data");

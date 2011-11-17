@@ -13,8 +13,27 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">instance_create(x,y,MainMenuController);
-instance_destroy();</argument>
+        <argument kind="STRING">global.chatMode = (global.chatMode+1) mod 3
+
+ini_open("gg2.ini");
+ini_write_real("Server", "Chat enabled (0=no, 1=only team chat, 2=all)", global.chatMode)
+ini_close();
+    
+switch (global.chatMode)
+{
+    case 0:
+        value[10] = "Disabled"
+        break;
+        
+    case 1:
+        value[10] = "Team Only"
+        break;
+        
+    case 2:
+        value[10] = "Global and Team enabled"
+        break;
+}
+</argument>
       </arguments>
     </action>
   </actions>

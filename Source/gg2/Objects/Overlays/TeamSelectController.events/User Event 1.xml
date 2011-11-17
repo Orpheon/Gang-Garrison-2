@@ -17,6 +17,7 @@
         buffer_clear(global.sendBuffer);
         ClientPlayerChangeteam(team);
         write_buffer(global.serverSocket, global.sendBuffer);
+        if team != TEAM_SPECTATOR write_ubyte(global.serverSocket, CHAT_JOIN)
         socket_send(global.serverSocket);
     }
     done = true;

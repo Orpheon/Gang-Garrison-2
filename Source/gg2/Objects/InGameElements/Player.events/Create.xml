@@ -19,6 +19,10 @@
     class = CLASS_SCOUT;
     socket = -1;
     name = "";
+    ID = 0
+    ID = getID();
+    chatJustSent = 0
+    muted = 0;
     
     //fuck your shit I'm making statistic arrays
     stats[KILLS] = 0;

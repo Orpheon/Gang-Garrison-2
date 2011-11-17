@@ -13,9 +13,10 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">afktimeout=9000;
+        <argument kind="STRING">afktimeout=20*30;
 afktimer=afktimeout;
 oldScoreKeyDown=false;
+chatBox = instance_create(0, 0, ChatBox)
 </argument>
       </arguments>
     </action>

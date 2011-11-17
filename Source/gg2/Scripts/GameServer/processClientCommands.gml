@@ -96,9 +96,175 @@ while(commandLimitRemaining > 0) {
                 }
                 else if(player.alarm[5]<=0)
                     player.alarm[5] = 1;
+                class = getClasslimit(player.team, class);
                 player.class = class;
                 ServerPlayerChangeclass(playerId, player.class, global.sendBuffer);
             }
+            break;
+            
+        case CHAT_JOIN:
+        
+            if player.muted
+            {
+                break
+            }
+                  
+            if ds_list_find_index(global.chatters, player) < 0 and (player.team != TEAM_SPECTATOR or playerId == 0) and global.chatMode > 0// Chat is enabled
+            {
+                ds_list_add(global.chatters, player);
+            }
+
+            switch (player.team)
+            {
+                case TEAM_RED:
+                    message = "r"+player.name+" has joined the chat";
+                    buffer = global.redChatBuffer;
+                    break;
+                    
+                case TEAM_BLUE:
+                    message = "b"+player.name+" has joined the chat";
+                    buffer = global.blueChatBuffer;
+                    break;
+            }
+            
+            if player.team == TEAM_SPECTATOR
+            {
+                if playerId == 0// The host
+                {
+                    message = "p"+player.name+" has joined the chat";
+                    buffer = global.publicChatBuffer// The host will be alone anyways, no-one cares about this.
+                }
+                else break;
+            }            else if global.myself.team == TEAM_SPECTATOR or global.myself.team == player.team// For the host.
+            {
+                printChat(message);
+            }
+            
+            write_ubyte(buffer, CHAT_JOIN);
+            write_ubyte(buffer, playerId);
+            break;
+            
+        case CHAT_MESSAGE_PUBLIC:
+            var length, message;
+            length = socket_receivebuffer_size(socket);
+            message = read_string(socket, length);
+            message = string_copy(message, 0, min(string_length(message), 53))// Limit the message to 53 characters, to prevent huge spam.
+            
+            if global.chatMode != 2
+            {
+                break;// If global chat is disabled
+            }
+            
+            if player.chatJustSent// Uh-oh, the player sent something not long ago, ignore.
+            {
+                player.alarm[1] = 20;// Reset the alarm to really shut down not carefully timed spam.
+                break;
+            }
+            else// Everything's in order.
+            {
+                player.chatJustSent = 1;// Prevent the player to send something again soon.
+                player.alarm[1] = 20;// 20 is arbitrary. Change when necessary.
+            }
+            
+            if player.muted
+            {
+                break
+            }
+            
+            switch (player.team)
+            {
+                case TEAM_RED:
+                    message = "r"+player.name+": "+message;
+                    break;
+                    
+                case TEAM_BLUE:
+                    message = "b"+player.name+": "+message;
+                    break;
+
+                default:// spec
+                    message = "g"+player.name+": "+message;
+                    break
+            }
+            
+            if player.team == TEAM_SPECTATOR
+            {
+                if playerId == 0// The host
+                {
+                    message = "p"+player.name+": "+message;
+                }
+            }
+            printChat(message);  
+            write_ubyte(global.publicChatBuffer, CHAT_MESSAGE_PRIVATE);// The client doesn't care, and I have to code less.
+            write_ubyte(global.publicChatBuffer, string_length(message));
+            write_string(global.publicChatBuffer, message);
+            break;
+            
+        case CHAT_MESSAGE_PRIVATE:        
+            var length, message, buffer;
+            
+            length = socket_receivebuffer_size(socket);
+            message = read_string(socket, length);
+            message = string_copy(message, 0, min(string_length(message), 53))// Limit the message to 53 characters, to prevent huge spam.
+            
+            if global.chatMode == 0
+            {
+                break;// If chat is disabled
+            }
+            
+            if player.chatJustSent// Uh-oh, the player sent something not long ago, ignore.
+            {
+                player.alarm[1] = 20;// Reset the alarm to really shut down not carefully timed spam.
+                break;
+            }
+            else// Everything's in order.
+            {
+                player.chatJustSent = 1;// Prevent the player to send something again soon.
+                player.alarm[1] = 20;// 20 is arbitrary. Change when necessary.
+            }
+            
+            if player.muted
+            {
+                break
+            }
+            
+            switch (player.team)
+            {
+                case TEAM_RED:
+                    message = "r"+player.name+": "+message;
+                    buffer = global.redChatBuffer;
+                    break;
+                    
+                case TEAM_BLUE:
+                    message = "b"+player.name+": "+message;
+                    buffer = global.blueChatBuffer;
+                    break;
+
+             // Spec should not get chat, except the host, which comes later.
+            }
+            
+            if player.team == TEAM_SPECTATOR
+            {
+                if playerId == 0// The host
+                {
+                    message = "p"+player.name+": "+message;
+
+                    write_ubyte(global.redChatBuffer, CHAT_MESSAGE_PRIVATE);// Send to red and blue.
+                    write_ubyte(global.redChatBuffer, string_length(message));
+                    write_string(global.redChatBuffer, message);
+                    
+                    buffer = global.blueChatBuffer
+                }
+                else break;
+            }
+            
+            if global.myself.team == TEAM_SPECTATOR or global.myself.team == player.team// For the host.
+            {
+                printChat(message);
+            }
+            
+            write_ubyte(buffer, CHAT_MESSAGE_PRIVATE);
+            write_ubyte(buffer, string_length(message));
+            write_string(buffer, message);
             break;
             
         case PLAYER_CHANGETEAM:
@@ -148,7 +314,65 @@ while(commandLimitRemaining > 0) {
                     }
                     else if(player.alarm[5]<=0)
                         player.alarm[5] = 1;
+
+                    if player.team != TEAM_SPECTATOR and ds_list_find_index(global.chatters, player) >= 0 and player.team != newTeam
+                    {
+                        switch (player.team)
+                        {
+                            case TEAM_RED:
+                                write_ubyte(global.redChatBuffer, CHAT_LEAVE);
+                                write_ubyte(global.redChatBuffer, playerId);
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                {
+                                    printChat("r"+player.name+" has left the chat");
+                                }
+                                break;
+                                
+                            case TEAM_BLUE:
+                                write_ubyte(global.blueChatBuffer, CHAT_LEAVE);
+                                write_ubyte(global.blueChatBuffer, playerId);
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                {
+                                    printChat("b"+player.name+" has left the chat");
+                                }
+                                break;
+                        }
+                    }      
+
+                    var class;
+                    class = getClasslimit(newTeam, player.class)
+                    if class != player.class
+                    {
+                        player.class = class
+                        ServerPlayerChangeclass(playerId, player.class, global.sendBuffer)
+                    }
+
                     player.team = newTeam;
+                    
+                    if player.team != TEAM_SPECTATOR and ds_list_find_index(global.chatters, player) >= 0
+                    {
+                        switch (player.team)
+                        {
+                            case TEAM_RED:
+                                write_ubyte(global.redChatBuffer, CHAT_JOIN);
+                                write_ubyte(global.redChatBuffer, playerId);
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                {
+                                    printChat("r"+player.name+" has joined the chat");
+                                }
+                                break;
+                                
+                            case TEAM_BLUE:
+                                write_ubyte(global.blueChatBuffer, CHAT_JOIN);
+                                write_ubyte(global.blueChatBuffer, playerId);
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                {
+                                    printChat("b"+player.name+" has joined the chat");
+                                }
+                                break;
+                        }
+                    }
+                    
                     ServerPlayerChangeteam(playerId, player.team, global.sendBuffer);
                 }
             }
@@ -255,6 +479,7 @@ while(commandLimitRemaining > 0) {
                     {
                         name = "I <3 Bacon";
                     }
+                    
                     write_ubyte(global.sendBuffer, PLAYER_CHANGENAME);
                     write_ubyte(global.sendBuffer, playerId);
                     write_ubyte(global.sendBuffer, string_length(name));

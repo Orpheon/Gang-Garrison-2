@@ -13,7 +13,13 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">alpha=0.01;
+        <argument kind="STRING">if global.isPlayingReplay
+{
+    instance_destroy();
+    exit;
+}
+
+alpha=0.01;
 done = false;
 newteam = -1;
 door = -1;
@@ -21,7 +27,8 @@ redteam=0;
 blueteam=0;
 y=-120;
 afk=false;
-balance = calculateTeamBalance();</argument>
+balance = calculateTeamBalance();
+</argument>
       </arguments>
     </action>
   </actions>

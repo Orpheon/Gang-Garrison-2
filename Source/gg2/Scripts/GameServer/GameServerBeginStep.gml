@@ -18,6 +18,11 @@ acceptJoiningPlayer();
 with(JoiningPlayer)
     serviceJoiningPlayer();
 
+if global.recordingEnabled and global.justEnabledRecording
+{
+    beginRecording();
+}
+
 // Service all players
 var i;
 for(i=0; i<ds_list_size(global.players); i+=1)
@@ -81,6 +86,7 @@ if(global.winners != -1 and !global.mapchanging)
 // if map change timer hits 0, do a map change
 if(impendingMapChange == 0)
 {
+    ds_list_clear(ChatBox.chatLog);
     global.mapchanging = false;
     global.currentMap = global.nextMap;
     if(file_exists("Maps/" + global.currentMap + ".png"))
@@ -144,6 +150,34 @@ for(i=1; i<ds_list_size(global.players); i+=1)
     player = ds_list_find_value(global.players, i);
     write_buffer(player.socket, global.eventBuffer);
     write_buffer(player.socket, global.sendBuffer);
+    
+    if ds_list_find_index(global.chatters, player) >= 0 and global.chatMode > 0// Chat is enabled and at least one person is chatting
+    {
+        switch (player.team)
+        {
+            case TEAM_RED:
+                write_buffer(player.socket, global.redChatBuffer);
+                break;
+            case TEAM_BLUE:
+                write_buffer(player.socket, global.blueChatBuffer);
+                break;
+        }
+        
+        if global.chatMode == 2
+        {
+            write_buffer(player.socket, global.publicChatBuffer);
+        }
+    }
     socket_send(player.socket);
 }
+if global.recordingEnabled
+{
+    write_ubyte(global.replayBuffer, buffer_size(global.eventBuffer)+buffer_size(global.sendBuffer));
+    write_buffer(global.replayBuffer, global.eventBuffer);
+    write_buffer(global.replayBuffer, global.sendBuffer);
+}
+
 buffer_clear(global.eventBuffer);
+buffer_clear(global.redChatBuffer);
+buffer_clear(global.blueChatBuffer);
+buffer_clear(global.publicChatBuffer);

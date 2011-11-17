@@ -16,20 +16,36 @@
         <argument kind="STRING">if(instance_exists(InGameMenuController) || instance_exists(OptionsController) || instance_exists(ControlsController) || instance_exists(HUDOptionsController))
     exit;
     
-if(instance_exists(TeamSelectController) || instance_exists(ClassSelectController))
+if(instance_exists(TeamSelectController) || instance_exists(ClassSelectController) or global.chatBoxOpen)
     menuOpen = true;
 else
     menuOpen = false;
 
 //Checking for input - Mapped Keys
-if(keyboard_check_pressed(global.changeTeam)) inputChangeTeam();
-if(keyboard_check_pressed(global.changeClass)) inputChangeClass();
+if(keyboard_check_pressed(global.changeTeam) and !global.chatBoxOpen) inputChangeTeam();
+if(keyboard_check_pressed(global.changeClass) and !global.chatBoxOpen) inputChangeClass();
+
+if(keyboard_check_pressed(global.chatKey)) and !ChatBox.hidden 
+{
+    inverseChatMode()
+}
+
+if keyboard_check_pressed(global.publicChatKey) and !ChatBox.hidden and !menuOpen
+{
+    ChatBox.public = 1
+    inverseChatMode()
+}
+
+if keyboard_check_pressed(ord("T")) and !menuOpen
+{
+    ChatBox.hidden = !ChatBox.hidden
+}
 
 var scoreKeyDown;
 scoreKeyDown = keyboard_check_direct(global.showScores);
-if(scoreKeyDown and !oldScoreKeyDown)
+if(scoreKeyDown and !oldScoreKeyDown and !global.chatBoxOpen)
     inputShowScores();
-else if(!scoreKeyDown and oldScoreKeyDown)
+else if(!scoreKeyDown and oldScoreKeyDown and !global.chatBoxOpen)
     inputCloseScores();
 oldScoreKeyDown = scoreKeyDown;
     

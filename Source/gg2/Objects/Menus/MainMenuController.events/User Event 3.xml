@@ -14,7 +14,19 @@
       <appliesTo>.self</appliesTo>
       <arguments>
         <argument kind="STRING">{
-    room_goto_fix(Options);
+    global.isHost = false;
+    global.isPlayingReplay = 1;
+    
+    loadReplay();
+    if !global.isPlayingReplay// If the user gave an invalid file.
+    {
+        exit
+    }
+    
+    global.serverIP = 127.0.0.1
+    global.serverPort = global.hostingPort
+    instance_create(0,0,Client);
+    Client.returnRoom = Menu;
 }
 </argument>
       </arguments>

@@ -34,7 +34,7 @@ xbegin = 40;
 ybegin = 200;
 spacing = 30;
 width = 300; 
-items = 11;
+items = 13;
 valueoffset = 200;
 editing = -1;
 canClick = false;
@@ -49,8 +49,10 @@ item[5] = "Capture Limit:";
 item[6] = "Respawn Time (secs):";
 item[7] = "Auto Balance:";
 item[8] = "Announce to Lobby:";
-item[9] = "Start Game";
-item[10] = "Back";
+item[9] = "Recording:";
+item[10] = "Chat:"
+item[11] = "Start Game";
+item[12] = "Back";
     
 value[0] = global.serverName;
 value[1] = global.serverPassword;
@@ -71,9 +73,30 @@ if(global.useLobbyServer) {
 } else {
     value[8] = "Off";
 }
+
+if(global.recordingEnabled) {
+    value[9] = "Enabled";
+} else {
+    value[9] = "Disabled";
+}
+
+switch (global.chatMode)
+{
+    case 0:
+        value[10] = "Disabled"
+        break;
+        
+    case 1:
+        value[10] = "Team Only"
+        break;
+        
+    case 2:
+        value[10] = "Global and Team enabled"
+        break;
+}
     
-value[9] = "";
-value[10] = "";
+value[11] = "";
+value[12] = "";
 </argument>
       </arguments>
     </action>
