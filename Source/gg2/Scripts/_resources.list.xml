@@ -9,9 +9,9 @@
   <resource name="deserialize" type="RESOURCE"/>
   <resource name="getCharacterObject" type="RESOURCE"/>
   <resource name="room_goto_fix" type="RESOURCE"/>
+  <resource name="Networking" type="GROUP"/>
   <resource name="Message Builders" type="GROUP"/>
   <resource name="Sound" type="GROUP"/>
-  <resource name="Networking" type="GROUP"/>
   <resource name="CustomMaps" type="GROUP"/>
   <resource name="Client" type="GROUP"/>
   <resource name="GameServer" type="GROUP"/>

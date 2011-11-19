@@ -67,7 +67,16 @@ if(global.winners != -1 and !global.mapchanging)
         global.currentMapArea = 1;
         if(global.currentMapIndex == ds_list_size(global.map_rotation)) 
             global.currentMapIndex = 0;
-        global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
+            
+        if global.suggestedMap != ""
+        {
+            global.nextMap = global.suggestedMap;
+            global.suggestedMap = "";
+        }
+        else
+        {
+            global.nextMap = ds_list_find_value(global.map_rotation, global.currentMapIndex);
+        }
     }
     global.mapchanging = true;
     impendingMapChange = 300; // in 300 frames (ten seconds), we'll do a map change
@@ -86,7 +95,7 @@ if(global.winners != -1 and !global.mapchanging)
 // if map change timer hits 0, do a map change
 if(impendingMapChange == 0)
 {
-    ds_list_clear(ChatBox.chatLog);
+    ds_list_clear(global.chatLog);
     global.mapchanging = false;
     global.currentMap = global.nextMap;
     if(file_exists("Maps/" + global.currentMap + ".png"))
@@ -172,9 +181,12 @@ for(i=1; i<ds_list_size(global.players); i+=1)
 }
 if global.recordingEnabled
 {
-    write_ubyte(global.replayBuffer, buffer_size(global.eventBuffer)+buffer_size(global.sendBuffer));
+    write_ubyte(global.replayBuffer, buffer_size(global.eventBuffer)+buffer_size(global.sendBuffer)+buffer_size(global.redChatBuffer)+buffer_size(global.blueChatBuffer)+buffer_size(global.publicChatBuffer));
     write_buffer(global.replayBuffer, global.eventBuffer);
     write_buffer(global.replayBuffer, global.sendBuffer);
+    write_buffer(global.replayBuffer, global.redChatBuffer);
+    write_buffer(global.replayBuffer, global.blueChatBuffer);
+    write_buffer(global.replayBuffer, global.publicChatBuffer);
 }
 
 buffer_clear(global.eventBuffer);

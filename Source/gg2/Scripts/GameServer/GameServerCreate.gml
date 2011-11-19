@@ -9,6 +9,11 @@
     global.currentMapIndex = 0;
     global.currentMapArea = 1;
     
+    if global.recordingEnabled
+    {
+        global.justEnabledRecording = 1
+    }
+    
     serverbalance=0;
     balancecounter=0;
     frame = 0;

@@ -39,6 +39,7 @@ if keyboard_check_pressed(global.publicChatKey) and !ChatBox.hidden and !menuOpe
 if keyboard_check_pressed(ord("T")) and !menuOpen
 {
     ChatBox.hidden = !ChatBox.hidden
+    global.chatBoxOpen = 0
 }
 
 var scoreKeyDown;

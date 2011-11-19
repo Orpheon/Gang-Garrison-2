@@ -13,8 +13,7 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">chatLog = ds_list_create();
-hidden = 0
+        <argument kind="STRING">hidden = 0
 public = 0
 </argument>
       </arguments>

@@ -5,7 +5,7 @@ write_ubyte(global.replayBuffer, REPLAY_END)
 
 name = get_save_filename(".gg2", "Replay.gg2")
 
-if name == ""
+if name != ""
 {
     text = file_bin_open(name, 1)
     while buffer_bytes_left(global.replayBuffer) > 0

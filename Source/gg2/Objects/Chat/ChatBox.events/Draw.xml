@@ -33,15 +33,15 @@ if (global.chatBoxOpen)
 }
 
 // The drawing of the text
-for (i = 0; i &lt; ds_list_size(chatLog); i+=1)
+for (i = 0; i &lt; ds_list_size(global.chatLog); i+=1)
 {
         var rawString, name, message, pos;
 
-        message = ds_list_find_value(chatLog, i);
+        message = ds_list_find_value(global.chatLog, i);
         
         var color;
         color = getColorCode(message);
-        draw_text_color(x+10, y+ysize-50-12*(ds_list_size(chatLog)-i),string_copy(message, 2, string_length(message)),color,color,color,color,1);
+        draw_text_color(x+10, y+ysize-50-12*(ds_list_size(global.chatLog)-i),string_copy(message, 2, string_length(message)),color,color,color,color,1);
 }
 
 draw_set_font(fnt_gg2);

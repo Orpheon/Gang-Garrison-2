@@ -31,6 +31,7 @@
         do
         {
             global.replaySocket = socket_accept(acceptor);
+            io_handle();
         }
         until(global.replaySocket >= 0)
         

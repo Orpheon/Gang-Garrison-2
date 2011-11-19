@@ -19,6 +19,7 @@
     class = CLASS_SCOUT;
     socket = -1;
     name = "";
+    challenge = ""; // :drool:
     ID = 0
     ID = getID();
     chatJustSent = 0

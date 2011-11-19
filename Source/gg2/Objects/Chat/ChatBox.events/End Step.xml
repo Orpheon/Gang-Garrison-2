@@ -16,9 +16,9 @@
         <argument kind="STRING">x = view_xview[0]+7;
 y = view_yview[0]+340;
 
-while ds_list_size(chatLog) &gt; 10
+while ds_list_size(global.chatLog) &gt; 10
 {
-    ds_list_delete(chatLog, 0);
+    ds_list_delete(global.chatLog, 0);
 }
 </argument>
       </arguments>

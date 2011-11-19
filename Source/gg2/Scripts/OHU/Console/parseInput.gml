@@ -17,18 +17,18 @@ while string_count("-", parseString) > 0
     parseString = string_copy(parseString, pos+3, string_length(parseString));
 }
 input[numOfCommands] = parseString// For the last argument, there's no '-' left.
-numOfCommands += 1
+numOfCommands += 1;
 
 while numOfCommands <= 10// Fill up until 10 arguments, that way there are no errors.
 {
     input[numOfCommands] = ""
-    numOfCommands += 1
+    numOfCommands += 1;
 }
 
 if string_copy(input[0], 0, 5) == "help "
 {
     input[1] = string_copy(input[0], 6, string_length(input[0]));
-    input[0] = "help"
+    input[0] = "help";
 }
 
 

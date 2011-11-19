@@ -20,3 +20,6 @@ else
     global.isPlayingReplay = 0
     exit;
 }
+
+global.replaySpeed = 1
+global.replayTime = 0

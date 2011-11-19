@@ -34,7 +34,7 @@ if global.myself == -1 &amp;&amp; cloakAlpha==1{
     exit;
 }
    
-if (global.myself.team == team or global.isPlayingReplay) &amp;&amp; cloakAlpha&lt;0.5 {
+if (global.myself.team == team or global.isPlayingReplay or (global.isHost and global.myself.team == TEAM_SPECTATOR)) &amp;&amp; cloakAlpha&lt;0.5 {
     if currentWeapon.readyToStab==true{
         cloakAlpha=0.5;
         image_alpha=0.5;

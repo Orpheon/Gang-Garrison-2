@@ -13,10 +13,15 @@ if(tcp_eof(global.serverSocket)) {
 if global.isPlayingReplay
 {
     var length;
-    length = read_ubyte(global.replayBuffer);
-    for(i=0; i<length; i+=1)
+    
+    for(a=0; a<global.replaySpeed; a+=1)
     {
-        write_ubyte(global.replaySocket, read_ubyte(global.replayBuffer));
+        length = read_ubyte(global.replayBuffer);
+        for(i=0; i<length; i+=1)
+        {
+            write_ubyte(global.replaySocket, read_ubyte(global.replayBuffer));
+        }
+        global.replayTime += 1
     }
     socket_send(global.replaySocket);
 }
@@ -83,6 +88,7 @@ do {
                     roomchange=true;
                 }
             }
+            
             ClientPlayerJoin(global.serverSocket);
             if(global.haxxyKey != "")
                 write_byte(global.serverSocket, I_AM_A_HAXXY_WINNER);
@@ -450,7 +456,7 @@ do {
             break;
 
         case CHANGE_MAP:
-            if instance_exists(ChatBox) ds_list_clear(ChatBox.chatLog);
+            ds_list_clear(global.chatLog);
             roomchange=true;
             global.mapchanging = false;
             global.currentMap = receivestring(global.serverSocket, 1);
@@ -531,6 +537,7 @@ do {
             
         case REPLAY_END:
             show_message("This replay is finished.#Exiting to menu")
+            global.isPlayingReplay = 0;
             instance_destroy();
             break;// Is this necessary?
         

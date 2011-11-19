@@ -15,7 +15,7 @@
         sound_volume(global.IngameMusic, 0.8);
     if(global.FaucetMusic != -1)
         sound_volume(global.FaucetMusic, 0.8);
-        
+
 
     global.sendBuffer = buffer_create();
     global.eventBuffer = buffer_create();
@@ -26,10 +26,6 @@
     global.CustomMapCollisionSprite = -1;
     
     window_set_region_scale(-1, false);
-    
-    global.replayBuffer = buffer_create();// Used by the server to save the replay and by the client to load it.
-    global.isPlayingReplay = 0;
-    global.justEnabledRecording = 0;// Used to know if the recording just began, to save the first bytes.
     
     ini_open("gg2.ini");
     global.playerName = ini_read_string("Settings", "PlayerName", "Player");

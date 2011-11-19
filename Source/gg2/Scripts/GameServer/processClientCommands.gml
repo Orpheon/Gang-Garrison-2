@@ -108,10 +108,14 @@ while(commandLimitRemaining > 0) {
             {
                 break
             }
-                  
-            if ds_list_find_index(global.chatters, player) < 0 and (player.team != TEAM_SPECTATOR or playerId == 0) and global.chatMode > 0// Chat is enabled
+
+            if ds_list_find_index(global.chatters, player) < 0 and global.chatMode > 0// Chat is enabled
             {
                 ds_list_add(global.chatters, player);
+            }
+            else
+            {
+                break;
             }
 
             switch (player.team)
@@ -134,8 +138,14 @@ while(commandLimitRemaining > 0) {
                     message = "p"+player.name+" has joined the chat";
                     buffer = global.publicChatBuffer// The host will be alone anyways, no-one cares about this.
                 }
+                else if global.chatMode == 2// If global chat is enabled, let the spec get announced.
+                {
+                    message = "g"+player.name+" has joined the chat";
+                    buffer = global.publicChatBuffer;
+                }
                 else break;
-            }            else if global.myself.team == TEAM_SPECTATOR or global.myself.team == player.team// For the host.
+            }
+            else if global.myself.team == TEAM_SPECTATOR or global.myself.team == player.team// For the host.
             {
                 printChat(message);
             }
@@ -182,17 +192,17 @@ while(commandLimitRemaining > 0) {
                     break;
 
                 default:// spec
-                    message = "g"+player.name+": "+message;
+                    if playerId != 0
+                    {
+                        message = "g"+player.name+": "+message;
+                    }
+                    else
+                    {
+                        message = "p"+player.name+": "+message;
+                    }
                     break
             }
-            
-            if player.team == TEAM_SPECTATOR
-            {
-                if playerId == 0// The host
-                {
-                    message = "p"+player.name+": "+message;
-                }
-            }
+
             printChat(message);  
             write_ubyte(global.publicChatBuffer, CHAT_MESSAGE_PRIVATE);// The client doesn't care, and I have to code less.
             write_ubyte(global.publicChatBuffer, string_length(message));
@@ -256,7 +266,6 @@ while(commandLimitRemaining > 0) {
                 }
                 else break;
             }
-            
             if global.myself.team == TEAM_SPECTATOR or global.myself.team == player.team// For the host.
             {
                 printChat(message);
@@ -322,7 +331,7 @@ while(commandLimitRemaining > 0) {
                             case TEAM_RED:
                                 write_ubyte(global.redChatBuffer, CHAT_LEAVE);
                                 write_ubyte(global.redChatBuffer, playerId);
-                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR or global.chatMode == 2
                                 {
                                     printChat("r"+player.name+" has left the chat");
                                 }
@@ -331,7 +340,7 @@ while(commandLimitRemaining > 0) {
                             case TEAM_BLUE:
                                 write_ubyte(global.blueChatBuffer, CHAT_LEAVE);
                                 write_ubyte(global.blueChatBuffer, playerId);
-                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR or global.chatMode == 2
                                 {
                                     printChat("b"+player.name+" has left the chat");
                                 }
@@ -349,14 +358,14 @@ while(commandLimitRemaining > 0) {
 
                     player.team = newTeam;
                     
-                    if player.team != TEAM_SPECTATOR and ds_list_find_index(global.chatters, player) >= 0
+                    if ds_list_find_index(global.chatters, player) >= 0
                     {
                         switch (player.team)
                         {
                             case TEAM_RED:
                                 write_ubyte(global.redChatBuffer, CHAT_JOIN);
                                 write_ubyte(global.redChatBuffer, playerId);
-                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR or global.chatMode == 2
                                 {
                                     printChat("r"+player.name+" has joined the chat");
                                 }
@@ -365,7 +374,7 @@ while(commandLimitRemaining > 0) {
                             case TEAM_BLUE:
                                 write_ubyte(global.blueChatBuffer, CHAT_JOIN);
                                 write_ubyte(global.blueChatBuffer, playerId);
-                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR
+                                if player.team == global.myself.team or global.myself.team == TEAM_SPECTATOR or global.chatMode == 2
                                 {
                                     printChat("b"+player.name+" has joined the chat");
                                 }
@@ -376,7 +385,7 @@ while(commandLimitRemaining > 0) {
                     ServerPlayerChangeteam(playerId, player.team, global.sendBuffer);
                 }
             }
-            break;                   
+            break;
             
         case CHAT_BUBBLE:
             var bubbleImage;
@@ -404,7 +413,7 @@ while(commandLimitRemaining > 0) {
                     write_ubyte(global.sendBuffer, playerId);
                 }
             }
-            break;                                       
+            break;
 
         case DESTROY_SENTRY:
             if(player.sentry != -1) {
@@ -422,7 +431,7 @@ while(commandLimitRemaining > 0) {
                 with player.object event_user(5);  
             }
             break;     
-              
+
         case OMNOMNOMNOM:
             if(player.object != -1) {
                 if(player.humiliated == 0
@@ -445,7 +454,7 @@ while(commandLimitRemaining > 0) {
                 }
             }
             break;
-             
+
         case TOGGLE_ZOOM:
             if player.object != -1 {
                 if player.class == CLASS_SNIPER {
@@ -500,7 +509,7 @@ while(commandLimitRemaining > 0) {
                 }
             }
             break;
-        
+
         case I_AM_A_HAXXY_WINNER:
             write_ubyte(socket, HAXXY_CHALLENGE_CODE);
             player.challenge = "";

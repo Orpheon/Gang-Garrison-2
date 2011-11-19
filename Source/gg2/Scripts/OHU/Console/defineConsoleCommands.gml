@@ -75,21 +75,21 @@ with Player
 for (i=0; i<ds_list_size(redteam); i+=1)
 {
     player = ds_list_find_value(redteam, i);
-    print('/:/r'+player.name+': '+string(player.ID));
+    print('/:/r'+player.name+': '+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
 }
 for (i=0; i<ds_list_size(blueteam); i+=1)
 {
     player = ds_list_find_value(blueteam, i);
-    print('/:/b'+player.name+': '+string(player.ID));
+    print('/:/b'+player.name+': '+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
 }
 for (i=0; i<ds_list_size(specteam); i+=1)
 {
     player = ds_list_find_value(specteam, i);
-    print('/:/g'+player.name+': '+string(player.ID));
+    print('/:/g'+player.name+': '+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
 }");
 ds_map_add(global.documentationDict, "listID", "
 print('Syntax: listID')
-print('Use: Prints a color-coded list of the IDs of all the players in the game.')
+print('Use: Prints a color-coded list of the IDs of all the players in the game, as well as their IPs.')
 print('These IDs are necessary for anything requiring a specific player, like kicking.')");
 
 
@@ -229,12 +229,15 @@ switch string_lower(input[1])
         exit;
 }
 global.classlimits[chosenClass] = real(input[2])
+
+var suggestedClass;
+
 with Player
 {
     if class == chosenClass
     {
-        class = getClasslimit(team, class);
-        if class != chosenClass// Class has been switched, send that to everyone
+        suggestedClass = getClasslimit(team, class);
+        if suggestedClass != class// Class has been switched, send that to everyone
         {
                 if(object != -1)
                 {
@@ -260,11 +263,12 @@ with Player
                         }
                         else 
                         instance_destroy(); 
-                        
                     }
                 }
                 else if(alarm[5]<=0){
                     alarm[5] = 1;}
+                    
+            class = suggestedClass
 
             ServerPlayerChangeclass(ds_list_find_index(global.players, id), class, global.sendBuffer);
         }
@@ -419,4 +423,30 @@ else
 ds_map_add(global.documentationDict, "unmute", "
 print('Syntax: unmute -playerID');
 print('Use: Allows a player banned from chat to re-enter it.');
+");
+
+
+ds_map_add(global.commandDict, "endMap", "
+if input[1] != ''
+{
+    // User entered a map
+    global.suggestedMap = input[1]
+    global.mapchanging = 0
+}
+global.winners = TEAM_SPECTATOR;
+");
+ds_map_add(global.documentationDict, "endMap", "
+print('Syntax: endMap -optionalMapName')
+print('Use: Ends the map with a stalemate, and if you have entered a map name will change to that map.')
+print('If you havent, it will simply go to the next map in the rotation.');
+");
+
+
+ds_map_add(global.commandDict, "shuffleMaps", "
+ds_list_shuffle(global.map_rotation);
+print('Shuffled map rotation');
+");
+ds_map_add(global.documentationDict, "shuffleMaps", "
+print('Syntax: shuffleMaps');
+print('Use: Randomizes the map rotation');
 ");
