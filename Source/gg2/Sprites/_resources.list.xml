@@ -12,4 +12,5 @@
   <resource name="Event Sprites" type="GROUP"/>
   <resource name="DevMessagesCheckerS" type="RESOURCE"/>
   <resource name="ChatBoxS" type="RESOURCE"/>
+  <resource name="ReplayButtonS" type="RESOURCE"/>
 </resources>

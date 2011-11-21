@@ -48,6 +48,13 @@ case STATE_EXPECT_HELLO:
             
     if(!sameProtocol)
         write_ubyte(socket, INCOMPATIBLE_PROTOCOL);
+        
+    if ds_list_find_index(global.banlist, socket_remote_ip(socket)) >= 0
+    {
+        socket_destroy(socket);
+        instance_destroy();
+        exit
+    }
     else if(global.serverPassword == "")
     {
         newState = STATE_CLIENT_AUTHENTICATED;

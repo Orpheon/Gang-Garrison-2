@@ -457,6 +457,7 @@ do {
 
         case CHANGE_MAP:
             ds_list_clear(global.chatLog);
+            ds_list_clear(global.chatFadeTimers);
             roomchange=true;
             global.mapchanging = false;
             global.currentMap = receivestring(global.serverSocket, 1);

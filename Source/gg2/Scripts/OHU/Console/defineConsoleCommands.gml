@@ -23,7 +23,7 @@ else
     print('Could not find a player with that ID.');
 }")
 ds_map_add(global.documentationDict, "kick", "
-print('Syntax: kick -playerID')
+print('Syntax: kick playerID')
 print('Use: Kicks the designed player from the game, disconnecting him but not banning him.')
 print('Warning: Attempting to kick the host will have no effect.')");
 
@@ -41,9 +41,13 @@ if player != -1 and player != ds_list_find_value(global.players, 0)
         socket = -1;
         print(player.name+' has been banned successfully.');
     }
+}
+else
+{
+    print('Could not find a player with that ID.');
 }")
 ds_map_add(global.documentationDict, "ban", "
-print('Syntax: ban -playerID')
+print('Syntax: ban playerID')
 print('Use: Bans the designed player from the game, disconnecting him and making it impossible for him to join later.')
 print('Warning: Attempting to ban the host will have no effect.')
 print('If you have not enabled persistent banning, all bans will be reset when gg2 is restarted.')
@@ -75,17 +79,17 @@ with Player
 for (i=0; i<ds_list_size(redteam); i+=1)
 {
     player = ds_list_find_value(redteam, i);
-    print('/:/r'+player.name+': '+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
+    print('/:/r'+player.name+':    ID='+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
 }
 for (i=0; i<ds_list_size(blueteam); i+=1)
 {
     player = ds_list_find_value(blueteam, i);
-    print('/:/b'+player.name+': '+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
+    print('/:/b'+player.name+':    ID='+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
 }
 for (i=0; i<ds_list_size(specteam); i+=1)
 {
     player = ds_list_find_value(specteam, i);
-    print('/:/g'+player.name+': '+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
+    print('/:/g'+player.name+':    ID='+string(player.ID)+'; IP='+string(socket_remote_ip(player.socket)));
 }");
 ds_map_add(global.documentationDict, "listID", "
 print('Syntax: listID')
@@ -102,7 +106,7 @@ if input[1] == ''
     print('OHU'+string(GAME_VERSION_STRING)+' console;');
     print('');
     print('Usage: Type in the wanted command followed by its arguments in this syntax:');
-    print('command -arg1 -arg2 -arg3')
+    print('command arg1 arg2 arg3')
     print('');
     print('Some commands require Player IDs, the command listID can show them to you.')
     print('');
@@ -115,7 +119,7 @@ if input[1] == ''
         print(key);
     }
     print('')
-    print('For more details on each command, enter help -commandName.')
+    print('For more details on each command, enter |help commandName|.')
     print('Additional questions or requests should go to the OHU thread.')
     print('----------------------------------------------------------------------------------');
 }
@@ -141,7 +145,8 @@ print('Use: Clears the console')");
 
 
 ds_map_add(global.commandDict, "setClasslimit", "
-var chosenClass;
+var chosenClass, noClassChosen;
+noClassChosen = 0
 switch string_lower(input[1])
 {
     case 'scout':
@@ -224,21 +229,35 @@ switch string_lower(input[1])
         chosenClass = CLASS_QUOTE;
         break;
         
+    case '':
+        noClassChosen = 1;
+        break;
+        
     default:
         print('Could not find a class with that name.');
         exit;
 }
-global.classlimits[chosenClass] = real(input[2])
 
-var suggestedClass;
-
-with Player
+if !noClassChosen
 {
-    if class == chosenClass
+    if input[2] != 'off'
     {
-        suggestedClass = getClasslimit(team, class);
-        if suggestedClass != class// Class has been switched, send that to everyone
+        global.classlimits[chosenClass] = real(input[2])
+    }
+    else
+    {
+        global.classlimits[chosenClass] = global.playerLimit+15
+    }
+
+    var suggestedClass;
+
+    with Player
+    {
+        if class == chosenClass
         {
+            suggestedClass = getClasslimit(team, class);
+            if suggestedClass != class// Class has been switched, send that to everyone
+            {
                 if(object != -1)
                 {
                     with(object)
@@ -265,12 +284,15 @@ with Player
                         instance_destroy(); 
                     }
                 }
-                else if(alarm[5]<=0){
-                    alarm[5] = 1;}
+                else if(alarm[5]<=0)
+                {
+                    alarm[5] = 1;
+                }
                     
-            class = suggestedClass
+                class = suggestedClass
 
-            ServerPlayerChangeclass(ds_list_find_index(global.players, id), class, global.sendBuffer);
+                ServerPlayerChangeclass(ds_list_find_index(global.players, id), class, global.sendBuffer);
+            }
         }
     }
 }
@@ -307,7 +329,7 @@ if global.classlimits[CLASS_QUOTE] >= global.playerLimit print(' Quote: Off');
 else print(' Quote: '+string(global.classlimits[CLASS_QUOTE]));
 ");
 ds_map_add(global.documentationDict, "setClasslimit", "
-print('Syntax: setClasslimit -className -newClasslimit');
+print('Syntax: setClasslimit className newClasslimit');
 print('className can be typed with the tf2 or the gg2 name, but only in singular.');
 print('Use: Change current classlimits of a class');");
 
@@ -371,10 +393,10 @@ switch string_lower(input[1])
         break;
 }");
 ds_map_add(global.documentationDict, "setChatMode", "
-print('Syntax: setChatMode -mode');
-print('Mode can be: -off, -team or -all');
-print('Use: Changes the chat settings. -off disables all chat, -team enables team only chat');
-print(' and -all enables both team and global chat');");
+print('Syntax: setChatMode mode');
+print('Mode can be: off, team or all');
+print('Use: Changes the chat settings. |off| disables all chat, |team| enables team only chat');
+print(' and |all| enables both team and global chat');");
 
 
 ds_map_add(global.commandDict, "mute", "
@@ -393,7 +415,7 @@ else
     print('Could not find a player with that ID.');
 }");
 ds_map_add(global.documentationDict, "mute", "
-print('Syntax: mute -playerID');
+print('Syntax: mute playerID');
 print('Use: Bans the designated player from the chat until you unban him or he leaves.');
 ");
 
@@ -421,7 +443,7 @@ else
     print('Could not find a player with that ID.');
 }");
 ds_map_add(global.documentationDict, "unmute", "
-print('Syntax: unmute -playerID');
+print('Syntax: unmute playerID');
 print('Use: Allows a player banned from chat to re-enter it.');
 ");
 
@@ -436,9 +458,10 @@ if input[1] != ''
 global.winners = TEAM_SPECTATOR;
 ");
 ds_map_add(global.documentationDict, "endMap", "
-print('Syntax: endMap -optionalMapName')
+print('Syntax: endMap optionalMapName')
 print('Use: Ends the map with a stalemate, and if you have entered a map name will change to that map.')
 print('If you havent, it will simply go to the next map in the rotation.');
+print('Warning: Please be careful to enter a correct map name, entering a wrong one will crash the server!');
 ");
 
 
@@ -449,4 +472,14 @@ print('Shuffled map rotation');
 ds_map_add(global.documentationDict, "shuffleMaps", "
 print('Syntax: shuffleMaps');
 print('Use: Randomizes the map rotation');
+");
+
+
+ds_map_add(global.commandDict, "changeNextMap", "
+global.nextMap = input[1]
+");
+ds_map_add(global.documentationDict, "changeNextMap", "
+print('Syntax: changeNextMap mapName')
+print('Sets the designated map as the next map.');
+print('Warning: Please be careful to enter a correct map name, entering a wrong one will crash the server!');
 ");

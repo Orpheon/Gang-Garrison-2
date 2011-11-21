@@ -96,6 +96,7 @@ if(global.winners != -1 and !global.mapchanging)
 if(impendingMapChange == 0)
 {
     ds_list_clear(global.chatLog);
+    ds_list_clear(global.chatFadeTimers);
     global.mapchanging = false;
     global.currentMap = global.nextMap;
     if(file_exists("Maps/" + global.currentMap + ".png"))

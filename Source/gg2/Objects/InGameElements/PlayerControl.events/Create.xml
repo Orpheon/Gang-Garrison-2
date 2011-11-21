@@ -17,6 +17,7 @@
 afktimer=afktimeout;
 oldScoreKeyDown=false;
 chatBox = instance_create(0, 0, ChatBox)
+if global.isPlayingReplay instance_create(0, 0, ReplayGUI)
 </argument>
       </arguments>
     </action>

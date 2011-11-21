@@ -25,12 +25,12 @@ else
 if(keyboard_check_pressed(global.changeTeam) and !global.chatBoxOpen) inputChangeTeam();
 if(keyboard_check_pressed(global.changeClass) and !global.chatBoxOpen) inputChangeClass();
 
-if(keyboard_check_pressed(global.chatKey)) and !ChatBox.hidden 
+if(keyboard_check_pressed(global.chatKey)) and !global.chatBoxHidden 
 {
     inverseChatMode()
 }
 
-if keyboard_check_pressed(global.publicChatKey) and !ChatBox.hidden and !menuOpen
+if keyboard_check_pressed(global.publicChatKey) and !global.chatBoxHidden and !menuOpen
 {
     ChatBox.public = 1
     inverseChatMode()
@@ -38,7 +38,7 @@ if keyboard_check_pressed(global.publicChatKey) and !ChatBox.hidden and !menuOpe
 
 if keyboard_check_pressed(ord("T")) and !menuOpen
 {
-    ChatBox.hidden = !ChatBox.hidden
+    global.chatBoxHidden = !global.chatBoxHidden
     global.chatBoxOpen = 0
 }
 

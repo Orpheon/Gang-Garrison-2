@@ -32,6 +32,7 @@ global.banlistNames = ds_list_create()
 global.suggestedMap = ""
 global.replayBuffer = buffer_create();// Used by the server to save the replay and by the client to load it.
 global.isPlayingReplay = 0;
+global.replaySpeed = 1;
 global.justEnabledRecording = 0;// Used to know if the recording just began, to save the first bytes.
 
 // Load the banlist if persistent banning was enabled.

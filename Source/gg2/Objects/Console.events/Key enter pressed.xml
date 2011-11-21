@@ -17,7 +17,6 @@
 {
     print("/:/o"+keyboard_string);
     parseInput(keyboard_string);
-    alarm[0] = -1
 }
 
 keyboard_string = ""

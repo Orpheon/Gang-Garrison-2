@@ -13,7 +13,7 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">if hidden exit
+        <argument kind="STRING">if global.chatBoxHidden exit
 
 var xoffset, yoffset, xsize, ysize;
 
@@ -33,15 +33,24 @@ if (global.chatBoxOpen)
 }
 
 // The drawing of the text
+var rawString, name, message, pos, age, alpha;
 for (i = 0; i &lt; ds_list_size(global.chatLog); i+=1)
 {
-        var rawString, name, message, pos;
-
         message = ds_list_find_value(global.chatLog, i);
+        age = ds_list_find_value(global.chatFadeTimers, i);
+        
+        if age &gt; 10
+        {
+            alpha = (11-age)
+        }
+        else
+        {
+            alpha = 1
+        }
         
         var color;
         color = getColorCode(message);
-        draw_text_color(x+10, y+ysize-50-12*(ds_list_size(global.chatLog)-i),string_copy(message, 2, string_length(message)),color,color,color,color,1);
+        draw_text_color(x+10, y+ysize-50-12*(ds_list_size(global.chatLog)-i),string_copy(message, 2, string_length(message)),color,color,color,color,alpha);
 }
 
 draw_set_font(fnt_gg2);

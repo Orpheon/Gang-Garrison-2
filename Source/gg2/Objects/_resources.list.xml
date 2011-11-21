@@ -13,4 +13,5 @@
   <resource name="Chat" type="GROUP"/>
   <resource name="RoomChangeObserver" type="RESOURCE"/>
   <resource name="Console" type="RESOURCE"/>
+  <resource name="ReplayGUI" type="RESOURCE"/>
 </resources>

@@ -20,6 +20,19 @@ while ds_list_size(global.chatLog) &gt; 10
 {
     ds_list_delete(global.chatLog, 0);
 }
+
+var time;
+for(i=0; i&lt;ds_list_size(global.chatFadeTimers); i+=1)
+{
+    time = ds_list_find_value(global.chatFadeTimers, i)
+    ds_list_replace(global.chatFadeTimers, i, time+global.replaySpeed/30)    
+    if time &gt; 11
+    {
+        ds_list_delete(global.chatFadeTimers, i)
+        ds_list_delete(global.chatLog, i)
+        i -= 1
+    }
+}
 </argument>
       </arguments>
     </action>
