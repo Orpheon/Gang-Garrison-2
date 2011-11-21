@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="MOUSE" id="50">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">if !(mouse_y &gt; y and mouse_y &lt; y+60) exit
+
+if mouse_x &gt; x+stopButton[0] and mouse_x &lt; x+stopButton[1]
+{
+    // User pressed the stop button
+    if show_question("Are you sure you want to exit the replay?")// and wants to quit
+    {
+        with Client
+        {
+            instance_destroy();
+        }
+    }
+}
+else if mouse_x &gt; x+playButton[0] and mouse_x &lt; x+playButton[1]
+{
+    // User pressed the play button
+    global.replaySpeed = 1
+}
+else if mouse_x &gt; x+fastButton[0] and mouse_x &lt; x+fastButton[1]
+{
+    // User pressed the fast-forward button
+    global.replaySpeed += 1
+}
+</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>
