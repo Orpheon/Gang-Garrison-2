@@ -13,13 +13,17 @@ if source == target
     return ds_list_create()
 }
 
-with Node
+// Network is the list of all nodes you can get to from source.
+for (i=0; i<ds_list_size(source.network); i+=1)
 {
-    ds_priority_add(unvisited, id, point_distance(x, y, source.x, source.y)+power(map_width(), 2)*power(map_height(), 2))// Big big big number. No real node distance is going to be bigger than this.
+    with ds_list_find_value(source.network, i)
+    {
+        ds_priority_add(unvisited, id, point_distance(x, y, source.x, source.y)+power(map_width(), 2)*power(map_height(), 2))// Big big big number. No real node distance is going to be bigger than this.
     
-    ds_list_clear(history)
+        ds_list_clear(history)
     
-    dist = point_distance(x, y, source.x, source.y)+power(map_width(), 2)*power(map_height(), 2)
+        dist = point_distance(x, y, source.x, source.y)+power(map_width(), 2)*power(map_height(), 2)
+    }
 }
 node = source
 
@@ -53,7 +57,12 @@ while true
     }
     
 //    if ds_priority_size(unvisited) mod 10 == 0 show_message(string(ds_priority_size(unvisited))+"; x="+string(node.x)+"; y="+string(node.y)+"; dist="+string(node.dist)+"; size of list="+string(ds_list_size(node.history)))
-    
+
+    if ds_priority_size(unvisited) <= 0
+    {
+        return ds_list_create();
+    }
+
     node = ds_priority_delete_min(unvisited)
 }
 

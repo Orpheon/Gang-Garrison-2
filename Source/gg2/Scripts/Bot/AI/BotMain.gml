@@ -9,13 +9,13 @@ while target == -1
         case 'roam':
         case 'objective':
 
-            if instance_exists(Intelligence)
+            if instance_exists(Intelligence) or instance_exists(IntelligenceBase)
             {
                 BotCTF()
             }
             else if instance_exists(KothControlPoint)
             {
-                target = KothControlPoint
+                target = instance_nearest(object.x, object.y, KothControlPoint)
             }
             else if instance_exists(ArenaControlPoint)
             {
@@ -26,6 +26,18 @@ while target == -1
                 else
                 {
                     target = ArenaControlPoint
+                }
+            }
+            else if instance_exists(KothRedControlPoint)
+            {
+                switch (team)
+                {
+                    case TEAM_RED:
+                        target = KothBlueControlPoint
+                        break
+                    case TEAM_BLUE:
+                        target = KothRedControlPoint
+                        break
                 }
             }
             else if instance_exists(Generator)
@@ -51,7 +63,15 @@ while target == -1
             }
             else
             {
-                task = 'roam'
+                switch (team)
+                {
+                    case TEAM_RED:
+                        target = SpawnPointBlue
+                        break;
+                    case TEAM_BLUE:
+                        target = SpawnPointRed
+                        break;
+                }
             }
             break
     }
@@ -67,6 +87,12 @@ while target == -1
             dir = 1
         }
     }
+}
+
+if task == 'hunt' and nearestEnemy != -1 and target != nearestEnemy
+{
+    target = nearestEnemy
+    ds_list_clear(directionList)
 }
 
 // Aiming and Fighting
@@ -164,7 +190,7 @@ if instance_number(Node) > 0 and target != -1
             {
                 if ds_list_find_value(directionList, 0) != node
                 {                
-                    getNodeList()
+                    getNodeList(node)
                 }
                 else
                 {            
@@ -189,7 +215,7 @@ if instance_number(Node) > 0 and target != -1
             }
             else
             {
-                getNodeList()
+                getNodeList(node)
             }
         }
     }
@@ -202,7 +228,7 @@ if instance_number(Node) > 0 and target != -1
     
     // Predict a collision, to brake before getting there. That way the bot can change direction correctly.
 
-    node = collision_circle(object.x+object.hspeed*1.4, object.y+object.vspeed*1.4+(0.2*power(1.4, 2))*sign(collision_point(object.x, object.y, Obstacle, 1, 1)), 5, Node, 0, 1)
+    node = collision_circle(object.x+object.hspeed*3+(object.runPower*object.controlFactor)*9, object.y+object.vspeed*3+(0.2*power(3, 2))*sign(collision_point(object.x, object.y, Obstacle, 1, 1)), 5, Node, 0, 1)
     if node >= 0
     {    
         if !ds_list_empty(directionList)
@@ -241,6 +267,11 @@ else if dir == 1
 {
     left = 0
     right = 1
+}
+
+if reloadCounter > 0
+{
+    reloadCounter -= 1
 }
 
 oldX = object.x

@@ -54,3 +54,4 @@ if bubbleHP
 
 object.keyState = keybyte
 object.aimDirection = aimDirection
+object.netAimDirection = aimDirection*65536/360

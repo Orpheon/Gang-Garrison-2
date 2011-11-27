@@ -59,13 +59,7 @@
     {
         global.botChosenTeam = choose(TEAM_RED, TEAM_BLUE)
     }
-    
-    if global.botMode == 2
-    {
-        CreateBot()// Just one
-    }
-    
-    if global.botMode == 3
+    else if global.botMode == 3
     {
         global.botNumber = global.playerLimit-sign(!global.dedicatedMode)
     }

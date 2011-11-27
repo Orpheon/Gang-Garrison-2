@@ -54,3 +54,13 @@ with Rocket
         }
     }
 }
+
+if reloadCounter > 0 or object.currentWeapon.ammoCount < 6
+{
+    LMB = 0
+    RMB = 0
+    if reloadCounter <= 0
+    {
+        reloadCounter = 60// Chosen randomly. 50 to even start reloading.
+    }
+}

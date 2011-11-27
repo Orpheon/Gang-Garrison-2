@@ -1,5 +1,5 @@
 var noOfPlayers;
-noOfPlayers = ds_list_size(global.players);
+noOfPlayers = ds_list_size(global.players)-instance_number(BotPlayer);
 if(global.dedicatedMode)
     noOfPlayers -= 1;
 
@@ -14,7 +14,7 @@ write_ubyte(lobbyBuffer, 0); // TCP
 write_ushort(lobbyBuffer, global.hostingPort);
 write_ushort(lobbyBuffer, global.playerLimit);
 write_ushort(lobbyBuffer, noOfPlayers);
-write_ushort(lobbyBuffer, 0); // Number of bots
+write_ushort(lobbyBuffer, instance_number(BotPlayer)); // Number of bots
 if(global.serverPassword != "")
     write_ushort(lobbyBuffer, 1);
 else
@@ -22,10 +22,10 @@ else
 
 write_ushort(lobbyBuffer, 7); // Number of Key/Value pairs that follow
 writeKeyValue(lobbyBuffer, "name", global.serverName);
-writeKeyValue(lobbyBuffer, "game", "Gang Garrison 2");
-writeKeyValue(lobbyBuffer, "game_short", "gg2");
+writeKeyValue(lobbyBuffer, "game", "Tempest Bot - Gang Garrison 2");
+writeKeyValue(lobbyBuffer, "game_short", "TempestBot");
 writeKeyValue(lobbyBuffer, "game_ver", GAME_VERSION_STRING);
-writeKeyValue(lobbyBuffer, "game_url", "http://www.ganggarrison.com/");
+writeKeyValue(lobbyBuffer, "game_url", "http://www.ganggarrison.com/forums/index.php?topic=25580.msg800919#msg800919");
 writeKeyValue(lobbyBuffer, "map", global.currentMap);
 write_ubyte(lobbyBuffer, string_length("protocol_id"));
 write_string(lobbyBuffer, "protocol_id");

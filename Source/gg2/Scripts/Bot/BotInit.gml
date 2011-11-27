@@ -22,19 +22,18 @@ dir = 1
 
 stuckTimer = 0
 
-oldX = object.x
-oldY = object.y
+oldX = 0
+oldY = 0
+
+reloadCounter = 0
 
 // Task selecting
 
-task = 'roam'// tasks possible: hunt (search enemies and kill them); roam (just wander around killing everyone you meet); and objective (capture the flag/point ignoring any enemies)
+task = choose("roam", "roam", "roam", "objective", "hunt")
+// tasks possible: hunt (search enemies and kill them); roam (just wander around killing everyone you meet); and objective (capture the flag/point ignoring any enemies)
+// roam has priority over everything else.
 
-if (class == CLASS_SCOUT and random(10)<4) or random(20)<4
+if class == CLASS_MEDIC
 {
-    task = 'objective'
-}
-
-if random(10)<6
-{
-    task = 'hunt'
+    task = 'roam'
 }

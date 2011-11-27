@@ -1,5 +1,7 @@
 // Predicts the movements of the nearest enemy and aims
 
+// TODO: FIX SCOUT AND ENGIE MOMENTUM COMPENSATION
+
 if class == CLASS_SCOUT
 {
     weapon_speed = 13+object.hspeed
@@ -96,6 +98,22 @@ else
 }
 
 aimDirection = point_direction(object.x, object.y, predictedEnemy_x, predictedEnemy_y)
+
+if (class == CLASS_SCOUT or class == CLASS_ENGINEER) and object.speed != 0// Bullets are modified by your momentum, compensate for that
+{
+    var vectorX, vectorY, X1, Y1, X2, Y2 distance;
+    
+    X1 = (predictedEnemy_x-object.x)
+    Y1 = (predictedEnemy_y-object.y)
+        
+    vectorX = X1 - object.hspeed*time
+    vectorY = Y1 - object.vspeed*time
+    
+    vectorX /= sqrt(power(vectorX, 2)+power(vectorY, 2))// Normalize the result
+    vectorY /= sqrt(power(vectorX, 2)+power(vectorY, 2))
+    
+    aimDirection = point_direction(object.x, object.y, object.x+vectorX, object.y+vectorY)
+}
 
 /*if class == CLASS_SNIPER// Nerfing the snipers aim; not really necessary imo because sniper bots are a bit UP
 {

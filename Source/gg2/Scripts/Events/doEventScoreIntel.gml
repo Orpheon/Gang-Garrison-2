@@ -21,6 +21,25 @@ if(argument0.team == TEAM_RED) {
     exit;
 }
 
+if argument0.object_index == BotPlayer
+{
+    with argument0
+    {
+        task = 'roam'
+        target = -1
+        ds_list_clear(directionList)
+    }
+}
+
+with BotPlayer
+{
+    if target == argument0
+    {
+        target = -1
+        ds_list_clear(directionList)
+    }
+}
+
 if(argument0.object != -1) {
     argument0.object.intel = false;
     argument0.object.animationOffset = CHARACTER_ANIMATION_NORMAL;

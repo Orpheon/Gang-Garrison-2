@@ -74,31 +74,6 @@ if patient != -1
 //MOVEMENT+COMBAT//
 ///////////////////
 
-//FOLLOW PATIENT//
-
-if isHealing and patient != -1
-{
-    if patient.player.class != CLASS_MEDIC or patient.hp < 40// You should heal medics if they're almost dead, but avoid infinite loops.
-    {
-        //get close if moved too far or too near from patient
-        if abs(object.x-patient.x)>=200
-        {
-            if object.x > patient.x
-                dir=-1;
-            else if object.x < patient.x
-                dir=1;
-        }
-        //jump with patient
-        if object.y-patient.y > 32 and patient.vspeed>0
-            jump=1;
-    }
-    else
-    {
-        patient = -1
-    }
-}
-
-
 //NORMAL MOVING//
 
 //i am not healing
@@ -113,11 +88,14 @@ if !isHealing
             if (point_distance(object.x,object.y,nearestEnemy.x,nearestEnemy.y)<350 or object.hp<30)
             and !collision_line(object.x,object.y,nearestEnemy.x,nearestEnemy.y,Obstacle,true,true)//i can see him
             {
-                //run away
-                if object.x > nearestEnemy.x
-                    dir = 1;
-                if object.x < nearestEnemy.x
-                    dir =- 1;
+                if task != 'objective'
+                {
+                    //run away
+                    if object.x > nearestEnemy.x
+                        dir = 1;
+                    if object.x < nearestEnemy.x
+                        dir =- 1;
+                }
 
                 //shooting
                 if point_distance(object.x,object.y,nearestEnemy.x,nearestEnemy.y)<300 and
@@ -135,29 +113,35 @@ if !isHealing
     }
 }
 
-// You're healing someone, or you could heal someone
+//FOLLOWING//
 if patient != -1 and isHealing
 {
     if point_distance(object.x, object.y, patient.x, patient.y) < 150// Pulled 150 out of the air, correct if necessary.
     {
-        //follow him
-        if object.x > patient.x
-            dir=-1;
-        if object.x < patient.x
-            dir=1;
+        if task != 'objective'
+        {
+            //follow him
+            if object.x > patient.x
+                dir=-1;
+            if object.x < patient.x
+                dir=1;
+        }
     }
     //oh wait,an enemy is nearer,run!
     if nearestEnemy != -1 and !object.currentWeapon.ubering
     {
         if point_distance(object.x,object.y,nearestEnemy.x,nearestEnemy.y)<=point_distance(object.x,object.y,patient.x,patient.y)+50
         {
-            //run away
-            if object.x > nearestEnemy.x
-                dir = 1;
-            if object.x < nearestEnemy.x
-                dir =- 1;
+            if task != 'objective'
+            {
+                //run away
+                if object.x > nearestEnemy.x
+                    dir = 1;
+                if object.x < nearestEnemy.x
+                    dir =- 1;
+            }
 
-            //shoot!(this make medic a bit too aggressive,maybe decrease 250 to 150? idk you choose)
+            //shoot!(this make medic a bit too aggressive,maybe decrease 250 to 150? idk you choose) -Gangsterman
             // I think I see why you used the okToShoot, sorry that I removed it :/.
             // Also, gave a check of the patients current hp instead of not healing medics and spies. -Orpheon
             if point_distance(object.x,object.y,nearestEnemy.x,nearestEnemy.y)<250

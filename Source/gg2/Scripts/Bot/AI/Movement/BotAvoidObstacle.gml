@@ -20,7 +20,7 @@ if collision_point(object.x, object.y+yOffset+3, Obstacle, 1, 0) > 0// Only do s
     }
 }
 
-if oldX == object.x and object.cappingPoint == noone// If you're at the same place as last frame
+if oldX-2 <= object.x and oldX+2 >= object.x and object.cappingPoint == noone// If you're at the same place as last frame
 {
     stuckTimer -= 1// Start the "stuck" alarm (see BotMain)
 }

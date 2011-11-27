@@ -13,22 +13,50 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">if lastNode != -1 and global.botLearningMode
+        <argument kind="STRING">if !global.botLearningMode exit;
+
+if lastNode != -1 and lastNode != other
 {
     if ds_list_find_index(lastNode.connections, other.id) &gt;= 0
     {
         if distanceTraveled &lt; ds_list_find_value(lastNode.distance, ds_list_find_index(lastNode.connections, other.id))
         {
-            // The distance between them is shorter than the bots think
-            // Correct the fault
+            // Connection exists, but the distance between them is shorter than the bots think.
+            // Correct the fault.
             ds_list_replace(lastNode.distance, ds_list_find_index(lastNode.connections, other.id), distanceTraveled)
             global.changedNodeMap = 1
         }
     }
-}
+    else
+    {
+        // No connection even existed; create one now.
+        ds_list_add(lastNode.connections, other.id)
+        ds_list_add(lastNode.distance, distanceTraveled)
+        ds_list_add(lastNode.commands, lastNodeCommand)
+        
+        for (i=0; i&lt;ds_list_size(other.network); i+=1)
+        {
+            if ds_list_find_index(lastNode.network, ds_list_find_value(other.network, i)) &lt; 0
+            {
+                ds_list_add(lastNode.network, ds_list_find_value(other.network, i));
+            }
+        }
+    }
 
-lastNode = other.id
-distanceTraveled = 0
+    lastNode = other.id
+    distanceTraveled = 0
+    lastNodeCommand = sign(hspeed)
+}
+else if lastNode == other
+{
+    lastNodeCommand = abs(lastNodeCommand)*sign(hspeed)
+}
+else if lastNode == -1
+{
+    lastNode = other.id
+    distanceTraveled = 0
+    lastNodeCommand = abs(lastNodeCommand)*sign(hspeed)
+}
 </argument>
       </arguments>
     </action>

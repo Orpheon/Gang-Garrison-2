@@ -29,6 +29,15 @@ if(!instance_exists(intelObj))
             event_user(5);
     }
 }
+
+with BotPlayer
+{
+    if target == intelBaseObj
+    {
+        target = -1
+        ds_list_clear(directionList)
+    }
+}
     
 // Still not there? Make a new one.
 if(!instance_exists(intelObj))

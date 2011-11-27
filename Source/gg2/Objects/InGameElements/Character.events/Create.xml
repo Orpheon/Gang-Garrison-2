@@ -20,8 +20,16 @@
     canBuild = 0;
     jumpStrength = 8;
     capStrength = 1;
+    
+    // Node stuff
     lastNode = -1
-    distanceTraveled = 0
+    distanceTraveledSinceNode = 0
+    lastNodeCommand = 0
+    /*if !instance_exists(Node)
+    {
+        GenerateNodes()
+        global.changedNodeMap = 1
+    }*/
     
     // 
     flamecount = 0;

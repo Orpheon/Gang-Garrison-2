@@ -142,12 +142,8 @@ case STATE_EXPECT_NAME:
     
     ds_list_add(global.players, player);
     ServerPlayerJoin(player.name, global.sendBuffer);
-    
-    if global.botMode == 2
-    {
-        CreateBot()
-    }
-    else if global.botMode == 3
+
+    if global.botMode == 3
     {
         with BotPlayer// Destroy one bot. Just one.
         {

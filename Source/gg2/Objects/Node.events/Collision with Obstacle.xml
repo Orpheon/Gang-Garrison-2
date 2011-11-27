@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<event category="CREATE" id="0">
+<event category="COLLISION" with="Obstacle">
   <actions>
     <action id="603" library="1">
       <!--action name: Code-->
@@ -13,13 +13,7 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">distance = ds_list_create()
-commands = ds_list_create()
-connections = ds_list_create()
-history = ds_list_create()
-network = ds_list_create()
-
-glow = 0// Aesthetic network highlighter.
+        <argument kind="STRING">/*instance_destroy()
 </argument>
       </arguments>
     </action>

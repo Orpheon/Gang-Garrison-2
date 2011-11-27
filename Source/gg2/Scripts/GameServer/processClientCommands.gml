@@ -119,27 +119,34 @@ while(commandLimitRemaining > 0) {
             var newTeam, balance, redSuperiority;
             newTeam = read_ubyte(socket);
             
-            redSuperiority = 0   //calculate which team is bigger
-            with(Player)
+            if global.botMode == 1 or global.botMode == 2
             {
-                if(team == TEAM_RED)
-                    redSuperiority += 1;
-                else if(team == TEAM_BLUE)
-                    redSuperiority -= 1;
+                balance = global.botChosenTeam// Don't let humans go there
             }
-            with(BotPlayer)
-            {
-                if(team == TEAM_RED)
-                    redSuperiority += 1;
-                else if(team == TEAM_BLUE)
-                    redSuperiority -= 1;
-            }
-            if(redSuperiority > 0)
-                balance = TEAM_RED;
-            else if(redSuperiority < 0)
-                balance = TEAM_BLUE;
             else
-                balance = -1;
+            {
+                redSuperiority = 0   //calculate which team is bigger
+                with(Player)
+                {
+                    if(team == TEAM_RED)
+                        redSuperiority += 1;
+                    else if(team == TEAM_BLUE)
+                        redSuperiority -= 1;
+                }
+                with(BotPlayer)
+                {
+                    if(team == TEAM_RED)
+                        redSuperiority += 1;
+                    else if(team == TEAM_BLUE)
+                        redSuperiority -= 1;
+                }
+                if(redSuperiority > 0)
+                    balance = TEAM_RED;
+                else if(redSuperiority < 0)
+                    balance = TEAM_BLUE;
+                else
+                    balance = -1;
+            }
             
             if(balance != newTeam)
             {
@@ -174,7 +181,11 @@ while(commandLimitRemaining > 0) {
                     {
                         if newTeam == TEAM_SPECTATOR
                         {
-                            BotPlayer.destroy = 1
+                            with BotPlayer
+                            {
+                                destroy = 1
+                                break;
+                            }
                         }
                         else
                         {

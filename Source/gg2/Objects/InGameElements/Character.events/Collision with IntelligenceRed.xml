@@ -28,6 +28,13 @@ if(global.isHost and !global.mapchanging) {
             ds_list_clear(directionList)
         }
     }
+    
+    if player.object_index == BotPlayer
+    {
+        player.task = 'objective'
+        player.target = -1
+        ds_list_clear(player.directionList)
+    }
 }
 </argument>
       </arguments>

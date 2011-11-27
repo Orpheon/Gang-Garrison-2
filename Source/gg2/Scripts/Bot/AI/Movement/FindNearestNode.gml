@@ -1,19 +1,21 @@
 // Gets a pair of coordinates and tries to find the closest node.
-// argument0=xpos; argument1=ypos
+// argument0=xpos; argument1=ypos; argument2=source node
 
-var xpos, ypos, list;
+var xpos, ypos, list, source, node;
 
 xpos = argument0
 ypos = argument1
+source = argument2
 
 list = ds_priority_create()
 
-with Node
+for(i=0; i<ds_list_size(source.network); i+=1)
 {
-    ds_priority_add(list, id, point_distance(xpos, ypos, x, y))
+    node = ds_list_find_value(source.network, i)
+    ds_priority_add(list, node, point_distance(xpos, ypos, node.x, node.y))
 }
 
-var node, nearestNode;
+var nearestNode;
 
 nearestNode = ds_priority_find_min(list)
 

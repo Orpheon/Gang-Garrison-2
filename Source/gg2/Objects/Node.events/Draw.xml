@@ -13,7 +13,10 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">draw_set_color(c_red)
+        <argument kind="STRING">if !global.botDebugMode exit
+
+if glow draw_set_color(c_yellow)
+else draw_set_color(c_red)
 draw_set_alpha(0.4)
 
 draw_circle(x, y, 5, 0)

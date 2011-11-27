@@ -13,7 +13,9 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">/*with BotPlayer
+        <argument kind="STRING">/*if !global.botDebugMode exit
+
+with BotPlayer
 {
     if !ds_list_empty(directionList) and object != -1
     {

@@ -32,6 +32,15 @@ if(scoreKeyDown and !oldScoreKeyDown)
 else if(!scoreKeyDown and oldScoreKeyDown)
     inputCloseScores();
 oldScoreKeyDown = scoreKeyDown;
+
+
+if global.botDebugMode
+{
+    with Node
+    {
+        glow = 0
+    }
+}
     
 var keybyte;
 keybyte = 0;

@@ -40,4 +40,4 @@ if ds_list_empty(classList)
 
 argument0.class = ds_list_find_value(classList, random_range(0, ds_list_size(classList)))
 
-return argument0.class
+return class

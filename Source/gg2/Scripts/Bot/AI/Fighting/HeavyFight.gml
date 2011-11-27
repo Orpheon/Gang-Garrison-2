@@ -19,3 +19,12 @@ if(collision_line(object.x,object.y,predictedEnemy_x,predictedEnemy_y,Obstacle,t
 {
     LMB = 1
 }
+
+if reloadCounter > 0 or object.currentWeapon.ammoCount < 6
+{
+    LMB = 0
+    if reloadCounter <= 0
+    {
+        reloadCounter = 60// Chosen randomly. 50 to even start reloading.
+    }
+}

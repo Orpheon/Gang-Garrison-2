@@ -8,4 +8,5 @@
   <resource name="GetBotClass" type="RESOURCE"/>
   <resource name="LoadBotNodes" type="RESOURCE"/>
   <resource name="writeNodesToFile" type="RESOURCE"/>
+  <resource name="GenerateNodes" type="RESOURCE"/>
 </resources>
