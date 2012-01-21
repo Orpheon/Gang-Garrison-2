@@ -13,7 +13,7 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">numItems = 5;
+        <argument kind="STRING">numItems = 2;
 virtualItem = -1;
 server = noone;
 destroy = 0;
@@ -25,9 +25,6 @@ destroy = 0;
 // The drawing will do it's part itself
 item[0] = "Join as soon as free";
 item[1] = "Get Server Information";
-item[2] = "Get Server Information";
-item[3] = "Get Server Information";
-item[4] = "Get Server Information";
 
 width = 0;
 height = 0;

@@ -157,17 +157,17 @@
                 }
             }
         }
-    else if (mouse_check_button_pressed(mb_right) and virtualitem&lt;ds_list_size(servers) and virtualitem&gt;=0){
+        else if (mouse_check_button_pressed(mb_right) and virtualitem&lt;ds_list_size(servers) and virtualitem&gt;=0){
         server = ds_list_find_value(servers, virtualitem);
-        if(server.compatible)
-        {
+            if(server.compatible)
+            {
                 var menu;     
                 menu = instance_create(mouse_x, mouse_y, LobbyRightClickMenu)
                 menu.server = server
+            }
         }
     } else {
         virtualitem = -1;
-        }
     }
 }
 </argument>

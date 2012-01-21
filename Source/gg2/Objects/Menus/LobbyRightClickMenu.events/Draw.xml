@@ -50,7 +50,7 @@ if virtualItem != -1// If you are hovering over something, draw the highlight-co
 draw_set_color(c_white);// Draw the text
 for (i=0; i&lt;numItems; i+=1)
 {
-    tempY = (i+3/20)*sizeOfCompartiment;// The height of each text; 1/5 == offset so text isn't drawn at top edge of each compartiment
+    tempY = (i+3/20)*sizeOfCompartiment;// The height of each text; 3/20 == offset so text isn't drawn at top edge of each compartiment
     draw_text(x+10, y+tempY, item[i]);
 }
 
