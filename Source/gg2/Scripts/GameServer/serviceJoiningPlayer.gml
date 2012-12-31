@@ -43,11 +43,23 @@ case STATE_EXPECT_HELLO:
     sameProtocol = (read_ubyte(socket) == HELLO);
     buffer_set_readpos(global.protocolUuid, 0)
     for(i=0; i<4; i+=1)
+    {
         if(read_uint(socket) != read_uint(global.protocolUuid))
             sameProtocol = false;
+        }
+    }
+    
+    if ds_list_find_index(global.banned_ips, socket_remote_ip(socket)) >= 0
+    {
+        // This person is banned, kill the socket (->kick them)
+        socket_destroy_abortive(socket);
+        exit;
+    }
             
     if(!sameProtocol)
+    {
         write_ubyte(socket, INCOMPATIBLE_PROTOCOL);
+    }
     else if(global.serverPassword == "")
     {
         newState = STATE_CLIENT_AUTHENTICATED;

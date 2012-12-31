@@ -12,6 +12,21 @@
     global.privChatSpecBuffer = buffer_create();
     global.publicChatBuffer = buffer_create();
     
+    global.banned_ips = ds_list_create();
+    var text, str;
+    if (file_exists("Banned ips.txt"))
+    {
+        // If a list of banned ips exists, load them into the list
+        text = file_text_open_read("Banned ips.txt");
+        while not file_text_eof(text)
+        {
+            str = file_text_read_string(text);
+            file_text_readln(text);
+            ds_list_add(global.banned_ips, str);
+        }
+        file_text_close(text);
+    }
+    
     global.currentMapIndex = 0;
     global.currentMapArea = 1;
     
