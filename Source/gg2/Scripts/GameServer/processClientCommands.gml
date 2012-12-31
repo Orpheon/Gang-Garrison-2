@@ -337,14 +337,18 @@ while(commandLimitRemaining > 0) {
                         teambuffer = global.privChatSpecBuffer;// Specs can only global chat
                         message = "/:/" + color + "(team) " + string_replace_all(name, "/:/", "/;/") + ": /:/" + COLOR_WHITE + message;
                     }
+                    var orig_message;
+                    orig_message = message;
+                    // Prefix the message with the index of the originating player, for muting on clientside
+                    message = string(ds_list_find_index(global.players, player)) + message;
                     write_ubyte(teambuffer, CHAT_PUBLIC_MESSAGE);
                     write_ushort(teambuffer, string_length(message));
                     write_string(teambuffer, message);
 
                     // For the host, who never receives stuff
-                    if global.myself.team == team
+                    if global.myself.team == team and ds_list_find_index(global.ignore_list, player) < 0
                     {
-                        print_to_chat(message);
+                        print_to_chat(orig_message);
                     }
                 }
             }
@@ -395,12 +399,19 @@ while(commandLimitRemaining > 0) {
                     {
                         message = "/:/" + color + string_replace_all(name, "/:/", "/;/") + ": /:/" + COLOR_WHITE + message;
                     }
+                    var orig_message;
+                    orig_message = message;
+                    // Prefix the message with the index of the originating player, for muting on clientside
+                    message = string(ds_list_find_index(global.players, player)) + message;
                     write_ubyte(global.publicChatBuffer, CHAT_PUBLIC_MESSAGE);
                     write_ushort(global.publicChatBuffer, string_length(message));
                     write_string(global.publicChatBuffer, message);
                     
                     // For the host, who never receives stuff
-                    print_to_chat(message);
+                    if ds_list_find_index(global.ignore_list, player) < 0
+                    {
+                        print_to_chat(orig_message);
+                    }
                 }
             }
             break;

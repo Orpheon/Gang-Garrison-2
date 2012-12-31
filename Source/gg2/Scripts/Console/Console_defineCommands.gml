@@ -458,3 +458,98 @@ Console_print('Syntax: unmute playerID/playerName');
 Console_print('Use: Allows chatting for that particular player (By default enabled).');
 Console_print('Warning: IDs are considered before names.');
 ");
+
+
+Console_addCommand("ignore", "
+var player;
+// Check whether a name or a ID was given
+if string_letters(input[1]) == ''
+{
+    // No letters were given
+    // First check whether that ID is even valid
+    if floor(real(string_digits(input[1]))) < ds_list_size(global.players) and floor(real(string_digits(input[1]))) >= 0
+    {
+        player = ds_list_find_value(global.players, floor(real(string_digits(input[1]))));
+        // Valid ID, start ignoring that player
+        if ds_list_find_index(global.ignore_list, player) < 0
+        {
+            ds_list_add(global.ignore_list, player);
+            Console_print(string_replace_all(player.name, '/:/', '/;/')+' is now ignored.');
+        }
+        else
+        {
+            Console_print(string_replace_all(player.name, '/:/', '/;/')+' is already being ignored.');
+        }
+    }
+}
+// If that system above did not work, try checking names
+with Player
+{
+    if name == other.input[1]
+    {
+        // Valid ID, start ignoring that player
+        if ds_list_find_index(global.ignore_list, id) < 0
+        {
+            ds_list_add(global.ignore_list, id);
+            Console_print(string_replace_all(name, '/:/', '/;/')+' is now ignored.');
+        }
+        else
+        {
+            Console_print(string_replace_all(name, '/:/', '/;/')+' is already being ignored.');
+        }
+    }
+}
+// We failed
+Console_print('Could not find a player with that ID or name');
+", "
+Console_print('Syntax: ignore playerID/playerName');
+Console_print('Use: Hides all chat messages (public and private) from that person');
+Console_print('Warning: IDs are considered before names.');
+");
+
+Console_addCommand("unignore", "
+var player;
+// Check whether a name or a ID was given
+if string_letters(input[1]) == ''
+{
+    // No letters were given
+    // First check whether that ID is even valid
+    if floor(real(string_digits(input[1]))) < ds_list_size(global.players) and floor(real(string_digits(input[1]))) >= 0
+    {
+        player = ds_list_find_value(global.players, floor(real(string_digits(input[1]))));
+        // Valid ID, stop ignoring that player
+        if ds_list_find_index(global.ignore_list, player) >= 0
+        {
+            ds_list_delete(global.ignore_list, player);
+            Console_print(string_replace_all(player.name, '/:/', '/;/')+' isn't ignored anymore.');
+        }
+        else
+        {
+            Console_print(string_replace_all(player.name, '/:/', '/;/')+' wasn't being ignored.');
+        }
+    }
+}
+// If that system above did not work, try checking names
+with Player
+{
+    if name == other.input[1]
+    {
+        // Valid ID, stop ignoring that player
+        if ds_list_find_index(global.ignore_list, id) >= 0
+        {
+            ds_list_delete(global.ignore_list, id);
+            Console_print(string_replace_all(name, '/:/', '/;/')+' isn't ignored anymore.');
+        }
+        else
+        {
+            Console_print(string_replace_all(name, '/:/', '/;/')+' wasn't being ignored.');
+        }
+    }
+}
+// We failed
+Console_print('Could not find a player with that ID or name');
+", "
+Console_print('Syntax: unignore playerID/playerName');
+Console_print('Use: Makes all messages from that person visible again (reverts the ignore command).');
+Console_print('Warning: IDs are considered before names.');
+");

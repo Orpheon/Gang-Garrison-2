@@ -25,6 +25,7 @@
     global.tempBuffer = buffer_create();
     global.HudCheck = false;
     global.map_rotation = ds_list_create();
+    global.ignore_list = ds_list_create();
     
     global.CustomMapCollisionSprite = -1;
     

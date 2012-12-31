@@ -18,6 +18,7 @@
     ds_list_destroy(global.players);
     buffer_destroy(global.deserializeBuffer);
     buffer_destroy(downloadMapBuffer);
+    ds_list_clear(global.ignore_list);
     
     with(Player)
         instance_destroy();

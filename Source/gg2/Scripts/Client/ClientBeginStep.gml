@@ -207,6 +207,26 @@ do {
         case CHAT_PUBLIC_MESSAGE:
             var message, length;
             message = receivestring(global.serverSocket, 2);
+            if (string_copy(message, 0, 3) != "/:/")
+            {
+                // This is probably a chat message prefixed with the index of the player who sent it
+                // First check if it's a number
+                if string_digits(string_copy(message, 0, 1)) != ""
+                {
+                    var index, player;
+                    index = real(string_copy(message, 0, 1));
+                    if index < ds_list_size(global.players)
+                    {
+                        player = ds_list_find_value(global.players, index);
+                        // If we're not ignoring this player
+                        if not ds_list_find_index(global.ignore_list, player)
+                        {
+                            print_to_chat(string_copy(message, 1, string_length(message)));
+                        }
+                        break;
+                    }
+                }
+            }
             print_to_chat(message);
             break;
                  

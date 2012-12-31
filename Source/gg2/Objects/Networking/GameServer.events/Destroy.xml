@@ -17,10 +17,13 @@
     sendLobbyUnreg();
 }
 
+ds_list_destroy(global.banned_ips);
+
 ds_list_destroy(global.players);
 socket_destroy(global.tcpListener);
 socket_destroy(global.serverSocket);
 buffer_destroy(serverId);
+ds_list_clear(global.ignore_list);
 
 buffer_destroy(global.privChatRedBuffer);
 buffer_destroy(global.privChatBlueBuffer);
