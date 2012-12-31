@@ -51,6 +51,7 @@
     {
         if global.classlimits[a] >= global.playerLimit
         {
+            // Any higher will get capped because of syncing anyways
             global.classlimits[a] = 256
         }
     }

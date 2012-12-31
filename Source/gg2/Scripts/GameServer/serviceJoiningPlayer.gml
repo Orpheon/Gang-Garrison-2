@@ -45,6 +45,7 @@ case STATE_EXPECT_HELLO:
     for(i=0; i<4; i+=1)
     {
         if(read_uint(socket) != read_uint(global.protocolUuid))
+        {
             sameProtocol = false;
         }
     }
