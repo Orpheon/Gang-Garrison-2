@@ -13,11 +13,16 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">typingChar = ""
-keyboard_string = ""
-alarm[0] = 8
+        <argument kind="STRING">keyboard_string = ""
+current_text = "";
+alarm[0] = 10
+blink = true;
 clearScreenTimer = -1
 commandLogIndex = 0;
+
+cursor_character = "|"
+cursor_position = 0;
+cursor_moving = 0;
 </argument>
       </arguments>
     </action>

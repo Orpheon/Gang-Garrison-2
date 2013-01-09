@@ -18,19 +18,21 @@
     exit;
 }
 
-if keyboard_string != ""
+if current_text != ""
 {
-    ds_list_add(global.commandLog, keyboard_string);
+    ds_list_add(global.commandLog, current_text);
     while ds_list_size(global.commandLog) &gt; MAX_COMMAND_LOG_SIZE
     {
         ds_list_delete(global.commandLog, 0);
     }
     commandLogIndex = ds_list_size(global.commandLog);
-    Console_print("/:/"+COLOR_ORANGE+keyboard_string);
-    Console_parseInput(keyboard_string);
+    Console_print("/:/"+COLOR_ORANGE+current_text);
+    Console_parseInput(current_text);
 }
 
-keyboard_string = ""
+current_text = ""
+cursor_position = 0;
+cursor_moving = 0;
 PlayerControl.afktimer = PlayerControl.afktimeout// The host shouldn't get afk'ed for writing long stuff in the console.
 </argument>
       </arguments>

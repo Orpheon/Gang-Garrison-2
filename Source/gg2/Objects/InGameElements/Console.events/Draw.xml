@@ -42,8 +42,16 @@ draw_sprite(sprite_index, image_index, x_left, y_top)
 draw_set_font(global.consoleFont);
 draw_text(x_left+15, y_top+10, "Console - GG2"+string(GAME_VERSION_STRING));
 
+draw_set_halign(fa_left);
+
+var offset;
 // Draw text in input field
-draw_text(x_left+14, y_bottom-15,keyboard_string+typingChar);
+if cursor_moving or blink
+{
+    offset = string_width(string_copy(current_text, 0, cursor_position));
+    draw_text(x_left+offset+11, y_bottom-15, cursor_character);
+}
+draw_text(x_left+14, y_bottom-15, current_text);
 
 // Draw the whole log
 var message;

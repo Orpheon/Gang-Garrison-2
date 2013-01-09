@@ -13,17 +13,10 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">// Makes a small '_' blink after the user-given text, makes the whole thing look more professional.
+        <argument kind="STRING">// Makes a small '|' blink after the user-given text, makes the whole thing look more professional.
 
-if typingChar == ""
-{
-    typingChar = "_"
-}
-else
-{
-    typingChar = ""
-}
-alarm[0] = 8
+blink = not blink
+alarm[0] = 10
 </argument>
       </arguments>
     </action>
