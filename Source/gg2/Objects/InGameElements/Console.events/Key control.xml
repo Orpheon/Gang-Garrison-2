@@ -17,7 +17,10 @@
 {
     if clipboard_has_text()
     {
-        keyboard_string += clipboard_get_text();
+        var str;
+        str = clipboard_get_text()
+        current_text = string_copy(current_text, 0, cursor_position) + str + string_copy(current_text, cursor_position+1, string_length(current_text));
+        cursor_position += string_length(str);
         keyboard_clear(ord('V'));
     }
 }
