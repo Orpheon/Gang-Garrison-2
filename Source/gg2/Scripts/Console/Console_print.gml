@@ -50,7 +50,7 @@
     
     ds_list_add(global.consoleLog, input);
     // This console can hold a maximum number of 32 lines of text
-    while ds_list_size(global.consoleLog) > 32
+    while ds_list_size(global.consoleLog) > global.consoleMaxLines
     {
         ds_list_delete(global.consoleLog, 0)
     }
